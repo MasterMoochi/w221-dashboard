@@ -588,11 +588,12 @@ const SECTIONS = [
     bg: "radial-gradient(120% 90% at 20% 10%, #8a5a00 0%, #0d0e12 70%)",
     desc: "The local push — campus outreach, community events, and catering gigs. Semester start + the 8/31 value promos are a perfect one-two punch.",
     chips: [
+      {t:"<b>Booked: 8/30 · 1pm</b> — 12 BYO boxes", c:"go"},
       {t:"Health fair: <b>logo sent</b>", c:"go"},
-      {t:"Rush week: <b>follow up</b>", c:"alert"},
-      {t:"Hot dog bars <b>$2.50/person</b>", c:""}
+      {t:"Rush week: <b>follow up</b>", c:"alert"}
     ],
     cards: [
+      {t:"📅 Booked", s:"", ul:["<b>Sat 8/30 · 1:00pm</b> — catering, <b>12 BYO hot dog boxes</b>. Also on the Calendar tab. Heads up: same day as Apple Pie/$4 POP removal, and the day before the triple launch — prep accordingly."]},
       {t:"Promise Health fair", s:"Patient Appreciation & Back-to-School Health Fair — Michele Latorre (mlatorre@promisehealth.org).", ul:["Logo sent ✓","Owed: monthly marketing posters closer to event + table setup plan"]},
       {t:"UIUC rush week", s:"Fraternity & Sorority Affairs said no direct sharing, but pointed to public chapter contacts on their site.", ul:["Next: pitch chapters directly from the website contact list","Hot dog bars at $2.50/person, order online"]},
       {t:"Campus calendar ideas", s:"", ul:["Dorm move-in week (now!)","Quad Day — coupon cards ready in Downloads","Game days + late-night","Wiener Wednesday as the student habit"]},
@@ -677,6 +678,13 @@ const SECTIONS = [
         "<a href='https://docs.google.com/document/d/1oX8jjYsO8THMmiIsi1kW4BWwxr6N1-b3to8AmMPL-is/edit' target='_blank'>Health Audit 7/14 ↗</a>",
         "<a href='https://docs.google.com/document/d/1lCrI8-mi7NA8PM2tyT9ps6luB004xP8cDG0nciRVay0/edit' target='_blank'>Monthly Strategic Review 7/8 ↗</a>",
         "Daily Ops docs: <a href='https://docs.google.com/document/d/1eEqRsRG-9cxPHyHn1BGa-BE6R-UoMn-1E--8jOaKQt4/edit' target='_blank'>7/11 ↗</a> · <a href='https://docs.google.com/document/d/1oGOasD41vZAIcB8WOlQXouTipeWSf6pyUJeMVilwPfk/edit' target='_blank'>7/12 ↗</a> · <a href='https://docs.google.com/document/d/1D37SBEsdISi7x-IYgFUk4sGnfR0U7uR2poKpSmzy1Go/edit' target='_blank'>7/13 ↗</a>"
+      ]},
+      {t:"🏛️ City & compliance", s:"", ul:[
+        "<a href='https://library.municode.com/il/champaign/codes/code_of_ordinances?nodeId=MUCO_CH37ZO' target='_blank'>Ch. 37 — Zoning ordinance (Municode) ↗</a>",
+        "<a href='https://library.municode.com/il/champaign/codes/code_of_ordinances?nodeId=MUCO_CH37ZO_ARTVIIISI_DIV1GE_S37-382DE' target='_blank'>Ch. 37 Art. VIII — Sign code ↗</a>",
+        "<a href='https://champaignil.gov/planning/zoning/' target='_blank'>City zoning & land development page ↗</a>",
+        "<a href='https://champaignil.gov/municipal-code/' target='_blank'>Full municipal code ↗</a>",
+        "Mia — Planning & Development · 217-403-8816"
       ]},
       {t:"🛒 Ordering & brand", s:"", ul:[
         "<a href='https://ggi.directedgeprint.com/' target='_blank'>Direct Edge ↗</a> — POP, cooler bags, signs (login = store email)",
@@ -781,10 +789,11 @@ function switchTab(t){
 }
 
 /* ---- Calendar: PM schedule + data cadence + promo dates from emails ---- */
-const CAL_CATS = { promo:{c:"#d95926",n:"Promos"}, deadline:{c:"#e66767",n:"Deadlines"}, pm:{c:"#199e70",n:"Cleaning & PM"}, data:{c:"#3987e5",n:"Data & tasks"}, corp:{c:"#9085e9",n:"Corporate"} };
+const CAL_CATS = { promo:{c:"#d95926",n:"Promos"}, deadline:{c:"#e66767",n:"Deadlines"}, pm:{c:"#199e70",n:"Cleaning & PM"}, data:{c:"#3987e5",n:"Data & tasks"}, corp:{c:"#9085e9",n:"Corporate"}, event:{c:"#d55181",n:"Events & catering"} };
 /*CAL-START*/
 const CAL_EVENTS = [
   { "date":"2026-08-21", "cat":"deadline", "t":"POP due in store — $8 deal, Small Shakes, Cooler (banners, cling-ons, toppers, Sold Out stickers)" },
+  { "date":"2026-08-30", "cat":"event", "t":"CATERING — 1:00pm · 12 BYO hot dog boxes" },
   { "date":"2026-08-30", "cat":"deadline", "t":"Remove Apple Pie Shake + $4 Meal Deal POP tonight" },
   { "date":"2026-08-31", "cat":"promo", "t":"LAUNCH: $8 All-American Meal Deal (Offer 219, thru 11/1)" },
   { "date":"2026-08-31", "cat":"promo", "t":"LAUNCH: $2.99 Small Shakes — required item (thru 12/28)" },
