@@ -272,8 +272,25 @@ const WB = { "updated": "2026-08-10", "text": "THIS WEEK\n• Verify deposits �
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
-  el.textContent = WB.text;
-  el.addEventListener("input", () => { document.getElementById("wbsave").style.display = "block"; });
+  const note = document.getElementById("wbsave");
+  let text = WB.text, local = false;
+  try {
+    const raw = localStorage.getItem("w221wb");
+    if (raw) {
+      const o = JSON.parse(raw);
+      if (o && o.text && o.savedAt >= new Date(WB.updated + "T00:00:00").getTime()) { text = o.text; local = true; }
+    }
+  } catch(e) {}
+  el.textContent = text;
+  if (local) { note.textContent = "Showing this device's saved edits ✓ — tell Claude \"save the whiteboard\" to sync them to every device."; note.style.display = "block"; }
+  el.addEventListener("input", () => {
+    let stored = false;
+    try { localStorage.setItem("w221wb", JSON.stringify({ text: el.innerText, savedAt: Date.now() })); stored = true; } catch(e) {}
+    note.textContent = stored
+      ? "Saved on this device ✓ — tell Claude \"save the whiteboard\" to sync it to every device."
+      : "Edited this session ✓ — tell Claude \"save the whiteboard\" and it'll be written in for good.";
+    note.style.display = "block";
+  });
 }
 initWB();
 
