@@ -29,9 +29,49 @@
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(13,14,18,0) 30%, rgba(13,14,18,.88) 78%, #0d0e12 100%);
   }
-  .top {
-    display: flex; align-items: center; gap: 14px; padding: 26px 40px 6px;
+  .nav {
+    display: flex; align-items: center; gap: 18px; padding: 20px 40px 0;
   }
+  .brand { font-size: 17px; color: var(--ink); }
+  .brand b { font-weight: 750; letter-spacing: .02em; }
+  .mainTabs { display: flex; gap: 4px; }
+  .mtab {
+    background: none; border: none; color: var(--ink-3); font: inherit; font-size: 15.5px; font-weight: 650;
+    padding: 8px 14px; cursor: pointer; border-radius: 99px; transition: color .15s, background .15s;
+  }
+  .mtab:hover { color: var(--ink); }
+  .mtab.on { color: #0d0e12; background: #fff; }
+  .top {
+    display: flex; align-items: center; gap: 14px; padding: 14px 40px 6px;
+  }
+  /* Calendar */
+  .calwrap { max-width: 1000px; padding: 14px 40px 40px; }
+  .calhead { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .calhead h2 { font-size: 20px; font-weight: 750; min-width: 200px; text-align: center; }
+  .calnav {
+    background: var(--chip); border: 1px solid var(--chip-br); color: var(--ink); font-size: 18px;
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  }
+  .calnav:hover { background: rgba(255,255,255,.2); }
+  .callegend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin: 4px 0 12px; }
+  .callegend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+  .calgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cdow { text-align: center; font-size: 11.5px; color: var(--ink-3); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: 4px 0; }
+  .cd {
+    background: rgba(22,23,30,.78); border: 1px solid rgba(255,255,255,.08); border-radius: 10px;
+    min-height: 84px; padding: 6px 7px; font-size: 11px; overflow: hidden;
+  }
+  .cd.blank { background: none; border-color: transparent; }
+  .cd.today { border-color: #ffd166; box-shadow: 0 0 0 1px #ffd166 inset; }
+  .cd .dnum { font-size: 12.5px; font-weight: 700; color: var(--ink-2); margin-bottom: 3px; }
+  .cd.today .dnum { color: #ffd166; }
+  .evt { display: flex; align-items: baseline; gap: 4px; color: var(--ink-2); line-height: 1.35; margin: 1px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .evt .dot { flex: 0 0 auto; width: 7px; height: 7px; border-radius: 50%; position: relative; top: -1px; }
+  .agrow { display: flex; gap: 12px; padding: 7px 0; border-top: 1px solid rgba(255,255,255,.07); font-size: 13.5px; }
+  .agrow .ad { flex: 0 0 92px; color: var(--ink-3); font-weight: 600; }
+  .agrow ul { list-style: none; margin: 0; padding: 0; flex: 1; }
+  .agrow li { margin: 1px 0; color: var(--ink-2); }
+  .agrow li b { color: var(--ink); font-weight: 600; }
   .tiles { display: flex; gap: 12px; flex-wrap: wrap; }
   .tile {
     width: 64px; height: 64px; border-radius: 14px; border: 2px solid transparent;
@@ -209,11 +249,21 @@
 })();
 </script>
 
-<div class="top">
-  <div class="tiles" id="tiles"></div>
+<div class="nav">
+  <div class="brand">🌭 <b>W221</b></div>
+  <div class="mainTabs">
+    <button id="mt-hq" class="mtab on" onclick="switchTab('hq')">HQ</button>
+    <button id="mt-cl" class="mtab" onclick="switchTab('cl')">Checklists</button>
+    <button id="mt-cal" class="mtab" onclick="switchTab('cal')">Calendar</button>
+  </div>
   <div class="spacer"></div>
   <div class="clockbox"><div class="clock" id="clock">–:–</div><div class="date" id="date"></div></div>
   <div class="avatar">MU</div>
+</div>
+
+<div id="view-hq">
+<div class="top">
+  <div class="tiles" id="tiles"></div>
 </div>
 
 <div class="alertbar" id="alertbar" style="display:none"></div>
@@ -232,7 +282,11 @@
 </div>
 
 <div class="cards" id="cards"></div>
-<div class="clwrap" id="clwrap">
+<div class="hint">Navigate with <kbd>←</kbd> <kbd>→</kbd> or click a tile · Wienerschnitzel #221 · Springfield Ave, Champaign — longest-standing restaurant in town</div>
+</div><!-- /view-hq -->
+
+<div id="view-cl" style="display:none">
+<div class="clwrap" id="clwrap" style="display:block; margin:0 auto;">
   <div class="today"><div class="tt">Due today</div><ul id="todaylist"></ul></div>
   <div class="cltabs" id="cltabs"></div>
   <div class="progressline">
@@ -243,7 +297,21 @@
   <div id="clgroups"></div>
   <p class="clnote">Check-offs last while this page is open (it can't save between visits). Want a permanent completion log? Tell Claude.</p>
 </div>
-<div class="hint">Navigate with <kbd>←</kbd> <kbd>→</kbd> or click a tile · Wienerschnitzel #221 · Springfield Ave, Champaign — longest-standing restaurant in town</div>
+</div><!-- /view-cl -->
+
+<div id="view-cal" style="display:none">
+<div class="calwrap">
+  <div class="calhead">
+    <button class="calnav" onclick="calShift(-1)">‹</button>
+    <h2 id="caltitle"></h2>
+    <button class="calnav" onclick="calShift(1)">›</button>
+  </div>
+  <div class="callegend" id="callegend"></div>
+  <div class="calgrid" id="calgrid"></div>
+  <h3 style="margin:20px 2px 4px; font-size:15.5px;">This month</h3>
+  <div id="calagenda"></div>
+</div>
+</div><!-- /view-cal -->
 
 <script>
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
@@ -450,14 +518,6 @@ const SECTIONS = [
       {t:"Checklist", s:"", ul:["<span class='due'>8/21</span> — POP arrives: banners, cling-ons, toppers, Sold Out stickers","<span class='due'>8/30</span> — remove Apple Pie Shake + $4 Meal Deal POP","<span class='due'>8/31</span> — verify offers #219 & #564, shake recipes, crew trained","Keep required merch stocked: cooler bags · TDO plushie · trucker hat (Direct Edge)"]},
       {t:"Memo library", s:"All 9 corporate marketing memos filed by type:", ul:["Promos & Deals (5)","Digital Coupons (1)","National Days (2)","Signage & POS (1)"], p:"Desktop/Wiener/Marketing/…"}
     ]
-  },
-  {
-    icon: "✅", kicker: "Operations", title: "Checklists",
-    bg: "radial-gradient(120% 90% at 20% 10%, #2a3f22 0%, #0d0e12 70%)",
-    desc: "Daily catch-the-leaks, weekly deep clean & labor tuning, monthly systems & strategy. The Due Today box follows the actual calendar — weekday PM tasks and numbered Saturdays included.",
-    chips: CL_CHIPS,
-    custom: "checklists",
-    cards: []
   },
   {
     icon: "📊", kicker: "Analytics", title: "Promo Tracker",
@@ -687,10 +747,6 @@ function select(i){
     </div>`;
   }
   document.getElementById("cards").innerHTML = html;
-  const isCL = s.custom === "checklists";
-  document.getElementById("cards").style.display = isCL ? "none" : "flex";
-  document.getElementById("clwrap").style.display = isCL ? "block" : "none";
-  if (isCL) renderCL();
   document.getElementById("wb").style.display = (i === 0) ? "block" : "none";
 }
 function esc(t){ const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
@@ -708,10 +764,79 @@ function addEntry(){
   document.getElementById("cards").scrollLeft = 1e6;
 }
 document.addEventListener("keydown", e => {
-  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable)) return;
+  if (document.getElementById("view-hq").style.display === "none") return;
   if (e.key === "ArrowRight") select((cur+1)%SECTIONS.length);
   if (e.key === "ArrowLeft") select((cur-1+SECTIONS.length)%SECTIONS.length);
 });
+
+/* ---- Main tabs (PS5-style) ---- */
+function switchTab(t){
+  ["hq","cl","cal"].forEach(k => {
+    document.getElementById("view-"+k).style.display = (k===t) ? "block" : "none";
+    document.getElementById("mt-"+k).classList.toggle("on", k===t);
+  });
+  if (t === "cl") renderCL();
+  if (t === "cal") renderCal();
+}
+
+/* ---- Calendar: PM schedule + data cadence + promo dates from emails ---- */
+const CAL_CATS = { promo:{c:"#d95926",n:"Promos"}, deadline:{c:"#e66767",n:"Deadlines"}, pm:{c:"#199e70",n:"Cleaning & PM"}, data:{c:"#3987e5",n:"Data & tasks"}, corp:{c:"#9085e9",n:"Corporate"} };
+/*CAL-START*/
+const CAL_EVENTS = [
+  { "date":"2026-08-21", "cat":"deadline", "t":"POP due in store — $8 deal, Small Shakes, Cooler (banners, cling-ons, toppers, Sold Out stickers)" },
+  { "date":"2026-08-30", "cat":"deadline", "t":"Remove Apple Pie Shake + $4 Meal Deal POP tonight" },
+  { "date":"2026-08-31", "cat":"promo", "t":"LAUNCH: $8 All-American Meal Deal (Offer 219, thru 11/1)" },
+  { "date":"2026-08-31", "cat":"promo", "t":"LAUNCH: $2.99 Small Shakes — required item (thru 12/28)" },
+  { "date":"2026-08-31", "cat":"promo", "t":"LAUNCH: $17.76 Cooler Bag + 6 Chili Dogs (Offer 564)" },
+  { "date":"2026-08-31", "cat":"deadline", "t":"August digital coupons & Wiener Wednesday window end today" },
+  { "date":"2026-11-01", "cat":"promo", "t":"$8 All-American Meal Deal ends" },
+  { "date":"2026-12-28", "cat":"promo", "t":"$2.99 Small Shakes promo ends" }
+];
+/*CAL-END*/
+const WW_START = new Date(2026,6,1), WW_END = new Date(2026,7,31);
+function calEventsFor(y,m,d){
+  const dt = new Date(y,m,d), dow = dt.getDay(), nth = Math.ceil(d/7);
+  const iso = y + "-" + String(m+1).padStart(2,"0") + "-" + String(d).padStart(2,"0");
+  const out = [];
+  CAL_EVENTS.forEach(e => { if (e.date === iso) out.push({cat:e.cat, t:e.t}); });
+  if (dow === 3 && dt >= WW_START && dt <= WW_END) out.push({cat:"promo", t:"Wiener Wednesday — 4 chili dogs $4 (PLU 626)"});
+  if (dow === 3) out.push({cat:"corp", t:"Hot Off the Grill webinar · 4pm CT"});
+  const wpm = {1:"PM: clean air vents (intake & return)",2:"PM: check gas flex lines — fryers & grills",4:"PM: coffee machine full breakdown & clean",5:"PM: scrub awning + clean egg crates"}[dow];
+  if (wpm) out.push({cat:"pm", t:wpm});
+  if (dow === 1) out.push({cat:"data", t:"Weekly data pulls · auto weekly row lands (7am)"});
+  if (d === 3) out.push({cat:"data", t:"Monthly P/L close — auto task (9am, needs your numbers)"});
+  if (dow === 3 && nth === 1) out.push({cat:"pm", t:"Monthly PM: reach-in & drink station condenser coils"});
+  if (dow === 6 && nth <= 4) out.push({cat:"pm", t:"Monthly PM (Sat " + nth + "): " + {1:"lube locks/hinges/safe · Pepsi ice chutes",2:"roof drains · swamp cooler check",3:"exhaust belts · drip trays",4:"A/C filters · fire extinguishers · Taylor machine"}[nth]});
+  return out;
+}
+let calY = clNow.getFullYear(), calM = clNow.getMonth();
+function calShift(n){ calM += n; if (calM < 0){ calM = 11; calY--; } if (calM > 11){ calM = 0; calY++; } renderCal(); }
+function renderCal(){
+  const MN = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById("caltitle").textContent = MN[calM] + " " + calY;
+  document.getElementById("callegend").innerHTML = Object.values(CAL_CATS).map(c =>
+    `<span><span class="dot" style="background:${c.c}"></span>${c.n}</span>`).join("");
+  const first = new Date(calY, calM, 1).getDay();
+  const ndays = new Date(calY, calM+1, 0).getDate();
+  let html = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="cdow">${d}</div>`).join("");
+  for (let i = 0; i < first; i++) html += `<div class="cd blank"></div>`;
+  const isToday = d => calY === clNow.getFullYear() && calM === clNow.getMonth() && d === clNow.getDate();
+  const agenda = [];
+  for (let d = 1; d <= ndays; d++){
+    const evs = calEventsFor(calY, calM, d);
+    if (evs.length) agenda.push({d, evs});
+    html += `<div class="cd ${isToday(d)?'today':''}"><div class="dnum">${d}</div>` +
+      evs.slice(0,3).map(e=>`<span class="evt"><span class="dot" style="background:${CAL_CATS[e.cat].c}"></span>${e.t}</span>`).join("") +
+      (evs.length > 3 ? `<span class="evt" style="color:var(--ink-3)">+${evs.length-3} more</span>` : "") + `</div>`;
+  }
+  document.getElementById("calgrid").innerHTML = html;
+  const DW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  document.getElementById("calagenda").innerHTML = agenda.map(a =>
+    `<div class="agrow"><div class="ad">${DW[new Date(calY,calM,a.d).getDay()]} ${calM+1}/${a.d}</div><ul>` +
+    a.evs.map(e=>`<li><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${CAL_CATS[e.cat].c};margin-right:7px;"></span>${e.t}</li>`).join("") +
+    `</ul></div>`).join("");
+}
 
 /* ---- Checklists rendering ---- */
 const clState = {};
