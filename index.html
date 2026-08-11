@@ -9,7 +9,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-180.png">
-
 <title>Wienerschnitzel #221 — Home</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -179,12 +178,13 @@
 </head>
 <body>
 <div id="bg"></div>
-<div id="gate" style="position:fixed;inset:0;z-index:9999;background:#0d0e12;display:grid;place-items:center;">
+
+<div id="gate" style="display:none;position:fixed;inset:0;z-index:9999;background:#0d0e12;place-items:center;">
   <div style="text-align:center;max-width:320px;padding:20px;">
     <div style="font-size:44px;margin-bottom:8px;">🌭</div>
     <div style="font-weight:750;font-size:19px;color:#f2f2f5;margin-bottom:2px;">Wienerschnitzel #221</div>
     <div style="font-size:13px;color:#7e808d;margin-bottom:18px;">Enter the passcode</div>
-    <input id="gatein" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#f2f2f5;font-size:16px;text-align:center;outline:none;" onkeydown="if(event.key==='Enter')gateTry()">
+    <input id="gatein" type="password" autocomplete="off" style="width:100%;box-sizing:border-box;padding:11px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#f2f2f5;font-size:16px;text-align:center;outline:none;" onkeydown="if(event.key==='Enter')gateTry()">
     <button onclick="gateTry()" style="margin-top:12px;width:100%;padding:11px;border-radius:10px;border:0;background:#fff;color:#111;font-weight:700;font-size:15px;cursor:pointer;">Unlock</button>
     <div id="gateerr" style="display:none;color:#e34948;font-size:13px;margin-top:10px;">Wrong passcode — try again.</div>
   </div>
@@ -192,16 +192,22 @@
 <script>
 (function(){
   const HASH = "0d376ebb9518c79210301a3f8edf1b772990d9e2e2ba8f43a68227294355a23c";
+  const isPublic = /github\.io$/.test(location.hostname);
+  const g = document.getElementById("gate");
+  if (!isPublic) { g.remove(); }
+  else {
+    let ok = false;
+    try { ok = localStorage.getItem("w221gate") === HASH; } catch(e){}
+    if (ok) g.remove(); else g.style.display = "grid";
+  }
   async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
-  try { if (localStorage.getItem("w221gate") === HASH) document.getElementById("gate").remove(); } catch(e){}
   window.gateTry = async function(){
     const v = document.getElementById("gatein").value;
-    if (await sha(v) === HASH){ try{localStorage.setItem("w221gate", HASH);}catch(e){} const g=document.getElementById("gate"); if(g) g.remove(); }
+    if (await sha(v) === HASH){ try{localStorage.setItem("w221gate", HASH);}catch(e){} const gg=document.getElementById("gate"); if(gg) gg.remove(); }
     else document.getElementById("gateerr").style.display = "block";
   };
 })();
 </script>
-
 
 <div class="top">
   <div class="tiles" id="tiles"></div>
