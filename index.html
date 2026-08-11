@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d0e12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-180.png">
+
+<title>Wienerschnitzel #221 — Home</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #f2f2f5; --ink-2: #b9bac4; --ink-3: #7e808d;
+    --chip: rgba(255,255,255,.10); --chip-br: rgba(255,255,255,.18);
+  }
+  html, body { height: 100%; }
+  body {
+    font: 15px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink); background: #0d0e12; overflow-x: hidden; min-height: 100vh;
+  }
+  #bg {
+    position: fixed; inset: 0; z-index: -1; transition: background 0.6s ease;
+    background: radial-gradient(120% 90% at 20% 10%, #23407a 0%, #0d0e12 70%);
+  }
+  #bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(13,14,18,0) 30%, rgba(13,14,18,.88) 78%, #0d0e12 100%);
+  }
+  .top {
+    display: flex; align-items: center; gap: 14px; padding: 26px 40px 6px;
+  }
+  .tiles { display: flex; gap: 12px; flex-wrap: wrap; }
+  .tile {
+    width: 64px; height: 64px; border-radius: 14px; border: 2px solid transparent;
+    display: grid; place-items: center; font-size: 28px; cursor: pointer;
+    background: var(--chip); backdrop-filter: blur(6px);
+    transition: transform .18s ease, border-color .18s, width .18s, box-shadow .18s;
+    flex: 0 0 auto; user-select: none;
+  }
+  .tile:hover { transform: translateY(-3px); }
+  .tileWrap { display: flex; flex-direction: column; align-items: center; gap: 7px; width: 84px; flex: 0 0 auto; cursor: pointer; }
+  .tileLabel {
+    font-size: 11.5px; color: var(--ink-3); text-align: center; line-height: 1.25;
+    transition: color .18s; max-width: 84px;
+  }
+  .tileWrap.on .tileLabel { color: var(--ink); font-weight: 600; }
+  .tileWrap.on .tile {
+    width: 76px; height: 76px; font-size: 34px; border-color: #fff;
+    box-shadow: 0 0 0 3px rgba(255,255,255,.15), 0 10px 30px rgba(0,0,0,.45);
+  }
+  .spacer { flex: 1; }
+  .clockbox { text-align: right; color: var(--ink-2); }
+  .clockbox .clock { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: .02em; }
+  .clockbox .date { font-size: 12.5px; }
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,#e34948,#eda100);
+    display: grid; place-items: center; font-weight: 700; font-size: 16px; color: #fff;
+    border: 2px solid rgba(255,255,255,.5); margin-left: 6px;
+  }
+  .wb {
+    margin: 14px 40px 0; padding: 14px 18px 12px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255,209,102,.10), rgba(255,255,255,.04));
+    border: 1px dashed rgba(255,209,102,.45);
+  }
+  .wb .wt { font-weight: 750; color: #ffd166; text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; margin-bottom: 6px; display: flex; align-items: baseline; gap: 10px; }
+  .wb .wt small { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink-3); font-size: 11px; }
+  .wb .board {
+    min-height: 64px; outline: none; font-size: 14.5px; line-height: 1.65; color: var(--ink);
+    white-space: pre-wrap; font-family: ui-rounded, "SF Pro Rounded", -apple-system, sans-serif;
+  }
+  .wb .wsave { display: none; font-size: 11.5px; color: #ffd166; margin-top: 6px; }
+  .alertbar {
+    margin: 14px 40px 0; padding: 11px 16px; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(227,73,72,.22), rgba(227,73,72,.08));
+    border: 1px solid rgba(227,73,72,.55); font-size: 13.5px; color: var(--ink);
+  }
+  .alertbar .at { font-weight: 750; color: #ff9c9b; text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; margin-bottom: 4px; }
+  .alertbar ul { margin: 0 0 0 18px; }
+  .alertbar li { margin: 2px 0; color: var(--ink-2); }
+  .alertbar li b { color: var(--ink); }
+  .hero { padding: 40px 42px 10px; max-width: 1080px; }
+  .hero .kicker { text-transform: uppercase; letter-spacing: .22em; font-size: 11.5px; color: var(--ink-2); margin-bottom: 8px; }
+  .hero h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 750; letter-spacing: -0.02em; margin-bottom: 10px; text-shadow: 0 2px 18px rgba(0,0,0,.5); }
+  .hero p.desc { max-width: 640px; color: var(--ink-2); font-size: 15.5px; margin-bottom: 16px; }
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .chip {
+    background: var(--chip); border: 1px solid var(--chip-br); border-radius: 99px;
+    padding: 6px 14px; font-size: 13px; color: var(--ink);
+  }
+  .chip b { font-weight: 650; }
+  .chip.alert { background: rgba(227,73,72,.25); border-color: rgba(227,73,72,.6); }
+  .chip.go { background: rgba(27,175,122,.22); border-color: rgba(27,175,122,.55); }
+  .cards {
+    display: flex; gap: 14px; padding: 22px 40px 40px; overflow-x: auto; scrollbar-width: thin;
+  }
+  .card {
+    flex: 0 0 300px; background: rgba(22,23,30,.78); border: 1px solid rgba(255,255,255,.10);
+    border-radius: 14px; padding: 16px 16px 14px; backdrop-filter: blur(8px);
+    transition: transform .15s ease, border-color .15s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.28); }
+  .card .ct { font-weight: 650; font-size: 14.5px; margin-bottom: 6px; }
+  .card .cs { font-size: 13px; color: var(--ink-2); }
+  .card ul { margin: 6px 0 0 16px; font-size: 13px; color: var(--ink-2); }
+  .card li { margin: 3px 0; }
+  .card li b, .card .cs b { color: var(--ink); font-weight: 600; }
+  .card .path { font-size: 11.5px; color: var(--ink-3); margin-top: 8px; word-break: break-all; }
+  .card a { color: #8ab8f2; text-decoration: none; }
+  .card a:hover { text-decoration: underline; }
+  .due { color: #ffd166; font-weight: 600; }
+  .addcard { border-style: dashed; }
+  .addcard input, .addcard textarea {
+    width: 100%; background: rgba(255,255,255,.07); border: 1px solid var(--chip-br); border-radius: 7px;
+    color: var(--ink); padding: 7px 9px; font: inherit; font-size: 13px; margin-bottom: 7px;
+  }
+  .addcard textarea { resize: vertical; min-height: 44px; }
+  .addcard button {
+    background: #fff; color: #111; border: 0; border-radius: 99px; padding: 7px 16px;
+    font: inherit; font-size: 13px; font-weight: 650; cursor: pointer;
+  }
+  .addcard button:hover { opacity: .85; }
+  .savenote { font-size: 11.5px; color: #ffd166; margin-top: 8px; display: none; }
+  .newtag { font-size: 10px; font-weight: 700; color: #0d0e12; background: #ffd166; border-radius: 4px; padding: 1px 5px; margin-left: 6px; vertical-align: 1px; }
+  /* Checklists panel */
+  .clwrap { max-width: 900px; padding: 4px 40px 40px; display: none; }
+  .today {
+    background: linear-gradient(135deg, rgba(255,209,102,.16), rgba(255,209,102,.05));
+    border: 1px solid rgba(255,209,102,.4); border-radius: 14px; padding: 12px 18px; margin-bottom: 18px;
+  }
+  .today .tt { font-weight: 700; color: #ffd166; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 5px; }
+  .today ul { margin-left: 18px; }
+  .today li { margin: 3px 0; font-size: 13.5px; color: var(--ink-2); }
+  .today li b { color: var(--ink); }
+  .cltabs { display: flex; gap: 8px; margin-bottom: 4px; }
+  .cltab {
+    border: 1px solid var(--chip-br); background: var(--chip); color: var(--ink-2);
+    border-radius: 99px; padding: 8px 20px; font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; transition: all .15s;
+  }
+  .cltab:hover { color: var(--ink); }
+  .cltab.on { background: #fff; color: #111; border-color: #fff; }
+  .progressline { display: flex; align-items: center; gap: 12px; margin: 12px 0 18px; }
+  .clbar { flex: 1; height: 8px; border-radius: 99px; background: var(--chip); overflow: hidden; }
+  .clbar i { display: block; height: 100%; width: 0%; background: #3dc789; border-radius: 99px; transition: width .25s; }
+  .clpct { font-size: 13px; color: var(--ink-2); min-width: 96px; text-align: right; }
+  .clreset { background: none; border: none; color: var(--ink-3); font: inherit; font-size: 12.5px; cursor: pointer; text-decoration: underline; }
+  .clreset:hover { color: var(--ink); }
+  .group { background: rgba(22,23,30,.82); border: 1px solid rgba(255,255,255,.10); border-radius: 14px; padding: 4px 18px 8px; margin-bottom: 12px; }
+  .ghead { display: flex; align-items: center; gap: 10px; padding: 11px 0 5px; }
+  .ghead .gi { font-size: 19px; }
+  .ghead h3 { font-size: 15px; font-weight: 700; }
+  .ghead .gcount { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+  .clitem { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-top: 1px solid rgba(255,255,255,.06); cursor: pointer; }
+  .clitem:hover { background: rgba(255,255,255,.025); }
+  .clbox {
+    flex: 0 0 auto; width: 21px; height: 21px; border-radius: 7px; border: 2px solid var(--chip-br);
+    display: grid; place-items: center; font-size: 13px; color: #0d0e12; margin-top: 1px; transition: all .12s;
+  }
+  .clitem.done .clbox { background: #3dc789; border-color: #3dc789; }
+  .clitem .txt { flex: 1; font-size: 13.5px; color: var(--ink-2); }
+  .clitem .txt b { color: var(--ink); font-weight: 650; }
+  .clitem.done .txt { opacity: .45; text-decoration: line-through; }
+  .daytag {
+    display: inline-block; font-size: 10.5px; font-weight: 700; border-radius: 5px; padding: 1px 7px; margin-right: 7px;
+    background: var(--chip); border: 1px solid var(--chip-br); color: var(--ink-2); vertical-align: 1px;
+  }
+  .daytag.now { background: #ffd166; border-color: #ffd166; color: #0d0e12; }
+  .sys { display: inline-block; font-size: 10.5px; font-weight: 700; border-radius: 5px; padding: 1px 7px; margin-right: 7px; vertical-align: 1px; color: #0d0e12; }
+  .sys.sim { background: #6d9eeb; } .sys.peach { background: #f7a7c0; }
+  .clnote { color: var(--ink-3); font-size: 12px; margin-top: 14px; }
+  .clitem a { color: #8ab8f2; text-decoration: none; }
+  .clitem a:hover { text-decoration: underline; }
+  .hint { padding: 0 42px 26px; color: var(--ink-3); font-size: 12px; }
+  kbd { background: var(--chip); border: 1px solid var(--chip-br); border-radius: 5px; padding: 0 6px; font-size: 11px; }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="gate" style="position:fixed;inset:0;z-index:9999;background:#0d0e12;display:grid;place-items:center;">
+  <div style="text-align:center;max-width:320px;padding:20px;">
+    <div style="font-size:44px;margin-bottom:8px;">🌭</div>
+    <div style="font-weight:750;font-size:19px;color:#f2f2f5;margin-bottom:2px;">Wienerschnitzel #221</div>
+    <div style="font-size:13px;color:#7e808d;margin-bottom:18px;">Enter the passcode</div>
+    <input id="gatein" type="password" autocomplete="off" style="width:100%;padding:11px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#f2f2f5;font-size:16px;text-align:center;outline:none;" onkeydown="if(event.key==='Enter')gateTry()">
+    <button onclick="gateTry()" style="margin-top:12px;width:100%;padding:11px;border-radius:10px;border:0;background:#fff;color:#111;font-weight:700;font-size:15px;cursor:pointer;">Unlock</button>
+    <div id="gateerr" style="display:none;color:#e34948;font-size:13px;margin-top:10px;">Wrong passcode — try again.</div>
+  </div>
+</div>
+<script>
+(function(){
+  const HASH = "0d376ebb9518c79210301a3f8edf1b772990d9e2e2ba8f43a68227294355a23c";
+  async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");}
+  try { if (localStorage.getItem("w221gate") === HASH) document.getElementById("gate").remove(); } catch(e){}
+  window.gateTry = async function(){
+    const v = document.getElementById("gatein").value;
+    if (await sha(v) === HASH){ try{localStorage.setItem("w221gate", HASH);}catch(e){} const g=document.getElementById("gate"); if(g) g.remove(); }
+    else document.getElementById("gateerr").style.display = "block";
+  };
+})();
+</script>
+
+
+<div class="top">
+  <div class="tiles" id="tiles"></div>
+  <div class="spacer"></div>
+  <div class="clockbox"><div class="clock" id="clock">–:–</div><div class="date" id="date"></div></div>
+  <div class="avatar">MU</div>
+</div>
+
+<div class="alertbar" id="alertbar" style="display:none"></div>
+
+<div class="wb" id="wb" style="display:none">
+  <div class="wt">🖊️ Whiteboard <small>type freely — then tell Claude "save the whiteboard" to make it permanent</small></div>
+  <div class="board" id="wbtext" contenteditable="true"></div>
+  <div class="wsave" id="wbsave">Edited this session ✓ — tell Claude "save the whiteboard" and it'll be written in for good.</div>
+</div>
+
+<div class="hero">
+  <div class="kicker" id="kicker"></div>
+  <h1 id="title"></h1>
+  <p class="desc" id="desc"></p>
+  <div class="chips" id="chips"></div>
+</div>
+
+<div class="cards" id="cards"></div>
+<div class="clwrap" id="clwrap">
+  <div class="today"><div class="tt">Due today</div><ul id="todaylist"></ul></div>
+  <div class="cltabs" id="cltabs"></div>
+  <div class="progressline">
+    <div class="clbar"><i id="clbarfill"></i></div>
+    <div class="clpct" id="clpct"></div>
+    <button class="clreset" onclick="resetCLTab()">reset</button>
+  </div>
+  <div id="clgroups"></div>
+  <p class="clnote">Check-offs last while this page is open (it can't save between visits). Want a permanent completion log? Tell Claude.</p>
+</div>
+<div class="hint">Navigate with <kbd>←</kbd> <kbd>→</kbd> or click a tile · Wienerschnitzel #221 · Springfield Ave, Champaign — longest-standing restaurant in town</div>
+
+<script>
+/* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
+/*LIVE-START*/
+const LIVE = {
+  "updated": "2026-08-10", "updatedBy": "catch-up run (8/5–8/9 backfilled + weekly row)",
+  "daily":   { "date": "2026-08-09", "netSales": 2877.41, "transactions": 167, "laborPct": 13.6, "alerts": ["Check avg $17.23 — above band"] },
+  "weekly":  { "weekStart": "2026-08-03", "netSales": 21635.79, "laborPct": 18.7, "cogsPct": 53.9, "alerts": ["COGS 53.9% — a $5,105 bulk paper order landed this week (purchases-timing artifact, not a real cost spike)"] },
+  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE — net sales & labor final; COGS/OpEx pending month close. Corporate sales-analysis basis: $103,459" },
+  "systemAlerts": ["Paid-out ≈ bank-variance pattern hit 4 days this week (8/3 $1,001 · 8/4 $1,045 · 8/8 $898) — verify those deposits", "Gift cards −$25.00 on 8/7 — third occurrence; check gift-card refunds at the register"]
+};
+/*LIVE-END*/
+function liveCardHTML(){
+  const f = [], d = LIVE.daily, w = LIVE.weekly, m = LIVE.monthly;
+  const money = n => "$" + (+n).toLocaleString();
+  if (d && d.date) f.push(`<b>${d.date}:</b> ${money(d.netSales)} net · ${d.transactions ?? "?"} trans · labor ${d.laborPct ?? "?"}%` + (d.alerts && d.alerts.length ? ` · <span class='due'>⚠ ${d.alerts.join("; ")}</span>` : ""));
+  if (w && w.weekStart) f.push(`<b>Week of ${w.weekStart}:</b> ${money(w.netSales)} net · labor ${w.laborPct ?? "?"}% · COGS ${w.cogsPct ?? "?"}%` + (w.alerts && w.alerts.length ? ` · <span class='due'>⚠ ${w.alerts.join("; ")}</span>` : ""));
+  if (m && m.month) f.push(`<b>${m.month}:</b>` + (m.netSales ? " " + money(m.netSales) + " net" : "") + (m.foodCostPct ? " · food " + m.foodCostPct + "%" : "") + (m.netIncome ? " · net income " + money(m.netIncome) : "") + (m.notes ? " — " + m.notes : ""));
+  if (!f.length) f.push("No live rows yet — the daily and weekly scheduled tasks fill this automatically.");
+  return { t: "📡 Live from Performance Tracker", s: "Auto-updated by your scheduled tasks · last update: <b>" + LIVE.updated + "</b> (" + LIVE.updatedBy + ")", ul: f };
+}
+
+/* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
+/*WB-START*/
+const WB = { "updated": "2026-08-10", "text": "THIS WEEK\n• Verify deposits — paid-out/bank-variance pattern (8/3, 8/4, 8/8)\n• Gift card refunds — 3rd −$25, ask the closers\n• 8/21: POP arrives for all three 8/31 launches\n• Taylor C706: confirm top air discharge chute, send order + payment\n• Rush week: pitch chapters from the UIUC contact list" };
+/*WB-END*/
+function initWB(){
+  const el = document.getElementById("wbtext");
+  el.textContent = WB.text;
+  el.addEventListener("input", () => { document.getElementById("wbsave").style.display = "block"; });
+}
+initWB();
+
+/* ---- Homepage alerts: staleness + tracker flags ---- */
+function renderAlerts(){
+  const items = [];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const days = ds => { if (!ds) return null; const d = new Date(ds + "T00:00:00"); return Math.round((today - d) / 86400000); };
+  const dAge = days(LIVE.daily && LIVE.daily.date);
+  if (dAge === null) items.push("<b>No daily rows synced yet</b> — the 7am task fills this.");
+  else if (dAge > 2) items.push(`<b>Daily tracker is ${dAge} days behind</b> (last row ${LIVE.daily.date}) — the 7am task skips when Chrome is offline; leave Chrome open tonight and it backfills automatically.`);
+  const wAge = days(LIVE.weekly && LIVE.weekly.weekStart);
+  if (wAge !== null && wAge > 13) items.push(`<b>Last week's weekly row hasn't landed</b> (latest is week of ${LIVE.weekly.weekStart}) — runs Mondays 7am with Chrome online.`);
+  (LIVE.daily && LIVE.daily.alerts || []).forEach(a => items.push(`Daily (${LIVE.daily.date}): <b>${a}</b>`));
+  (LIVE.weekly && LIVE.weekly.alerts || []).forEach(a => items.push(`Weekly (wk of ${LIVE.weekly.weekStart}): <b>${a}</b>`));
+  (LIVE.systemAlerts || []).forEach(a => items.push(a));
+  const bar = document.getElementById("alertbar");
+  if (!items.length) { bar.style.display = "none"; return; }
+  bar.style.display = "block";
+  bar.innerHTML = `<div class="at">⚠ Alerts · from your trackers</div><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+}
+
+/* ---- Checklists data & date logic ---- */
+const CL_DATA = {
+  Daily: [
+    { icon:"🗂️", name:"Essential routines", items:[
+      "<b>Organize daily files</b>",
+      "<b>File today's invoices</b> — <a href='https://my.peachworks.com/accounts/20220/reports/home/my/300' target='_blank' onclick='event.stopPropagation()'>Invoice Summary by GL ↗</a>",
+      "<b>Update food cost tracking</b> — <a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank' onclick='event.stopPropagation()'>Performance Tracker · Daily tab ↗</a>",
+      "<b>Review labor reports</b> (punches, hours, OT) — the 7am task logs these to the <a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank' onclick='event.stopPropagation()'>Performance Tracker ↗</a>"
+    ]},
+    { icon:"🔎", name:"Data & reporting — catch profit leaks", items:[
+      "<b>Read the 7am auto-update's alert summary</b> (missed clock-outs, bank variance, paid outs) — <a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank' onclick='event.stopPropagation()'>Performance Tracker ↗</a>, Notes column",
+      "<span class='sys sim'>Simphony</span>Pull <b>Discount, Void & Error Correct</b> report (yesterday) — <a href='https://www.mymicros.net/portal/' target='_blank' onclick='event.stopPropagation()'>Simphony R&A ↗</a>",
+      "<b>Flag cashiers</b> with unusually high voids/error corrects — training issue or theft",
+      "<span class='sys peach'>Peachworks</span>Pull <b>Daily Food Cost & Waste Detail</b> (yesterday) — <a href='https://my.peachworks.com/accounts/20220/reports/home' target='_blank' onclick='event.stopPropagation()'>Peachworks reports ↗</a>",
+      "<b>Compare waste vs. targets</b> — flag items (buns, produce) driving up food cost",
+      "<b>Set prep levels</b> with the morning crew based on what's flagged"
+    ]}
+  ],
+  Weekly: [
+    { icon:"🅿️", name:"Exterior & parking lot", items:[
+      "Scrub dumpster area and outside of dumpster",
+      "Trim plants; check bumper stops are visible",
+      "Scrub trash cans inside & out; clean light fixtures",
+      "Sweep parking lot; inspect building exterior for cracks/chipping paint"
+    ]},
+    { icon:"🚻", name:"Restrooms", items:[
+      "Clean exhaust fan grill",
+      "Scrub waste baskets; clean light fixtures"
+    ]},
+    { icon:"🍳", name:"Kitchen", items:[
+      "Clean fly fans, light fixtures, ceiling vents, baseboards, corners",
+      "Wash all trash cans",
+      "<b>Boil out the fryer</b> to remove carbon deposits"
+    ]},
+    { icon:"🥤", name:"Front & drive-thru counters", items:[
+      "Clean light fixtures, ceiling vents, baseboards, corners",
+      "Wash trash cans",
+      "Empty & clean drink machine ice bin",
+      "Clean illuminated menu board"
+    ]},
+    { icon:"🪑", name:"Dining room", items:[
+      "Clean ceiling vents, light fixtures, baseboards, corners, smooth woodwork",
+      "Wash all trash cans"
+    ]},
+    { icon:"📦", name:"Storeroom", items:[
+      "Clean light fixtures, ceiling vents, walk-in/freezer walls, wire shelving (before receiving supplies)",
+      "Scrub trash cans and walk-in/freezer floors",
+      "Clean fan & covers in walk-in and freezer; clean syrup tank rack"
+    ]},
+    { icon:"🪜", name:"A-frame attics (if applicable)", items:[
+      "Mop floor; wash shelves, doors, painted woodwork; clean stairs thoroughly"
+    ]},
+    { icon:"🔧", name:"PM routine (by day)", pm:"weekly", items:[
+      {d:1, t:"Clean air vents — intake and return"},
+      {d:2, t:"Check gas flex lines on fryers & both grills (visually and manually)"},
+      {d:4, t:"Break down & thoroughly clean all removable coffee machine parts"},
+      {d:5, t:"Scrub awning with degreaser; clean egg crates"}
+    ]},
+    { icon:"📈", name:"Data & reporting — labor & inventory", items:[
+      "<b>Review Monday's auto-filled weekly row & alerts</b> (net sales vs prior week, labor %, COGS %) — <a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank' onclick='event.stopPropagation()'>Performance Tracker · Weekly tab ↗</a>",
+      "<span class='sys sim'>Simphony</span><b>Half-Hourly Sales Recap</b> (trailing 4 wks) — set staggered start times around dead periods & rushes; watch overtime creep. <a href='https://www.mymicros.net/portal/' target='_blank' onclick='event.stopPropagation()'>Simphony R&A ↗</a>",
+      "<span class='sys peach'>Peachworks</span><b>Inventory Usage vs. Ideal</b> (trailing 7 days) — top 3 ingredients with worst negative variance. <a href='https://my.peachworks.com/accounts/20220/reports/home' target='_blank' onclick='event.stopPropagation()'>Peachworks reports ↗</a>",
+      "<span class='sys sim'>Simphony</span><b>Product Mix / Menu Item Sales</b> (trailing 7 days) — top 10 & bottom 5 items; are high-margin combos or low-margin value items driving revenue? (Also lands monthly via the corporate Sales Analysis email → promo-tracker artifact.)"
+    ]}
+  ],
+  Monthly: [
+    { icon:"⛱️", name:"Exterior", items:[
+      "Wax all umbrellas",
+      "Clean all trash cans; scrub trash can lids"
+    ]},
+    { icon:"📦", name:"Storeroom", items:[
+      "Clean refrigerator & freezer condenser coils"
+    ]},
+    { icon:"🥤", name:"Front & drive-thru counters", items:[
+      "Clean drink machine condenser coil",
+      "Flush syrup lines",
+      "Clean & lubricate the safe head"
+    ]},
+    { icon:"🪜", name:"A-frame attics (if applicable)", items:[
+      "Empty & clean exhaust system drip trays",
+      "Clean calcium buildup on swamp cooler pads"
+    ]},
+    { icon:"🏠", name:"Concept 80/90 roof (if applicable)", items:[
+      "Pick up debris; sweep roof",
+      "Clean grease drip pans and roof drains",
+      "Clean A/C and refrigeration condenser coils"
+    ]},
+    { icon:"🔧", name:"PM routine (by week)", pm:"monthly", items:[
+      {d:"Wed", t:"Clean coils thoroughly on small reach-in coolers & drink station condensers"},
+      {d:"Sat 1", t:"Lightly lube door locks, hinges, window guides & safe (WD-40); clean ice chute on Pepsi machines"},
+      {d:"Sat 2", t:"Pick up debris, clean/flush drains, sweep rooftop C-80s; check swamp coolers (panels in place, water through pads, remove calcium)"},
+      {d:"Sat 3", t:"Check exhaust systems (grills/fryers) — belts not off or frayed; empty & clean drip trays"},
+      {d:"Sat 4", t:"Check A/C thermostat, breakers, replace filters; check fire extinguisher charge dials; clean Taylor shake machine drip pans & side vents"}
+    ]},
+    { icon:"🎯", name:"Data & reporting — marketing ROI & strategy", items:[
+      "<b>Close last month with the P/L task</b> (runs the 3rd, needs your Simphony/Peachworks numbers) — <a href='https://docs.google.com/spreadsheets/d/10bMgoq0jobbUA4qCmaSPNRFIlLzINI3fCkfk3SSgBcU/edit' target='_blank' onclick='event.stopPropagation()'>Monthly P/L sheet ↗</a>",
+      "<span class='sys sim'>Simphony</span><b>Destination / Order Type & Tender Detail</b> (trailing 3 mo) — exact % of revenue: drive-thru vs dine-in vs third-party; does delivery volume justify marketing spend? <a href='https://www.mymicros.net/portal/' target='_blank' onclick='event.stopPropagation()'>Simphony R&A ↗</a>",
+      "<span class='sys sim'>Simphony</span><b>Hourly Sales / Daypart Summary</b> (trailing 30 days) — most & least profitable dayparts → targeted activations (happy hour, late-night). <a href='https://www.mymicros.net/portal/' target='_blank' onclick='event.stopPropagation()'>Simphony R&A ↗</a>",
+      "<span class='sys peach'>Peachworks</span><b>Cost of Sales by Category</b> (trailing 30 days) — the definitive Food Cost %. <a href='https://my.peachworks.com/accounts/20220/reports/home' target='_blank' onclick='event.stopPropagation()'>Peachworks reports ↗</a> → feeds the <a href='https://docs.google.com/spreadsheets/d/10bMgoq0jobbUA4qCmaSPNRFIlLzINI3fCkfk3SSgBcU/edit' target='_blank' onclick='event.stopPropagation()'>Monthly P/L ↗</a>"
+    ]}
+  ]
+};
+const CL_DOW = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const clNow = new Date();
+const clDow = clNow.getDay();
+const clNthSat = Math.ceil(clNow.getDate() / 7);
+const CL_TODAY = ["<b>Daily:</b> files · invoices · food cost tracking · labor reports · yesterday's Void/Error + Waste reports"];
+const clWpm = {1:"Clean air vents (intake & return)",2:"Check gas flex lines on fryers & grills",4:"Coffee machine full breakdown & clean",5:"Scrub awning with degreaser; clean egg crates"}[clDow];
+if (clWpm) CL_TODAY.push("<b>Weekly PM (" + CL_DOW[clDow] + "):</b> " + clWpm);
+if (clDow === 3) CL_TODAY.push("<b>Monthly PM (a Wednesday):</b> reach-in cooler & drink station condenser coils — if not done yet this month");
+if (clDow === 6) {
+  const clSat = {1:"Lube locks/hinges/safe; clean Pepsi ice chutes",2:"Roof drains & swamp cooler check",3:"Exhaust belts & drip trays",4:"A/C filters, fire extinguishers, Taylor machine pans/vents"}[clNthSat];
+  if (clSat) CL_TODAY.push("<b>Monthly PM (Saturday #" + clNthSat + "):</b> " + clSat);
+}
+if (clDow === 1) CL_TODAY.push("<b>Weekly data:</b> Half-Hourly Sales Recap · Inventory vs Ideal · Product Mix (good Monday habit)");
+const CL_CHIPS = [
+  {t:"<b>" + CL_TODAY.length + "</b> item" + (CL_TODAY.length>1?"s":"") + " due today", c:"alert"},
+  {t:"Daily · Weekly · Monthly", c:""},
+  {t:"PM routine follows the calendar", c:"go"}
+];
+
+const SECTIONS = [
+  {
+    icon: "🌭", kicker: "Promotions", title: "Promo HQ",
+    bg: "radial-gradient(120% 90% at 20% 10%, #7a2318 0%, #0d0e12 70%)",
+    desc: "Everything corporate has running or about to launch. Three promos go live Monday 8/31 — POP for all of them is due in store Friday 8/21.",
+    chips: [
+      {t:"<b>Wiener Wednesday</b> live thru 8/31", c:"go"},
+      {t:"<b>3 launches</b> on 8/31", c:""},
+      {t:"POP due <b>8/21</b>", c:"alert"}
+    ],
+    cards: [
+      {t:"Live now", s:"", ul:["<b>Wiener Wednesday</b> — 4 chili dogs $4, PLU 626 (no more GGI buy-down — upsell!)","<b>August digital coupons</b> — 99¢–$8, offers good thru 8/31"]},
+      {t:"Launching 8/31", s:"", ul:["<b>$8 All-American Meal Deal</b> — Offer 219, thru 11/1, corporate media behind it","<b>$2.99 Small Shakes</b> — required item, thru 12/28","<b>$17.76 Cooler Bag + 6 Chili Dogs</b> — Offer 564, first-party delivery only"]},
+      {t:"Checklist", s:"", ul:["<span class='due'>8/21</span> — POP arrives: banners, cling-ons, toppers, Sold Out stickers","<span class='due'>8/30</span> — remove Apple Pie Shake + $4 Meal Deal POP","<span class='due'>8/31</span> — verify offers #219 & #564, shake recipes, crew trained","Keep required merch stocked: cooler bags · TDO plushie · trucker hat (Direct Edge)"]},
+      {t:"Memo library", s:"All 9 corporate marketing memos filed by type:", ul:["Promos & Deals (5)","Digital Coupons (1)","National Days (2)","Signage & POS (1)"], p:"Desktop/Wiener/Marketing/…"}
+    ]
+  },
+  {
+    icon: "✅", kicker: "Operations", title: "Checklists",
+    bg: "radial-gradient(120% 90% at 20% 10%, #2a3f22 0%, #0d0e12 70%)",
+    desc: "Daily catch-the-leaks, weekly deep clean & labor tuning, monthly systems & strategy. The Due Today box follows the actual calendar — weekday PM tasks and numbered Saturdays included.",
+    chips: CL_CHIPS,
+    custom: "checklists",
+    cards: []
+  },
+  {
+    icon: "📊", kicker: "Analytics", title: "Promo Tracker",
+    bg: "radial-gradient(120% 90% at 20% 10%, #1c4587 0%, #0d0e12 70%)",
+    desc: "The live scoreboard built from your corporate Sales Analysis and P/L — open the promo-tracker-221 artifact in the sidebar for the full interactive version.",
+    chips: [
+      {t:"July: <b>$103,459</b> — best month", c:"go"},
+      {t:"Wed lift <b>+31.6%</b>", c:"go"},
+      {t:"Food cost <b>35.2%</b> and climbing", c:"alert"}
+    ],
+    cards: [
+      {t:"July highlights", s:"", ul:["Wednesdays averaged <b>$4,180</b> vs $3,175 other days","<b>294 chili dogs</b> per Wednesday vs 99 baseline","Hot Dog Day 7/15: <b>371 dogs</b>, $4,424 (+39%)","54 cooler bags sold before the deal even starts"]},
+      {t:"Top sellers (July $)", s:"", ul:["Chili Cheese Dog — $15,598","Chili Dog — $10,889","Chili Cheese Fries — $8,634","Corn Dog — $6,986"]},
+      {t:"Watch list", s:"", ul:["Food cost: 27.4% (Jan) → <b>35.2%</b> (Jun) — July P/L will show if promos covered it","Labor solid at ~22–24%","Root Beer Float Day 8/6 — verify redemptions vs 19/store benchmark"]},
+      {t:"Refresh cadence", s:"Ask Claude to refresh when a new <b>Sales Analysis</b> email or the <b>July P/L</b> arrives. Cash Analysis = exact coupon redemption counts.", ul:[]}
+    ]
+  },
+  {
+    live: true,
+    icon: "💰", kicker: "Money", title: "Financials",
+    bg: "radial-gradient(120% 90% at 20% 10%, #0b5d3a 0%, #0d0e12 70%)",
+    desc: "H1 2026: $519,680 in sales, $37,128 net income (7.1%). The margin story is food cost — every point is about $1,000/month.",
+    chips: [
+      {t:"H1 net <b>$37,128</b>", c:""},
+      {t:"Best month: <b>Jul $103.5k</b>", c:"go"},
+      {t:"Food cost <b>+7.8 pts</b> since Jan", c:"alert"}
+    ],
+    cards: [
+      {t:"🎯 Main trackers — direct links", s:"The sheets your scheduled tasks keep filled:", ul:[
+        "<a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank'><b>W221 Performance Tracker</b> ↗</a> — Daily / Weekly / Monthly tabs (7am daily task + Monday weekly task)",
+        "<a href='https://docs.google.com/spreadsheets/d/10bMgoq0jobbUA4qCmaSPNRFIlLzINI3fCkfk3SSgBcU/edit' target='_blank'><b>Monthly P/L — the Bing Bong sheet</b> ↗</a> — closed by the 3rd-of-month task (Assumptions + Partner Payments tabs)",
+        "<a href='https://docs.google.com/spreadsheets/d/1m0he5y9YBApRrQm_juKTfdBbqUeT_EtyVrrIo-44Hn8/edit' target='_blank'><b>221 Monthly P/L Sheet 1/26–6/26</b> ↗</a> — the Jan–Jun history"
+      ]},
+      {t:"📄 More financial sheets", s:"", ul:[
+        "<a href='https://docs.google.com/spreadsheets/d/1dbxpI0alY2CRnMaWqMSyM3uNMJdg1rHFf42lZRXOOpA/edit' target='_blank'>W221 Income Statements Monthly ↗</a>",
+        "<a href='https://docs.google.com/spreadsheets/d/1k25vKmyiW9fTdjse_xx7GCoRluZZFAuYFUNGa4JGdAM/edit' target='_blank'>W221 Income Statement — Corporate Format ↗</a>",
+        "<a href='https://docs.google.com/spreadsheets/d/1KjpDhLOnCwXhKsUUMZuIKUNT0q4kSUqiNwe1A8OqYhw/edit' target='_blank'>Wienerschnitzel Budget Statement ↗</a>",
+        "Monthly P/L thread with Shantell Baker (FBC) — % column still owed per her 8/4 email"
+      ]},
+      {t:"🔍 Where each number comes from", s:"", ul:[
+        "<b>H1 sales $519,680 & net income $37,128</b> ← <a href='https://docs.google.com/spreadsheets/d/1m0he5y9YBApRrQm_juKTfdBbqUeT_EtyVrrIo-44Hn8/edit' target='_blank'>221 Monthly P/L Sheet ↗</a>",
+        "<b>July $103,459</b> ← corporate Sales Analysis email (filed via Gmail; also in the promo-tracker artifact)",
+        "<b>Food cost 27.4% → 35.2%</b> ← P/L food line ÷ net sales, Jan–Jun",
+        "<b>Live card above</b> ← <a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank'>Performance Tracker ↗</a> via the scheduled tasks"
+      ]},
+      {t:"Monthly net sales", s:"Jan 75.5k · Feb 76.5k · Mar 91.4k · Apr 92.5k · May 94.7k · Jun 89.0k · <b>Jul 103.5k</b>", ul:[]},
+      {t:"Folder", s:"<b>Invoices</b> folder in Wiener has the invoice confirmation zip; Wasserstrom + AR invoices arrive by email.", ul:[], p:"Desktop/Wiener/Invoices/"},
+      {t:"Ideas", s:"", ul:["Audit chili/cheese portioning + waste log (June spike)","Track Wednesday attachment rate weekly","Push first-party delivery (DSP fees ≈ 2.3% of sales)"]}
+    ]
+  },
+  {
+    icon: "📣", kicker: "Brand & assets", title: "Marketing Assets",
+    bg: "radial-gradient(120% 90% at 20% 10%, #833a70 0%, #0d0e12 70%)",
+    desc: "Your creative library on the Mac — logos, food shots, flyers, and the filed corporate memos, all under Desktop/Wiener/Marketing.",
+    chips: [
+      {t:"<b>4</b> memo folders", c:""},
+      {t:"<b>12</b> brand images", c:""},
+      {t:"Gmail labels: <b>pending re-auth</b>", c:"alert"}
+    ],
+    cards: [
+      {t:"Folder map", s:"", ul:["<b>Promos & Deals</b> — 5 memos","<b>Digital Coupons</b> — 1 memo","<b>National Days</b> — 2 memos","<b>Signage & POS</b> — 1 memo","Loose: Main Logo, food shots, catering flyer → could become <b>Brand Assets</b>"], p:"Desktop/Wiener/Marketing/"},
+      {t:"Campaign files", s:"", ul:["Quad Day coupon cards (PDF + PSDs, Downloads)","Full-page flyer PDF","Catering flyer PDF","QT August 2027 campaign (signed)"]},
+      {t:"Email organization", s:"Weekly scheduled check runs <b>Mondays ~9am</b> — new memos get flagged & categorized. Gmail labels (Marketing/…) will be created once you re-authorize Gmail in Settings → Connectors.", ul:[]}
+    ]
+  },
+  {
+    icon: "🎪", kicker: "Community & catering", title: "Catering & Events",
+    bg: "radial-gradient(120% 90% at 20% 10%, #8a5a00 0%, #0d0e12 70%)",
+    desc: "The local push — campus outreach, community events, and catering gigs. Semester start + the 8/31 value promos are a perfect one-two punch.",
+    chips: [
+      {t:"Health fair: <b>logo sent</b>", c:"go"},
+      {t:"Rush week: <b>follow up</b>", c:"alert"},
+      {t:"Hot dog bars <b>$2.50/person</b>", c:""}
+    ],
+    cards: [
+      {t:"Promise Health fair", s:"Patient Appreciation & Back-to-School Health Fair — Michele Latorre (mlatorre@promisehealth.org).", ul:["Logo sent ✓","Owed: monthly marketing posters closer to event + table setup plan"]},
+      {t:"UIUC rush week", s:"Fraternity & Sorority Affairs said no direct sharing, but pointed to public chapter contacts on their site.", ul:["Next: pitch chapters directly from the website contact list","Hot dog bars at $2.50/person, order online"]},
+      {t:"Campus calendar ideas", s:"", ul:["Dorm move-in week (now!)","Quad Day — coupon cards ready in Downloads","Game days + late-night","Wiener Wednesday as the student habit"]},
+      {t:"Paperwork", s:"Catering invoice template (Michelle) in Downloads; catering flyer in Marketing folder.", ul:[], p:"Downloads/Wienerschnitzel_Catering_Invoice…"}
+    ]
+  },
+  {
+    icon: "🍦", kicker: "Equipment", title: "Ice Cream Machine",
+    bg: "radial-gradient(120% 90% at 20% 10%, #2a6f7a 0%, #0d0e12 70%)",
+    desc: "The Taylor C706 soft-serve machine purchase — timely, since $2.99 Small Shakes become a required menu item 8/31.",
+    chips: [
+      {t:"Freight quote <b>$360</b>", c:""},
+      {t:"Order form <b>in folder</b>", c:""},
+      {t:"Confirm <b>top air discharge</b>", c:"alert"}
+    ],
+    cards: [
+      {t:"Where it stands", s:"Lee Ann Langan @ Taylor Freezers (leeann@taylorfreezers.com):", ul:["Freight quote $360 still good — add to machine total","Fill out order form + send payment","<b>Open question:</b> does it include the Top Air Discharge Chute? Asked 6/17 — chase if no answer"]},
+      {t:"Files", s:"", ul:["C706 order form (2 copies) — Wiener/Icecream machine/","Spec sheet sC706.pdf — Downloads","Wiring Instructions 2026.pdf — Downloads"], p:"Desktop/Wiener/Icecream machine/"},
+      {t:"Why it matters", s:"Small Shakes ($2.99/$3.99) required from 8/31 and run thru 12/28 — soft-serve capacity is the whole game.", ul:[]}
+    ]
+  },
+  {
+    icon: "👥", kicker: "People", title: "Team",
+    bg: "radial-gradient(120% 90% at 20% 10%, #5a3aa7 0%, #0d0e12 70%)",
+    desc: "Your crew — hours, discounts, alerts, and the hiring pipeline. Roster and hours come from the W221 time-card summary (Jan 1 – Jun 7, 2026). Use + Add for new hires.",
+    add: { label: "Add employee", f1: "Name", f2: "Role / wage", f3: "Phone / email", f4: "Notes (discounts, permits, availability…)" },
+    chips: [
+      {t:"<b>10</b> on roster", c:""},
+      {t:"YTD hours <b>5,908</b> · pay <b>$87.9k</b>", c:""},
+      {t:"⚠ Kresin OT: <b>571 hrs</b>", c:"alert"}
+    ],
+    cards: [
+      {t:"Shift lead", s:"", ul:["<b>Jacob Kresin</b> — 878 reg hrs + <b>571 OT hrs</b> YTD. That's 39% overtime — at time-and-a-half it's likely thousands/month. Worth a second shift lead or schedule rebalance."]},
+      {t:"Crew (YTD reg hours)", s:"", ul:["Maria Perez Marin — 749","Marissa Caston — 740","Ahmad Muslih — 661 (+39 OT)","Andrew Renier — 628 (+8 OT)","Kooper Blackwelder — 593","Jamal Saqri — 433","Ejay Rosal — 290","Carina Carrasco — 161","Kareem Muslih — 154"]},
+      {t:"Alerts", s:"", ul:["<span class='due'>OT watch:</span> Kresin's overtime pace","<span class='due'>8/31:</span> everyone trained on Small Shakes builds before launch","ServSafe (Mu) on file since Aug 2025 — check expiry (5-yr cert)","Work permits needed for any under-16 hires (IL)"]},
+      {t:"Employee discounts", s:"No discount log yet — set the policy and track it here. Common setup: free/50% shift meal, rung on a dedicated PLU so it shows in the sales analysis.", ul:["Policy: <i>to set</i>","Log: use + Add or tell Claude \"log discount for [name]\""]},
+      {t:"Hiring pipeline", s:"", ul:["Twilia Moore — application on file (Applications folder)","Post before the semester crush — students want August jobs"], p:"Desktop/Wiener/Applications/"}
+    ]
+  },
+  {
+    icon: "🤝", kicker: "People", title: "Partners",
+    bg: "radial-gradient(120% 90% at 20% 10%, #7a5a18 0%, #0d0e12 70%)",
+    desc: "Every contact the store runs on — corporate, vendors, community, money. Sourced from your Bing Bong sheet and email history. Use + Add for new ones.",
+    add: { label: "Add partner", f1: "Name / company", f2: "What they do", f3: "Phone / email", f4: "Notes" },
+    chips: [
+      {t:"<b>Corporate</b> · 7 contacts", c:""},
+      {t:"<b>Vendors</b> · 14 from Bing Bong sheet", c:""},
+      {t:"<b>Community</b> · 3", c:""}
+    ],
+    cards: [
+      {t:"Galardi Group (corporate)", s:"", ul:["<b>Maria Pareja</b> — marketing memos · mpareja@ · 949-892-2673","<b>Elisa Ham</b> — shakes/promo Qs · eham@ · 949-892-2648","<b>Machel Cook</b> — register/POS · mcook@ · 949-892-2671","<b>Shantell Baker</b> — FBC, P/L · sbaker@ · 909-609-7625","<b>Mary Morey</b> — training, Hot Off the Grill Weds","<b>Marlene Perez</b> — purchasing highlights","<b>Tracey Ethridge</b> — legal/compliance notices"]},
+      {t:"Building & utilities", s:"From the Bing Bong sheet:", ul:["<b>Nogle and Black</b> — landlord (rent $2,500)","<b>Ameren</b> — gas/electric","<b>Comcast</b> — internet/phone","<b>Illinois American</b> — water","<b>Schoonover</b> — sewer","<b>Berg Tank</b> · <b>CO2 supplier</b>","Alarm/security co."]},
+      {t:"Services & supplies", s:"", ul:["<b>PFG</b> — food distribution","<b>Direct Edge</b> — POP printing & merch (ggi.directedgeprint.com)","<b>Clipper</b> — trucker hats","<b>Wasserstrom</b> — smallwares/equipment","<b>Taylor Freezers</b> — Lee Ann Langan · leeann@taylorfreezers.com (C706!)","<b>Bug Out</b> — pest control","<b>Getz</b> — hood cleaning","<b>Society Insurance</b> — business insurance","<b>Hajj</b> — accounting ($300/mo)"]},
+      {t:"Delivery platforms", s:"", ul:["DoorDash ($1,250/mo fees)","Uber Eats ($167/mo)","Olo — first-party ordering ($142/mo)","First-party is where the cooler deal lives — push it"]},
+      {t:"Community & money", s:"", ul:["<b>Michele Latorre</b> — Promise Health fairs · mlatorre@promisehealth.org · 509-430-4482","<b>UIUC FS Affairs</b> — fsaffairs@illinois.edu (chapter contacts on their site)","<b>Sean Hermann</b> — t-shirts/merch · seanhermann24@gmail.com","<b>Heartland Bank</b> — eStatements","<b>Kondler CPA</b> — Ray Kondler · 702-433-7075 (taxes)"]}
+    ]
+  },
+  {
+    icon: "🔗", kicker: "Everything, one tap", title: "Links",
+    bg: "radial-gradient(120% 90% at 20% 10%, #303a5e 0%, #0d0e12 70%)",
+    desc: "Every portal, sheet, and site the store runs on. Use + Add for new ones (tell Claude to make them permanent).",
+    add: { label: "Add link", f1: "Name", f2: "URL", f3: "What it's for", f4: "Notes" },
+    chips: [
+      {t:"<b>Portals</b> · Simphony, Peachworks, Direct Edge", c:""},
+      {t:"<b>Sheets</b> · trackers, P/L, hiring", c:""},
+      {t:"<b>Docs</b> · audits, ops, strategy", c:""}
+    ],
+    cards: [
+      {t:"🖥️ Daily portals", s:"", ul:[
+        "<a href='https://www.mymicros.net/portal/' target='_blank'>Simphony R&A (mymicros) ↗</a> — POS reports",
+        "<a href='https://my.peachworks.com/accounts/20220/reports/home' target='_blank'>Peachworks reports ↗</a> — sales recap, inventory, labor",
+        "<a href='https://mail.google.com' target='_blank'>Gmail ↗</a> · <a href='https://drive.google.com' target='_blank'>Google Drive ↗</a>"
+      ]},
+      {t:"📊 Trackers & sheets", s:"", ul:[
+        "<a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank'>W221 Performance Tracker ↗</a>",
+        "<a href='https://docs.google.com/spreadsheets/d/10bMgoq0jobbUA4qCmaSPNRFIlLzINI3fCkfk3SSgBcU/edit' target='_blank'>Monthly P/L (Bing Bong) ↗</a>",
+        "<a href='https://docs.google.com/spreadsheets/d/1m0he5y9YBApRrQm_juKTfdBbqUeT_EtyVrrIo-44Hn8/edit' target='_blank'>221 Monthly P/L 1/26–6/26 ↗</a>",
+        "<a href='https://docs.google.com/spreadsheets/d/1BqC7OFBfel_YjILJsO6d9h8dRFkYunCP6WtThY6h_yU/edit' target='_blank'>Hiring tracker ↗</a> · <a href='https://docs.google.com/spreadsheets/d/1LiOJfYDU-uPmYIdbEUmKB2AKG2bTjR3b-4rq8lkVimc/edit' target='_blank'>Interview tracker ↗</a>",
+        "<a href='https://docs.google.com/spreadsheets/d/1KjpDhLOnCwXhKsUUMZuIKUNT0q4kSUqiNwe1A8OqYhw/edit' target='_blank'>Budget Statement ↗</a>"
+      ]},
+      {t:"📝 Docs & audits", s:"", ul:[
+        "<a href='https://docs.google.com/document/d/1oX8jjYsO8THMmiIsi1kW4BWwxr6N1-b3to8AmMPL-is/edit' target='_blank'>Health Audit 7/14 ↗</a>",
+        "<a href='https://docs.google.com/document/d/1lCrI8-mi7NA8PM2tyT9ps6luB004xP8cDG0nciRVay0/edit' target='_blank'>Monthly Strategic Review 7/8 ↗</a>",
+        "Daily Ops docs: <a href='https://docs.google.com/document/d/1eEqRsRG-9cxPHyHn1BGa-BE6R-UoMn-1E--8jOaKQt4/edit' target='_blank'>7/11 ↗</a> · <a href='https://docs.google.com/document/d/1oGOasD41vZAIcB8WOlQXouTipeWSf6pyUJeMVilwPfk/edit' target='_blank'>7/12 ↗</a> · <a href='https://docs.google.com/document/d/1D37SBEsdISi7x-IYgFUk4sGnfR0U7uR2poKpSmzy1Go/edit' target='_blank'>7/13 ↗</a>"
+      ]},
+      {t:"🛒 Ordering & brand", s:"", ul:[
+        "<a href='https://ggi.directedgeprint.com/' target='_blank'>Direct Edge ↗</a> — POP, cooler bags, signs (login = store email)",
+        "<a href='https://www.wasserstrom.com' target='_blank'>Wasserstrom ↗</a> — smallwares & equipment",
+        "<a href='https://www.wienerschnitzel.com' target='_blank'>wienerschnitzel.com ↗</a> — coupons & first-party ordering"
+      ]}
+    ]
+  },
+  {
+    icon: "📬", kicker: "Automation", title: "Email Ops",
+    bg: "radial-gradient(120% 90% at 20% 10%, #444a55 0%, #0d0e12 70%)",
+    desc: "The machinery keeping the inbox organized so memos never get lost again.",
+    chips: [
+      {t:"Weekly check: <b>Mon ~9am</b>", c:"go"},
+      {t:"Next run <b>Aug 17</b>", c:""},
+      {t:"Gmail write access: <b>re-authorize</b>", c:"alert"}
+    ],
+    cards: [
+      {t:"Weekly memo check", s:"Every Monday morning a scheduled task scans for new Galardi marketing memos, categorizes them, and sends you a summary. Ask Claude to file the attachments when they land.", ul:[]},
+      {t:"Filing system", s:"Marketing emails → download attachment → file to Wiener/Marketing by type. Same four categories as the Gmail labels (once re-authorized).", ul:[]},
+      {t:"Key senders", s:"", ul:["mpareja@ / eham@galardigroup.com — marketing memos","itadmin@ — sales/cash/TF analysis reports","sbaker@ — P/L (FBC)","mmorey@ — Hot Off the Grill training, Weds 4pm CT"]}
+    ]
+  }
+];
+
+const tilesEl = document.getElementById("tiles");
+SECTIONS.forEach((s, i) => {
+  const w = document.createElement("div");
+  w.className = "tileWrap";
+  const d = document.createElement("div");
+  d.className = "tile"; d.textContent = s.icon;
+  const l = document.createElement("div");
+  l.className = "tileLabel"; l.textContent = s.title;
+  w.appendChild(d); w.appendChild(l);
+  w.addEventListener("click", () => select(i));
+  tilesEl.appendChild(w);
+});
+let cur = -1;
+function select(i){
+  if (i === cur) return; cur = i;
+  const s = SECTIONS[i];
+  document.querySelectorAll(".tileWrap").forEach((t,j)=>t.classList.toggle("on", j===i));
+  document.getElementById("bg").style.background = s.bg;
+  document.getElementById("kicker").textContent = s.kicker;
+  document.getElementById("title").textContent = s.title;
+  document.getElementById("desc").innerHTML = s.desc;
+  document.getElementById("chips").innerHTML =
+    s.chips.map(c=>`<span class="chip ${c.c}">${c.t}</span>`).join("");
+  const cardsArr = s.live ? [liveCardHTML(), ...s.cards] : s.cards;
+  let html = cardsArr.map(c=>`
+    <div class="card">
+      <div class="ct">${c.t}${c.isNew ? '<span class="newtag">NEW</span>' : ''}</div>
+      ${c.s ? `<div class="cs">${c.s}</div>` : ""}
+      ${c.ul && c.ul.length ? `<ul>${c.ul.map(li=>`<li>${li}</li>`).join("")}</ul>` : ""}
+      ${c.p ? `<div class="path">📁 ${c.p}</div>` : ""}
+    </div>`).join("");
+  if (s.add) {
+    html += `
+    <div class="card addcard">
+      <div class="ct">＋ ${s.add.label}</div>
+      <input id="af1" placeholder="${s.add.f1}">
+      <input id="af2" placeholder="${s.add.f2}">
+      <input id="af3" placeholder="${s.add.f3}">
+      <textarea id="af4" placeholder="${s.add.f4}"></textarea>
+      <button onclick="addEntry()">${s.add.label}</button>
+      <div class="savenote" id="savenote">Added for this session ✓ — this page can't save permanently, so tell Claude
+      (e.g. "add ${s.add.f1.toLowerCase()} … to the dashboard") and it'll be written in for good.</div>
+    </div>`;
+  }
+  document.getElementById("cards").innerHTML = html;
+  const isCL = s.custom === "checklists";
+  document.getElementById("cards").style.display = isCL ? "none" : "flex";
+  document.getElementById("clwrap").style.display = isCL ? "block" : "none";
+  if (isCL) renderCL();
+  document.getElementById("wb").style.display = (i === 0) ? "block" : "none";
+}
+function esc(t){ const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+function addEntry(){
+  const s = SECTIONS[cur];
+  const v = id => document.getElementById(id).value.trim();
+  const name = v("af1"); if (!name) return;
+  const ul = [];
+  if (v("af2")) ul.push(esc(v("af2")));
+  if (v("af3")) ul.push(esc(v("af3")));
+  if (v("af4")) ul.push(esc(v("af4")));
+  s.cards.push({ t: esc(name), s: "", ul: ul, isNew: true });
+  const i = cur; cur = -1; select(i);
+  const n = document.getElementById("savenote"); if (n) n.style.display = "block";
+  document.getElementById("cards").scrollLeft = 1e6;
+}
+document.addEventListener("keydown", e => {
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+  if (e.key === "ArrowRight") select((cur+1)%SECTIONS.length);
+  if (e.key === "ArrowLeft") select((cur-1+SECTIONS.length)%SECTIONS.length);
+});
+
+/* ---- Checklists rendering ---- */
+const clState = {};
+let clTab = "Daily";
+document.getElementById("todaylist").innerHTML = CL_TODAY.map(t=>`<li>${t}</li>`).join("");
+const clTabsEl = document.getElementById("cltabs");
+Object.keys(CL_DATA).forEach(k => {
+  clState[k] = new Set();
+  const b = document.createElement("button");
+  b.className = "cltab"; b.textContent = k; b.id = "cltab-" + k;
+  b.onclick = () => { clTab = k; renderCL(); };
+  clTabsEl.appendChild(b);
+});
+function clItemHTML(g, gi, it, ii){
+  let tag = "", txt = it;
+  if (typeof it === "object") {
+    txt = it.t;
+    if (g.pm === "weekly") {
+      tag = `<span class="daytag ${it.d===clDow?'now':''}">${CL_DOW[it.d].slice(0,3)}</span>`;
+    } else {
+      const isNow = (it.d === "Wed" && clDow === 3) || (it.d === "Sat " + clNthSat && clDow === 6);
+      tag = `<span class="daytag ${isNow?'now':''}">${it.d}</span>`;
+    }
+  }
+  const id = gi + "-" + ii;
+  const done = clState[clTab].has(id);
+  return `<div class="clitem ${done?'done':''}" onclick="toggleCL('${id}')">
+    <div class="clbox">${done?'✓':''}</div><div class="txt">${tag}${txt}</div></div>`;
+}
+function renderCL(){
+  Object.keys(CL_DATA).forEach(k =>
+    document.getElementById("cltab-"+k).classList.toggle("on", k===clTab));
+  const groups = CL_DATA[clTab];
+  document.getElementById("clgroups").innerHTML = groups.map((g,gi)=>{
+    const doneCt = g.items.filter((_,ii)=>clState[clTab].has(gi+"-"+ii)).length;
+    return `<div class="group">
+      <div class="ghead"><span class="gi">${g.icon}</span><h3>${g.name}</h3>
+      <span class="gcount">${doneCt}/${g.items.length}</span></div>
+      ${g.items.map((it,ii)=>clItemHTML(g,gi,it,ii)).join("")}
+    </div>`;
+  }).join("");
+  const total = groups.reduce((a,g)=>a+g.items.length,0);
+  const done = clState[clTab].size;
+  document.getElementById("clbarfill").style.width = (done/total*100) + "%";
+  document.getElementById("clpct").textContent = done + " of " + total + " done";
+}
+function toggleCL(id){
+  clState[clTab].has(id) ? clState[clTab].delete(id) : clState[clTab].add(id);
+  renderCL();
+}
+function resetCLTab(){ clState[clTab].clear(); renderCL(); }
+function tick(){
+  const n = new Date();
+  document.getElementById("clock").textContent =
+    n.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+  document.getElementById("date").textContent =
+    n.toLocaleDateString([], {weekday:"long", month:"long", day:"numeric"});
+}
+tick(); setInterval(tick, 15000);
+renderAlerts();
+select(0);
+</script>
+</body>
+</html>
