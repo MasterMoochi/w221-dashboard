@@ -461,11 +461,11 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-08-17", "updatedBy": "catch-up run (8/10\u20138/16 backfilled + weekly row)",
-  "daily":   { "date": "2026-08-16", "netSales": 2484.79, "transactions": 170, "laborPct": 25.4, "alerts": ["Labor 25.4% on 43.8 hrs vs a ~29.5 hr Sunday norm \u2014 check punches / Sunday schedule"] },
-  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "cogsPct": 21.0, "alerts": ["Labor % rose 2.4 pts while net sales fell 6.4% \u2014 hours did not flex down with volume", "COGS back to 21.0% \u2014 confirms last week's 53.9% was the $5,105 bulk paper order, not a cost spike"] },
-  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/16: $47,747.67 net; Peachworks projects $92,511 for the month." },
-  "systemAlerts": ["8 days went unlogged (8/10\u20138/17): the daily task fired every morning but the desktop bridge was offline, so it recorded nothing and never said so", "Unexplained cash gap \u2212$86.76 on 8/12 (paid outs $933.79 vs variance $847.03) \u2014 the only day this week outside the $75 band", "Sales down 6.4% WoW on 72 fewer transactions while labor dollars rose $235 \u2014 the schedule is the thing to fix this week"]
+  "updated": "2026-08-18", "updatedBy": "catch-up + labor investigation",
+  "daily":   { "date": "2026-08-17", "netSales": 2167.04, "transactions": 162, "laborPct": 23.4, "alerts": ["Net sales 26% below the Monday norm \u2014 only 162 transactions", "Unexplained cash gap \u2212$136.52 (paid outs $140.00 vs variance $3.48)"] },
+  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "cogsPct": 21.0, "alerts": ["SOLVED: ~$187 of the labor rise was a missed clock-out, not real hours \u2014 see system alerts", "Real hours were FLAT week-over-week while sales fell 6.4% \u2014 that is the 1.8 pts that is actually yours to fix"] },
+  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/17: $49,914.71 net; Peachworks projects $91,021 for the month \u2014 down from the $92,511 projection a day earlier." },
+  "systemAlerts": ["MISSED CLOCK-OUT 8/16: Carina Carrasco logged a single 17.56-hour punch (job 301) against a ~4.6-hour norm \u2014 longer than the store was even open. ~13 phantom hours, ~$187 of labor that never happened. Fix the punch, then re-pull 8/16.", "Even after removing that, labor still rose ~1.8 pts: hours held flat at ~274 while sales fell 6.4%. Nobody was cut when the evening died (7\u20139pm took $314 on 8/16 vs $681 the Sunday before).", "Overtime is recorded as ZERO across August \u2014 so none of the labor rise is OT premium.", "Monday 8/17 came in 26% under the Monday norm at $2,167 \u2014 watch whether that is the pre-semester lull or the start of a trend."]
 };
 /*LIVE-END*/
 function liveCardHTML(){
@@ -480,7 +480,7 @@ function liveCardHTML(){
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-17", "text": "THIS WEEK\n\u2022 Sunday schedule \u2014 8/16 ran 43.8 hrs / 25.4% labor on the slowest day of the week\n\u2022 8/12 cash: paid outs $933.79 vs variance $847.03, $87 unaccounted \u2014 pull the slips\n\u2022 8/31: three launches go live ($8 Meal Deal, $2.99 shakes, $17.76 cooler bag)\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide whether to extend\n\u2022 Newspaper half-page: confirm the $8 vs $4 meal deal before it prints\n\u2022 Keep the desktop app open so the daily task can actually run" };
+const WB = { "updated": "2026-08-18", "text": "THIS WEEK\n\u2022 FIX THE 8/16 PUNCH \u2014 Carina Carrasco, 17.56 hrs on one clock-in. Correct it in the POS, then tell Claude to re-pull 8/16.\n\u2022 Sunday close: someone has to be cut when the 7pm rush doesn\u2019t show. Hours were flat all week while sales fell 6.4%.\n\u2022 8/12 cash: paid outs $933.79 vs variance $847.03 \u2014 $87 unaccounted, pull the slips.\n\u2022 8/31: three launches go live ($8 Meal Deal, $2.99 shakes, $17.76 cooler bag).\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide whether to extend.\n\u2022 Newspaper half-page: confirm $4 vs $8 meal deal before it prints." };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
