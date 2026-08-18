@@ -67,6 +67,24 @@
   .tk.miss { color:#5a5952; }
   .tk.zero { color:#e66767; font-weight:700; }
   .pfgnote { color:var(--ink-3); font-size:11.5px; margin-top:9px; }
+  /* Clock-Out Watch */
+  .empwrap { max-width:1040px; padding:6px 0 20px; display:none; }
+  .empstats { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0; }
+  .empstat { background:rgba(22,23,30,.78); border:1px solid rgba(255,255,255,.10); border-radius:12px;
+    padding:11px 16px; min-width:150px; }
+  .empstat .v { font-size:23px; font-weight:750; color:var(--ink); letter-spacing:-.02em; }
+  .empstat .k { font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.07em; margin-top:2px; }
+  .empstat.bad .v { color:#ff9c9b; }
+  .emptbl { border-collapse:collapse; width:100%; font-size:12.5px; }
+  .emptbl th { text-align:left; color:var(--ink-3); font-weight:700; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.06em; padding:8px 9px; border-bottom:1px solid rgba(255,255,255,.15);
+    position:sticky; top:0; background:#16171d; }
+  .emptbl td { padding:6px 9px; border-bottom:1px solid rgba(255,255,255,.06); color:var(--ink-2); white-space:nowrap; }
+  .emptbl td.n, .emptbl th.n { text-align:right; font-variant-numeric:tabular-nums; }
+  .emptbl tr:hover td { background:rgba(255,255,255,.03); }
+  .empscroll { max-height:300px; overflow:auto; border:1px solid rgba(255,255,255,.1); border-radius:10px; }
+  .sev { font-size:10px; font-weight:700; border-radius:4px; padding:1px 6px; color:#0d0e12; }
+  .sev.impossible { background:#e66767; } .sev.high { background:#ffd166; } .sev.watch { background:#8f8e85; }
   /* Calendar */
   .calwrap { max-width: 1000px; padding: 14px 40px 40px; }
   .calhead { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
@@ -307,6 +325,30 @@
 </div>
 
 <div class="cards" id="cards"></div>
+<div class="empwrap" id="empwrap">
+  <div class="alertbar" id="empalert" style="margin:0 0 12px;"></div>
+  <div class="empstats" id="empstats"></div>
+
+  <div class="group" style="padding:14px 18px;margin-bottom:12px;">
+    <h3 style="font-size:14.5px;margin-bottom:2px;">👤 By person — who forgets</h3>
+    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Each person's own shift median is the yardstick. A punch longer than the store is open can't be real time worked.</div>
+    <div class="empscroll"><table class="emptbl" id="emppeople"></table></div>
+    <div style="color:var(--ink-3);font-size:11px;margin-top:9px;" id="empcoverage"></div>
+  </div>
+
+  <div class="group" style="padding:14px 18px;margin-bottom:12px;">
+    <h3 style="font-size:14.5px;margin-bottom:2px;">📅 Flagged days — store-wide</h3>
+    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Days where total hours ran 25%+ over that weekday's median. This layer is complete for every day since 7/1, even for people the punch feed doesn't name.</div>
+    <div class="empscroll"><table class="emptbl" id="empdays"></table></div>
+  </div>
+
+  <div class="group" style="padding:14px 18px;">
+    <h3 style="font-size:14.5px;margin-bottom:2px;">📐 Weekday norms</h3>
+    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Median store hours by day of week, from 7/1 on. These are the baselines the flags compare against.</div>
+    <div id="empnorms" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+  </div>
+</div>
+
 <div class="pfgwrap" id="pfgwrap">
   <div class="alertbar" style="margin:0 0 12px;">
     <div class="at">⚠ Still out right now</div>
@@ -462,10 +504,10 @@
 /*LIVE-START*/
 const LIVE = {
   "updated": "2026-08-18", "updatedBy": "catch-up + labor investigation",
-  "daily":   { "date": "2026-08-17", "netSales": 2167.04, "transactions": 162, "laborPct": 23.4, "alerts": ["Net sales 26% below the Monday norm \u2014 only 162 transactions", "Unexplained cash gap \u2212$136.52 (paid outs $140.00 vs variance $3.48)"] },
-  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "cogsPct": 21.0, "alerts": ["SOLVED: ~$187 of the labor rise was a missed clock-out, not real hours \u2014 see system alerts", "Real hours were FLAT week-over-week while sales fell 6.4% \u2014 that is the 1.8 pts that is actually yours to fix"] },
-  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/17: $49,914.71 net; Peachworks projects $91,021 for the month \u2014 down from the $92,511 projection a day earlier." },
-  "systemAlerts": ["MISSED CLOCK-OUT 8/16: Carina Carrasco logged a single 17.56-hour punch (job 301) against a ~4.6-hour norm \u2014 longer than the store was even open. ~13 phantom hours, ~$187 of labor that never happened. Fix the punch, then re-pull 8/16.", "Even after removing that, labor still rose ~1.8 pts: hours held flat at ~274 while sales fell 6.4%. Nobody was cut when the evening died (7\u20139pm took $314 on 8/16 vs $681 the Sunday before).", "Overtime is recorded as ZERO across August \u2014 so none of the labor rise is OT premium.", "Monday 8/17 came in 26% under the Monday norm at $2,167 \u2014 watch whether that is the pre-semester lull or the start of a trend."]
+  "daily":   { "date": "2026-08-17", "netSales": 2167.04, "transactions": 162, "laborPct": 23.4, "alerts": ["Net sales 26% below the Monday norm — only 162 transactions", "Unexplained cash gap \u2212$136.52 (paid outs $140.00 vs variance $3.48)"] },
+  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "cogsPct": 21.0, "alerts": ["SOLVED: ~$187 of the labor rise was a missed clock-out, not real hours — see system alerts", "Real hours were FLAT week-over-week while sales fell 6.4% — that is the 1.8 pts that is actually yours to fix"] },
+  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/17: $49,914.71 net; Peachworks projects $91,021 for the month — down from the $92,511 projection a day earlier." },
+  "systemAlerts": ["MISSED CLOCK-OUT 8/16: Carina Carrasco logged a single 17.56-hour punch (job 301) against a ~4.6-hour norm — longer than the store was even open. ~13 phantom hours, ~$187 of labor that never happened. Fix the punch, then re-pull 8/16.", "Even after removing that, labor still rose ~1.8 pts: hours held flat at ~274 while sales fell 6.4%. Nobody was cut when the evening died (7\u20139pm took $314 on 8/16 vs $681 the Sunday before).", "Overtime is recorded as ZERO across August — so none of the labor rise is OT premium.", "Monday 8/17 came in 26% under the Monday norm at $2,167 — watch whether that is the pre-semester lull or the start of a trend."]
 };
 /*LIVE-END*/
 function liveCardHTML(){
@@ -480,7 +522,7 @@ function liveCardHTML(){
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-18", "text": "THIS WEEK\n\u2022 FIX THE 8/16 PUNCH \u2014 Carina Carrasco, 17.56 hrs on one clock-in. Correct it in the POS, then tell Claude to re-pull 8/16.\n\u2022 Sunday close: someone has to be cut when the 7pm rush doesn\u2019t show. Hours were flat all week while sales fell 6.4%.\n\u2022 8/12 cash: paid outs $933.79 vs variance $847.03 \u2014 $87 unaccounted, pull the slips.\n\u2022 8/31: three launches go live ($8 Meal Deal, $2.99 shakes, $17.76 cooler bag).\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide whether to extend.\n\u2022 Newspaper half-page: confirm $4 vs $8 meal deal before it prints." };
+const WB = { "updated": "2026-08-18", "text": "THIS WEEK\n\u2022 FIX THE 8/16 PUNCH — Carina Carrasco, 17.56 hrs on one clock-in. Correct it in the POS, then tell Claude to re-pull 8/16.\n\u2022 Sunday close: someone has to be cut when the 7pm rush doesn’t show. Hours were flat all week while sales fell 6.4%.\n\u2022 8/12 cash: paid outs $933.79 vs variance $847.03 — $87 unaccounted, pull the slips.\n\u2022 8/31: three launches go live ($8 Meal Deal, $2.99 shakes, $17.76 cooler bag).\n\u2022 Wiener Wednesday 4/$4 ends 8/31 — decide whether to extend.\n\u2022 Newspaper half-page: confirm $4 vs $8 meal deal before it prints." };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
@@ -526,6 +568,43 @@ function renderAlerts(){
 }
 
 
+/*EMP-START*/
+const EMP_META = { "updated":"2026-08-18", "storeOpenHrs":12,
+  "coverage":"Store-wide daily hours are COMPLETE (Peachworks SALES RECAP, 7/1 onward). Named punches are PARTIAL — Peachworks Analytics only exposes ~14% of hours (95.65 of ~670 in August) and resolves just two employees. Full crew punch detail needs Oracle Simphony (mymicros.net), which is signed out." };
+const EMP_NORMS = {"Mon":37.20,"Tue":38.81,"Wed":43.31,"Thu":41.85,"Fri":41.34,"Sat":38.42,"Sun":28.90};
+// [date, dow, hours, labor$, netSales]
+const EMP_DAYS = [
+["2026-07-01","Wed",38.53,689.81,4054.77],["2026-07-02","Thu",37.50,695.57,3291.39],["2026-07-03","Fri",40.05,571.16,3161.20],
+["2026-07-04","Sat",32.17,454.15,2888.71],["2026-07-05","Sun",32.74,459.85,2961.92],["2026-07-06","Mon",34.63,484.76,3213.90],
+["2026-07-07","Tue",31.54,475.85,2984.60],["2026-07-08","Wed",35.71,609.06,3113.69],["2026-07-09","Thu",41.73,722.23,3043.50],
+["2026-07-10","Fri",34.00,474.26,3246.55],["2026-07-11","Sat",38.42,548.04,2538.94],["2026-07-12","Sun",28.09,400.41,2800.30],
+["2026-07-13","Mon",38.31,547.80,3115.62],["2026-07-14","Tue",37.21,515.09,2685.41],["2026-07-15","Wed",47.53,742.79,3770.11],
+["2026-07-16","Thu",41.85,679.06,2824.09],["2026-07-17","Fri",39.28,553.39,3425.67],["2026-07-18","Sat",37.23,523.21,3033.20],
+["2026-07-19","Sun",26.78,373.08,2294.19],["2026-07-20","Mon",36.55,506.03,3524.86],["2026-07-21","Tue",38.47,559.22,2722.49],
+["2026-07-22","Wed",43.45,690.29,3779.11],["2026-07-23","Thu",39.40,631.25,3001.08],["2026-07-24","Fri",71.68,993.06,3080.13],
+["2026-07-25","Sat",40.84,579.37,2537.61],["2026-07-26","Sun",28.90,412.38,2562.35],["2026-07-27","Mon",37.20,560.97,2645.28],
+["2026-07-28","Tue",42.34,645.21,2979.44],["2026-07-29","Wed",36.08,512.75,3483.38],["2026-07-30","Thu",45.28,710.07,3486.24],
+["2026-07-31","Fri",43.12,600.94,3399.57],["2026-08-01","Sat",40.93,579.19,3175.73],["2026-08-02","Sun",34.08,485.90,2681.39],
+["2026-08-03","Mon",42.19,589.34,2856.52],["2026-08-04","Tue",39.15,543.85,3126.65],["2026-08-05","Wed",43.31,674.13,3712.86],
+["2026-08-06","Thu",42.99,688.29,3026.00],["2026-08-07","Fri",43.01,611.64,3239.09],["2026-08-08","Sat",38.50,551.02,2797.26],
+["2026-08-09","Sun",28.17,392.46,2877.41],["2026-08-10","Mon",41.32,577.49,2752.08],["2026-08-11","Tue",40.83,602.27,2842.15],
+["2026-08-12","Wed",43.78,697.94,3196.78],["2026-08-13","Thu",42.20,695.32,3025.88],["2026-08-14","Fri",41.34,594.69,3081.90],
+["2026-08-15","Sat",33.41,488.65,2871.18],["2026-08-16","Sun",43.81,629.80,2484.79],["2026-08-17","Mon",36.53,506.14,2167.04]];
+// [date, employee, hours, jobId]
+const EMP_PUNCH = [
+["2026-08-02","Carina Carrasco",5.65,"301"],["2026-08-02","Eduar Gramajo",4.61,"301"],
+["2026-08-05","Carina Carrasco",4.80,"301"],
+["2026-08-06","Carina Carrasco",5.59,"301"],["2026-08-06","Eduar Gramajo",4.00,"301"],
+["2026-08-07","Carina Carrasco",3.93,"301"],["2026-08-07","Eduar Gramajo",6.08,"301"],
+["2026-08-08","Carina Carrasco",2.84,"301"],
+["2026-08-09","Carina Carrasco",4.82,"301"],
+["2026-08-11","Carina Carrasco",1.29,"301"],
+["2026-08-12","Carina Carrasco",4.57,"301"],
+["2026-08-13","Carina Carrasco",5.44,"301"],["2026-08-13","Eduar Gramajo",4.09,"301"],
+["2026-08-14","Carina Carrasco",3.84,"301"],["2026-08-14","Eduar Gramajo",6.22,"301"],
+["2026-08-15","Carina Carrasco",1.33,"301"],["2026-08-15","Eduar Gramajo",4.05,"301"],
+["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
+/*EMP-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
 const PFG_ITEMS=[
@@ -573,6 +652,99 @@ const PFG_ITEMS=[
 ];
 
 let pfgMode='all';
+
+/* ---------- Clock-Out Watch ---------- */
+function empMedian(a){ if(!a.length) return 0; const b=[...a].sort((x,y)=>x-y), m=b.length>>1;
+  return b.length%2 ? b[m] : (b[m-1]+b[m])/2; }
+function empAnalyse(){
+  const open = EMP_META.storeOpenHrs;
+  // ---- day layer ----
+  const days = EMP_DAYS.map(([d,dow,h,l,n])=>{
+    const norm = EMP_NORMS[dow]||0, ratio = norm? h/norm : 0, rate = h? l/h : 0;
+    const excess = Math.max(0, h-norm);
+    return {d,dow,h,l,n,norm,ratio,rate,excess,cost:excess*rate,laborPct: n? l/n*100 : 0};
+  });
+  const flagged = days.filter(x=>x.ratio>=1.25).sort((a,b)=>b.ratio-a.ratio);
+  // ---- person layer ----
+  const byP = {};
+  EMP_PUNCH.forEach(([d,e,h,j])=>{ (byP[e]=byP[e]||[]).push({d,h,j}); });
+  const people = Object.entries(byP).map(([name,rows])=>{
+    const hrs = rows.map(r=>r.h), med = empMedian(hrs);
+    const bad = rows.filter(r=> r.h>open || (med>0 && r.h>=med*2.5));
+    const phantom = bad.reduce((t,r)=> t + Math.max(0, r.h-med), 0);
+    const worst = rows.reduce((a,b)=> b.h>a.h?b:a, rows[0]);
+    return {name, shifts:rows.length, med, worst, bad, phantom,
+            lastBad: bad.length? bad[bad.length-1].d : null};
+  }).sort((a,b)=> b.phantom-a.phantom || b.bad.length-a.bad.length);
+  return {days, flagged, people, open};
+}
+function empSev(h, med, open){
+  if (h > open) return ['impossible','Impossible'];
+  if (med>0 && h >= med*2.5) return ['high','Way over'];
+  return ['watch','Watch'];
+}
+function renderEMP(){
+  const A = empAnalyse();
+  const rate = 14.38; // recent blended crew rate, for costing day-level excess
+  const totalCost = A.flagged.reduce((t,f)=>t+f.cost,0);
+  const lastFlag = A.flagged.length ? A.flagged.map(f=>f.d).sort().slice(-1)[0] : null;
+  const today = EMP_DAYS.length ? EMP_DAYS[EMP_DAYS.length-1][0] : null;
+  const daysSince = (lastFlag && today) ?
+    Math.round((new Date(today)-new Date(lastFlag))/86400000) : null;
+
+  // alert bar
+  const openIssues = [];
+  A.people.forEach(p=> p.bad.forEach(b=>{
+    openIssues.push(`<li><b>${esc(p.name)}</b> — <b>${b.h.toFixed(2)} hrs</b> on ${b.d} against a ${p.med.toFixed(1)}-hr norm. The store is open about ${A.open} hrs, so roughly <b>${(b.h-p.med).toFixed(1)} phantom hours</b> (≈$${((b.h-p.med)*rate).toFixed(0)}). Fix the punch in the POS.</li>`);
+  }));
+  const ab = document.getElementById('empalert');
+  if (openIssues.length){
+    ab.style.display='block';
+    ab.innerHTML = `<div class="at">⚠ Punches to correct</div><ul>${openIssues.join('')}</ul>`;
+  } else { ab.style.display='none'; }
+
+  // stats
+  document.getElementById('empstats').innerHTML = [
+    ['bad', A.flagged.length, 'Flagged days since 7/1'],
+    ['bad', '$'+Math.round(totalCost).toLocaleString(), 'Est. excess labor'],
+    ['', daysSince===null?'—':daysSince, 'Days since last flag'],
+    ['', A.people.reduce((t,p)=>t+p.bad.length,0), 'Named bad punches'],
+    ['', EMP_DAYS.length, 'Days measured']
+  ].map(([c,v,k])=>`<div class="empstat ${c}"><div class="v">${v}</div><div class="k">${k}</div></div>`).join('');
+
+  // people table
+  document.getElementById('emppeople').innerHTML =
+    `<tr><th>Employee</th><th class="n">Shifts</th><th class="n">Median shift</th><th class="n">Longest</th>
+     <th class="n">Bad punches</th><th class="n">Phantom hrs</th><th class="n">Est. cost</th><th>Last incident</th></tr>` +
+    A.people.map(p=>{
+      const [cls,lab] = empSev(p.worst.h, p.med, A.open);
+      return `<tr><td><b style="color:var(--ink)">${esc(p.name)}</b></td>
+      <td class="n">${p.shifts}</td><td class="n">${p.med.toFixed(2)}</td>
+      <td class="n">${p.worst.h.toFixed(2)} ${p.worst.h>A.open?`<span class="sev ${cls}">${lab}</span>`:''}</td>
+      <td class="n">${p.bad.length}</td><td class="n">${p.phantom?p.phantom.toFixed(1):'—'}</td>
+      <td class="n">${p.phantom?'$'+Math.round(p.phantom*rate):'—'}</td>
+      <td>${p.lastBad||'—'}</td></tr>`;
+    }).join('');
+  document.getElementById('empcoverage').textContent = EMP_META.coverage;
+
+  // days table
+  document.getElementById('empdays').innerHTML =
+    `<tr><th>Date</th><th>Day</th><th class="n">Hours</th><th class="n">Norm</th><th class="n">Over</th>
+     <th class="n">Excess hrs</th><th class="n">Est. cost</th><th class="n">Labor %</th><th>Named</th></tr>` +
+    (A.flagged.length ? A.flagged.map(f=>{
+      const named = EMP_PUNCH.filter(r=>r[0]===f.d && r[2]>A.open).map(r=>r[1]).join(', ');
+      return `<tr><td><b style="color:var(--ink)">${f.d}</b></td><td>${f.dow}</td>
+      <td class="n">${f.h.toFixed(2)}</td><td class="n">${f.norm.toFixed(2)}</td>
+      <td class="n">${f.ratio.toFixed(2)}×</td><td class="n">${f.excess.toFixed(2)}</td>
+      <td class="n">$${Math.round(f.cost)}</td><td class="n">${f.laborPct.toFixed(1)}%</td>
+      <td>${named? esc(named) : '<span style="color:var(--ink-3)">not in feed</span>'}</td></tr>`;
+    }).join('') : `<tr><td colspan="9" style="color:var(--ink-3)">No flagged days — clean.</td></tr>`);
+
+  // norms
+  document.getElementById('empnorms').innerHTML = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+    .map(d=>`<div class="chip"><b>${d}</b> ${EMP_NORMS[d].toFixed(1)} hrs</div>`).join('');
+}
+
 function pfgFilter(m){ pfgMode=m;
   ['all','risk','Disposables','Dry Grocery'].forEach(k=>{const b=document.getElementById('pf-'+k); if(b)b.classList.toggle('on',k===m);});
   renderPFG(); }
@@ -877,6 +1049,18 @@ const SECTIONS = [
     ]
   },
   {
+    icon: "\u23f1\ufe0f", kicker: "Labor", title: "Clock-Out Watch",
+    bg: "radial-gradient(120% 90% at 20% 10%, #5c2d63 0%, #0d0e12 70%)",
+    desc: "Who forgets to clock out, and what it costs. Every day since 7/1 is measured against that weekday's own median — a punch longer than the store is open cannot be real time worked.",
+    custom: "emp",
+    chips: [
+      {t:"<b>2 flagged days</b> since 7/1", c:"alert"},
+      {t:"8/16: <b>Carina 17.56 hrs</b>", c:"alert"},
+      {t:"Overtime recorded: <b>zero</b>", c:""}
+    ],
+    cards: []
+  },
+  {
     icon: "🚚", kicker: "Supply", title: "PFG Orders",
     bg: "radial-gradient(120% 90% at 20% 10%, #6b3410 0%, #0d0e12 70%)",
     desc: "Every item Performance Foods delivers, split by supply line — and what went wrong in July. Denver ships paper and syrup every ~66 days; Chicago ships food every ~12.",
@@ -1112,9 +1296,12 @@ function select(i){
   }
   document.getElementById("cards").innerHTML = html;
   const isPFG = s.custom === "pfg";
-  document.getElementById("cards").style.display = isPFG ? "none" : "flex";
+  const isEMP = s.custom === "emp";
+  document.getElementById("cards").style.display = (isPFG||isEMP) ? "none" : "flex";
   document.getElementById("pfgwrap").style.display = isPFG ? "block" : "none";
+  document.getElementById("empwrap").style.display = isEMP ? "block" : "none";
   if (isPFG) renderPFG();
+  if (isEMP) renderEMP();
   document.getElementById("wb").style.display = (i === 0) ? "block" : "none";
 }
 function esc(t){ const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
