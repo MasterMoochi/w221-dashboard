@@ -330,6 +330,9 @@
   <div class="empstats" id="empstats"></div>
 
   <div class="group" style="padding:14px 18px;margin-bottom:12px;">
+    <h3 style="font-size:14.5px;margin-bottom:2px;">🚨 Auto clock-outs — Simphony's own log</h3>
+    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">When someone forgets, Simphony force-closes the punch at 3:45 AM and records it here. This is the definitive list — every occurrence in 2026.</div>
+    <div class="empscroll" style="margin-bottom:16px;"><table class="emptbl" id="empauto"></table></div>
     <h3 style="font-size:14.5px;margin-bottom:2px;">👤 By person — who forgets</h3>
     <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Each person's own shift median is the yardstick. A punch longer than the store is open can't be real time worked.</div>
     <div class="empscroll"><table class="emptbl" id="emppeople"></table></div>
@@ -570,7 +573,13 @@ function renderAlerts(){
 
 /*EMP-START*/
 const EMP_META = { "updated":"2026-08-18", "storeOpenHrs":12,
-  "coverage":"WHY ONLY TWO NAMES: the Simphony\u2192Peachworks labor feed carries exactly two employee IDs (3777 and 10800) and ONE job code (301) \u2014 403 hours for all of 2026 against roughly 5,000 actually worked. It is not a name-matching problem; the other job codes are simply not mapped in the integration, so those punches never arrive. The store-wide daily hours below come from the SALES RECAP, which reads Simphony directly and is complete. To name every offender, either map the remaining job codes in the POS Hub labor integration or pull time cards from Simphony." };
+  "coverage":"SOURCE: Oracle Simphony \u2014 the Auto Clock Out Report is the system's own log of punches it had to close itself, so it is authoritative, not a heuristic. Simphony auto-closes an open punch at 3:45 AM. Peachworks is NOT usable for this: its labor feed carries only two employee IDs and one job code (403 hrs for all of 2026 against roughly 5,000 worked), because the other job codes are not mapped in the integration." };
+// Simphony "Auto Clock Out Report" — the system's own record of punches it had to close. Year to date, W221.
+// [businessDate, employee, clockIn, clockOut, status]
+const EMP_AUTO = [
+["2026-08-16","Carina Carrasco","8/16/2026 10:11 AM","8/17/2026 3:45 AM","Scheduled Clock Out"],
+["2026-03-02","Marissa Caston","3/2/2026 3:47 PM","3/3/2026 3:45 AM","Scheduled Clock Out"]];
+const EMP_OT = { "period":"August MTD (8/1\u20138/18)", "totalHours":669.75, "otHours":46.76, "otPay":1052.10, "totalPay":9823.74, "avgRate":14.67 };
 const EMP_NORMS = {"Mon":37.20,"Tue":38.81,"Wed":43.31,"Thu":41.85,"Fri":41.34,"Sat":38.42,"Sun":28.90};
 // [date, dow, hours, labor$, netSales]
 const EMP_DAYS = [
@@ -694,7 +703,11 @@ function renderEMP(){
 
   // alert bar
   const openIssues = [];
-  A.people.forEach(p=> p.bad.forEach(b=>{
+  EMP_AUTO.forEach(([d,e,ci,co])=>{
+    const hrs=(new Date(co)-new Date(ci))/3600000;
+    openIssues.push(`<li><b>${esc(e)}</b> — clocked in ${esc(ci)}, never clocked out. Simphony force-closed it at <b>${esc(co)}</b> = <b>${hrs.toFixed(2)} hrs</b>. Correct the punch in the POS${d==='2026-08-16'?' — this one is still uncorrected and is inflating the week of 8/10':''}.</li>`);
+  });
+  A.people.forEach(p=> p.bad.forEach(b=>{ if(EMP_AUTO.some(a=>a[0]===b.d)) return;
     openIssues.push(`<li><b>${esc(p.name)}</b> — <b>${b.h.toFixed(2)} hrs</b> on ${b.d} against a ${p.med.toFixed(1)}-hr norm. The store is open about ${A.open} hrs, so roughly <b>${(b.h-p.med).toFixed(1)} phantom hours</b> (≈$${((b.h-p.med)*rate).toFixed(0)}). Fix the punch in the POS.</li>`);
   }));
   const ab = document.getElementById('empalert');
@@ -724,6 +737,14 @@ function renderEMP(){
       <td class="n">${p.bad.length}</td><td class="n">${p.phantom?p.phantom.toFixed(1):'—'}</td>
       <td class="n">${p.phantom?'$'+Math.round(p.phantom*rate):'—'}</td>
       <td>${p.lastBad||'—'}</td></tr>`;
+    }).join('');
+  document.getElementById('empauto').innerHTML =
+    `<tr><th>Business date</th><th>Employee</th><th>Clocked in</th><th>Force-closed at</th><th>Hours</th></tr>` +
+    EMP_AUTO.map(([d,e,ci,co,st])=>{
+      const hrs=(new Date(co)-new Date(ci))/3600000;
+      return `<tr><td><b style="color:var(--ink)">${d}</b></td><td><b style="color:var(--ink)">${esc(e)}</b></td>
+      <td>${esc(ci)}</td><td style="color:#ff9c9b">${esc(co)}</td>
+      <td class="n"><b style="color:#ff9c9b">${hrs.toFixed(2)}</b></td></tr>`;
     }).join('');
   document.getElementById('empcoverage').textContent = EMP_META.coverage;
 
@@ -1054,9 +1075,9 @@ const SECTIONS = [
     desc: "Who forgets to clock out, and what it costs. Every day since 7/1 is measured against that weekday's own median — a punch longer than the store is open cannot be real time worked.",
     custom: "emp",
     chips: [
-      {t:"<b>2 flagged days</b> since 7/1", c:"alert"},
+      {t:"<b>2 auto clock-outs</b> in 2026", c:"alert"},
       {t:"8/16: <b>Carina 17.56 hrs</b>", c:"alert"},
-      {t:"Overtime recorded: <b>zero</b>", c:""}
+      {t:"OT: <b>46.8 hrs / $1,052</b> in Aug MTD", c:"alert"}
     ],
     cards: []
   },
@@ -1148,7 +1169,7 @@ const SECTIONS = [
       {t:"Confirm <b>top air discharge</b>", c:"alert"}
     ],
     cards: [
-      {t:"Where it stands", s:"Lee Ann Langan @ Taylor Freezers (leeann@taylorfreezers.com):", ul:["Freight quote $360 still good — add to machine total","Fill out order form + send payment","<b>Open question:</b> does it include the Top Air Discharge Chute? Asked 6/17 — chase if no answer"]},
+      {t:"Where it stands", s:"Lee Ann Langan @ Taylor Freezers (leeann@taylorfreezers.com):", ul:["Freight quote $360 still good — add to machine total","Fill out order form + send payment","<b>Open question:</b> does it include the Top Air Discharge Chute? Asked 6/17 — chase if no answer","<b>Service contact:</b> Bill Hegger, Service Manager at Taylor Midwest · 636-375-6652 · bhegger@taylormidwest.com — the person to call once it is installed"]},
       {t:"Files", s:"", ul:["C706 order form (2 copies) — Wiener/Icecream machine/","Spec sheet sC706.pdf — Downloads","Wiring Instructions 2026.pdf — Downloads"], p:"Desktop/Wiener/Icecream machine/"},
       {t:"Why it matters", s:"Small Shakes ($2.99/$3.99) required from 8/31 and run thru 12/28 — soft-serve capacity is the whole game.", ul:[]}
     ]
@@ -1178,13 +1199,13 @@ const SECTIONS = [
     add: { label: "Add partner", f1: "Name / company", f2: "What they do", f3: "Phone / email", f4: "Notes" },
     chips: [
       {t:"<b>Corporate</b> · 7 contacts", c:""},
-      {t:"<b>Vendors</b> · 14 from Bing Bong sheet", c:""},
+      {t:"<b>Vendors</b> · 15 — incl. Taylor Midwest service", c:""},
       {t:"<b>Community</b> · 3", c:""}
     ],
     cards: [
       {t:"Galardi Group (corporate)", s:"", ul:["<b>Maria Pareja</b> — marketing memos · mpareja@ · 949-892-2673","<b>Elisa Ham</b> — shakes/promo Qs · eham@ · 949-892-2648","<b>Machel Cook</b> — register/POS · mcook@ · 949-892-2671","<b>Shantell Baker</b> — FBC, P/L · sbaker@ · 909-609-7625","<b>Mary Morey</b> — training, Hot Off the Grill Weds","<b>Marlene Perez</b> — purchasing highlights","<b>Tracey Ethridge</b> — legal/compliance notices"]},
       {t:"Building & utilities", s:"From the Bing Bong sheet:", ul:["<b>Nogle and Black</b> — landlord (rent $2,500)","<b>Ameren</b> — gas/electric","<b>Comcast</b> — internet/phone","<b>Illinois American</b> — water","<b>Schoonover</b> — sewer","<b>Berg Tank</b> · <b>CO2 supplier</b>","Alarm/security co."]},
-      {t:"Services & supplies", s:"", ul:["<b>PFG</b> — food distribution","<b>Direct Edge</b> — POP printing & merch (ggi.directedgeprint.com)","<b>Clipper</b> — trucker hats","<b>Wasserstrom</b> — smallwares/equipment","<b>Taylor Freezers</b> — Lee Ann Langan · leeann@taylorfreezers.com (C706!)","<b>Bug Out</b> — pest control","<b>Getz</b> — hood cleaning","<b>Society Insurance</b> — business insurance","<b>Hajj</b> — accounting ($300/mo)"]},
+      {t:"Services & supplies", s:"", ul:["<b>PFG</b> — food distribution","<b>Direct Edge</b> — POP printing & merch (ggi.directedgeprint.com)","<b>Clipper</b> — trucker hats","<b>Wasserstrom</b> — smallwares/equipment","<b>Taylor Freezers</b> — Lee Ann Langan · leeann@taylorfreezers.com (C706!)","<b>Bill Hegger</b> — Taylor Midwest (Midwest Equipment Co.), Service Manager · bhegger@taylormidwest.com · 636-375-6652 — service &amp; repair for the C706 (added 8/18)","<b>Bug Out</b> — pest control","<b>Getz</b> — hood cleaning","<b>Society Insurance</b> — business insurance","<b>Hajj</b> — accounting ($300/mo)"]},
       {t:"Delivery platforms", s:"", ul:["DoorDash ($1,250/mo fees)","Uber Eats ($167/mo)","Olo — first-party ordering ($142/mo)","First-party is where the cooler deal lives — push it"]},
       {t:"Community & money", s:"", ul:["<b>Ken Kirby</b> — Adams Outdoor (billboards), Sales Consultant · kkirby@adamsoutdoor.com · office 217-352-4460 · cell 217-417-9128 · 1711 Dobbins Dr, Champaign (card 8/12)","<b>Mia</b> — City of Champaign Planning & Development · <b>217-403-8816</b> · re: Ch. 37 zoning code (left card 8/11)","<b>Michele Latorre</b> — Promise Health fairs · mlatorre@promisehealth.org · 509-430-4482","<b>UIUC FS Affairs</b> — fsaffairs@illinois.edu (chapter contacts on their site)","<b>Sean Hermann</b> — t-shirts/merch · seanhermann24@gmail.com","<b>Heartland Bank</b> — eStatements","<b>Kondler CPA</b> — Ray Kondler · 702-433-7075 (taxes)"]}
     ]
