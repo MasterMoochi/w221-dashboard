@@ -570,7 +570,7 @@ function renderAlerts(){
 
 /*EMP-START*/
 const EMP_META = { "updated":"2026-08-18", "storeOpenHrs":12,
-  "coverage":"Store-wide daily hours are COMPLETE (Peachworks SALES RECAP, 7/1 onward). Named punches are PARTIAL — Peachworks Analytics only exposes ~14% of hours (95.65 of ~670 in August) and resolves just two employees. Full crew punch detail needs Oracle Simphony (mymicros.net), which is signed out." };
+  "coverage":"WHY ONLY TWO NAMES: the Simphony\u2192Peachworks labor feed carries exactly two employee IDs (3777 and 10800) and ONE job code (301) \u2014 403 hours for all of 2026 against roughly 5,000 actually worked. It is not a name-matching problem; the other job codes are simply not mapped in the integration, so those punches never arrive. The store-wide daily hours below come from the SALES RECAP, which reads Simphony directly and is complete. To name every offender, either map the remaining job codes in the POS Hub labor integration or pull time cards from Simphony." };
 const EMP_NORMS = {"Mon":37.20,"Tue":38.81,"Wed":43.31,"Thu":41.85,"Fri":41.34,"Sat":38.42,"Sun":28.90};
 // [date, dow, hours, labor$, netSales]
 const EMP_DAYS = [
