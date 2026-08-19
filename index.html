@@ -550,7 +550,7 @@ const LIVE = {
   "daily":   { "date": "2026-08-17", "netSales": 2167.04, "transactions": 162, "laborPct": 23.4, "alerts": ["Net sales 26% below the Monday norm — only 162 transactions", "Unexplained cash gap \u2212$136.52 (paid outs $140.00 vs variance $3.48)"] },
   "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "cogsPct": 21.0, "alerts": ["SOLVED: ~$187 of the labor rise was a missed clock-out, not real hours — see system alerts", "Real hours were FLAT week-over-week while sales fell 6.4% — that is the 1.8 pts that is actually yours to fix"] },
   "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/17: $49,914.71 net; Peachworks projects $91,021 for the month — down from the $92,511 projection a day earlier." },
-  "systemAlerts": ["MISSED CLOCK-OUT 8/16: Carina Carrasco logged a single 17.56-hour punch (job 301) against a ~4.6-hour norm — longer than the store was even open. ~13 phantom hours, ~$187 of labor that never happened. Fix the punch, then re-pull 8/16.", "Even after removing that, labor still rose ~1.8 pts: hours held flat at ~274 while sales fell 6.4%. Nobody was cut when the evening died (7\u20139pm took $314 on 8/16 vs $681 the Sunday before).", "Overtime is recorded as ZERO across August — so none of the labor rise is OT premium.", "Monday 8/17 came in 26% under the Monday norm at $2,167 — watch whether that is the pre-semester lull or the start of a trend."]
+  "systemAlerts": ["MISSED CLOCK-OUT 8/16: Carina Carrasco, 10:11 AM \u2192 force-closed 3:45 AM = 17.57 hrs. Confirmed by Simphony\u2019s own Auto Clock Out Report. Still uncorrected \u2014 fixing it drops the week of 8/10 from 21.2% labor to ~20.2%.", "CORRECTION: overtime is NOT zero. Simphony shows 46.76 OT hours and $1,052.10 of OT pay in August MTD, 37.11 hrs of it in Dinner. The earlier \u201czero OT\u201d reading came from the Peachworks feed, which only sees two employees.", "Peachworks\u2019 labor feed carries 2 employee IDs and 1 job code \u2014 403 hrs for all of 2026 against ~5,000 worked. Use Simphony for anything labor. Worth a ticket to get the job codes mapped.", "Employee discount % still unset \u2014 the Shift & Discounts tile logs every ring but can\u2019t judge the amount until it knows the policy.", "Monday 8/17 landed 26% under the Monday norm at $2,167 on 162 transactions \u2014 watch whether that is the pre-semester lull."]
 };
 /*LIVE-END*/
 function liveCardHTML(){
@@ -565,7 +565,7 @@ function liveCardHTML(){
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-18", "text": "THIS WEEK\n\u2022 FIX THE 8/16 PUNCH — Carina Carrasco, 17.56 hrs on one clock-in. Correct it in the POS, then tell Claude to re-pull 8/16.\n\u2022 Sunday close: someone has to be cut when the 7pm rush doesn’t show. Hours were flat all week while sales fell 6.4%.\n\u2022 8/12 cash: paid outs $933.79 vs variance $847.03 — $87 unaccounted, pull the slips.\n\u2022 8/31: three launches go live ($8 Meal Deal, $2.99 shakes, $17.76 cooler bag).\n\u2022 Wiener Wednesday 4/$4 ends 8/31 — decide whether to extend.\n\u2022 Newspaper half-page: confirm $4 vs $8 meal deal before it prints." };
+const WB = { "updated": "2026-08-19", "text": "THIS WEEK\n\u2022 Confirm the employee discount % \u2014 the Shift & Discounts tile can\u2019t judge a ring until it knows the number\n\u2022 Fix Carina\u2019s 8/16 punch (17.57 hrs, force-closed 3:45 AM) \u2014 worth ~1 pt of labor on the week of 8/10\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hours are in one daypart. Look at the dinner schedule before the 8/31 launches\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag all go live\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide on extending\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
@@ -1259,11 +1259,20 @@ const SECTIONS = [
     desc: "Your creative library on the Mac — logos, food shots, flyers, and the filed corporate memos, all under Desktop/Wiener/Marketing.",
     chips: [
       {t:"<b>4</b> memo folders", c:""},
-      {t:"<b>12</b> brand images", c:""},
+      {t:"Half-page ad <b>ready</b>", c:"go"},
       {t:"Gmail labels: <b>pending re-auth</b>", c:"alert"}
     ],
     cards: [
       {t:"Folder map", s:"", ul:["<b>Promos & Deals</b> — 5 memos","<b>Digital Coupons</b> — 1 memo","<b>National Days</b> — 2 memos","<b>Signage & POS</b> — 1 memo","Loose: Main Logo, food shots, catering flyer → could become <b>Brand Assets</b>"], p:"Desktop/Wiener/Marketing/"},
+      {t:"📰 Newspaper half-page ad — ready to submit", s:"Built 8/18 from the brand folder. Print-ready PDF at exactly 7.25 × 4.625 in.", ul:[
+        "Headline: <b>THE LONGEST RUNNING RESTAURANT IN CHAMPAIGN</b> · 1971 · Same corner. Same recipe.",
+        "Three offer panels: Wiener Wednesday 4/$4 · $4 All-American Meal Deal · Legendary Licker",
+        "Navy banner: THE ONLY WIENERSCHNITZEL EAST OF THE ROCKIES",
+        "Two live QR codes — order.wienerschnitzel.com and the ezCater catering page",
+        "<span class='due'>Before print:</span> confirm the meal deal is <b>$4 (2 corn dogs + small fries)</b> and not the $8 memo version",
+        "<span class='due'>Note:</span> the corporate art's “FIND A LOCATION” buttons were removed — wrong CTA for a one-store ad",
+        "Also built: a 3-concept comparison PDF (heritage · catering/Daily Illini · Pour Some Chili On Me)"
+      ]},
       {t:"Campaign files", s:"", ul:["Quad Day coupon cards (PDF + PSDs, Downloads)","Full-page flyer PDF","Catering flyer PDF","QT August 2027 campaign (signed)"]},
       {t:"Email organization", s:"Weekly scheduled check runs <b>Mondays ~9am</b> — new memos get flagged & categorized. Gmail labels (Marketing/…) will be created once you re-authorize Gmail in Settings → Connectors.", ul:[]}
     ]
@@ -1308,13 +1317,13 @@ const SECTIONS = [
     chips: [
       {t:"<b>10</b> on roster", c:""},
       {t:"YTD hours <b>5,908</b> · pay <b>$87.9k</b>", c:""},
-      {t:"⚠ Kresin OT: <b>571 hrs</b>", c:"alert"}
+      {t:"Aug OT: <b>46.8 hrs / $1,052</b>", c:"alert"}
     ],
     cards: [
       {t:"Shift lead", s:"", ul:["<b>Jacob Kresin</b> — 878 reg hrs + <b>571 OT hrs</b> YTD. That's 39% overtime — at time-and-a-half it's likely thousands/month. Worth a second shift lead or schedule rebalance."]},
       {t:"Crew (YTD reg hours)", s:"", ul:["Maria Perez Marin — 749","Marissa Caston — 740","Ahmad Muslih — 661 (+39 OT)","Andrew Renier — 628 (+8 OT)","Kooper Blackwelder — 593","Jamal Saqri — 433","Ejay Rosal — 290","Carina Carrasco — 161","Kareem Muslih — 154"]},
-      {t:"Alerts", s:"", ul:["<span class='due'>OT watch:</span> Kresin's overtime pace","<span class='due'>8/31:</span> everyone trained on Small Shakes builds before launch","ServSafe (Mu) on file since Aug 2025 — check expiry (5-yr cert)","Work permits needed for any under-16 hires (IL)"]},
-      {t:"Employee discounts", s:"No discount log yet — set the policy and track it here. Common setup: free/50% shift meal, rung on a dedicated PLU so it shows in the sales analysis.", ul:["Policy: <i>to set</i>","Log: use + Add or tell Claude \"log discount for [name]\""]},
+      {t:"Alerts", s:"", ul:["<span class='due'>OT watch:</span> August MTD overtime is <b>46.8 hrs / $1,052</b> — and <b>37.1 of those hours are in Dinner</b>. Kresin's 571 YTD OT hrs is the standing driver. (Peachworks reported OT as zero — it was wrong; Simphony is the source.)","<span class='due'>8/31:</span> everyone trained on Small Shakes builds before launch","ServSafe (Mu) on file since Aug 2025 — check expiry (5-yr cert)","Work permits needed for any under-16 hires (IL)"]},
+      {t:"Employee discounts", s:"Policy is a PERCENTAGE off \u2014 the exact % still needs confirming, and whether it is valid off shift. Tracking is now live: the <b>Shift &amp; Discounts</b> tile logs every ring with its time and checks it against that person\u2019s clocked hours.", ul:["Policy: <i>% off \u2014 confirm the number</i>","Source: Simphony Library \u2192 \u201cDiscounts by Revenue Center and Check\u201d","A ring outside someone\u2019s shift is flagged in red on the Shift tile"]},
       {t:"Hiring pipeline", s:"", ul:["Twilia Moore — application on file (Applications folder)","Post before the semester crush — students want August jobs"], p:"Desktop/Wiener/Applications/"}
     ]
   },
@@ -1348,9 +1357,17 @@ const SECTIONS = [
     ],
     cards: [
       {t:"🖥️ Daily portals", s:"", ul:[
-        "<a href='https://www.mymicros.net/portal/' target='_blank'>Simphony R&A (mymicros) ↗</a> — POS reports",
+        "<a href='https://simphony-home.mtu5.oraclerestaurants.com/GGI/portal/' target='_blank'>Simphony R&amp;A — Galardi (GGI) ↗</a> — the REAL address. mymicros.net is the old one and lands on a sign-in that never carries the session.",
         "<a href='https://my.peachworks.com/accounts/20220/reports/home' target='_blank'>Peachworks reports ↗</a> — sales recap, inventory, labor",
         "<a href='https://mail.google.com' target='_blank'>Gmail ↗</a> · <a href='https://drive.google.com' target='_blank'>Google Drive ↗</a>"
+      ]},
+      {t:"🔎 Simphony report map — where the good stuff is", s:"249 reports live in the Library tab; these are the ones that matter. Sessions expire fast, so open what you need and go.", ul:[
+        "<b>Labor → Auto Clock Out Report</b> — the system's own log of punches it had to force-close at 3:45 AM. This is how you catch a missed clock-out, by name.",
+        "<b>Labor → Time Card Detail</b> — clock in/out per employee. The only place the WHOLE crew shows up.",
+        "<b>Labor → Payroll Summary</b> · <b>HR Employee Pay Rates</b> · <b>Job Summary</b> · <b>Clock In Status</b>",
+        "<b>Daily Detail → Labor Analysis</b> — regular vs overtime hours and pay, splittable by daypart.",
+        "<b>Library → “Discounts by Revenue Center and Check”</b> — every discount ring at check level, with times.",
+        "<b>Operations Performance → Employee Financial</b> — sales by employee with a drill into financial detail."
       ]},
       {t:"📊 Trackers & sheets", s:"", ul:[
         "<a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank'>W221 Performance Tracker ↗</a>",
