@@ -85,6 +85,16 @@
   .empscroll { max-height:300px; overflow:auto; border:1px solid rgba(255,255,255,.1); border-radius:10px; }
   .sev { font-size:10px; font-weight:700; border-radius:4px; padding:1px 6px; color:#0d0e12; }
   .sev.impossible { background:#e66767; } .sev.high { background:#ffd166; } .sev.watch { background:#8f8e85; }
+  /* Shift & Discounts */
+  .shiftwrap { max-width:1040px; padding:6px 0 20px; display:none; }
+  .shiftgrid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:820px){ .shiftgrid { grid-template-columns:1fr; } }
+  .planbox { min-height:150px; outline:none; font-size:14px; line-height:1.6; color:var(--ink);
+    white-space:pre-wrap; background:rgba(255,255,255,.05); border:1px dashed rgba(255,209,102,.45);
+    border-radius:10px; padding:11px 13px; font-family:ui-rounded,"SF Pro Rounded",-apple-system,sans-serif; }
+  .shiftdate { background:rgba(255,255,255,.08); border:1px solid var(--chip-br); border-radius:8px;
+    color:var(--ink); padding:6px 10px; font:inherit; font-size:13px; }
+  .plansave { font-size:11.5px; color:#ffd166; margin-top:7px; display:none; }
   /* Calendar */
   .calwrap { max-width: 1000px; padding: 14px 40px 40px; }
   .calhead { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
@@ -325,6 +335,36 @@
 </div>
 
 <div class="cards" id="cards"></div>
+<div class="shiftwrap" id="shiftwrap">
+  <div style="display:flex;align-items:center;gap:12px;margin:10px 0 14px;flex-wrap:wrap;">
+    <label style="font-size:13px;color:var(--ink-2);">Day <input type="date" id="shiftday" class="shiftdate" onchange="renderShift()"></label>
+    <button class="mtab" style="border:1px solid var(--chip-br);font-size:12.5px;padding:6px 12px;" onclick="shiftToday()">Today</button>
+    <span style="color:var(--ink-3);font-size:11.5px;" id="shiftstamp"></span>
+  </div>
+
+  <div class="shiftgrid">
+    <div class="group" style="padding:14px 18px;">
+      <h3 style="font-size:14.5px;margin-bottom:2px;">📝 The plan — what you wrote</h3>
+      <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Type the shift blurb for this day: who is on, when, and anything the crew needs to know. Saves in this browser, per day.</div>
+      <div class="planbox" id="planbox" contenteditable="true" data-ph="e.g. Carina 11–4 · Eduar 4–close · truck 2pm · Wiener Wednesday"></div>
+      <div class="plansave" id="plansave">Saved ✓</div>
+    </div>
+
+    <div class="group" style="padding:14px 18px;">
+      <h3 style="font-size:14.5px;margin-bottom:2px;">⏱️ What actually happened</h3>
+      <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Real punches from Simphony’s time cards. Compare against the plan.</div>
+      <div class="empscroll"><table class="emptbl" id="shiftactual"></table></div>
+    </div>
+  </div>
+
+  <div class="group" style="padding:14px 18px;margin-top:12px;">
+    <h3 style="font-size:14.5px;margin-bottom:2px;">🧾 Employee discounts rung this day</h3>
+    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Every discount ring with its time, so you can match it to someone you saw eating. Rings outside a person’s clocked hours are highlighted.</div>
+    <div class="empscroll"><table class="emptbl" id="shiftdisc"></table></div>
+    <div style="color:var(--ink-3);font-size:11px;margin-top:9px;" id="shiftpolicy"></div>
+  </div>
+</div>
+
 <div class="empwrap" id="empwrap">
   <div class="alertbar" id="empalert" style="margin:0 0 12px;"></div>
   <div class="empstats" id="empstats"></div>
@@ -614,6 +654,15 @@ const EMP_PUNCH = [
 ["2026-08-15","Carina Carrasco",1.33,"301"],["2026-08-15","Eduar Gramajo",4.05,"301"],
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
+/*SHIFT-START*/
+const SHIFT_META = { "updated":"2026-08-18", "pct":null,
+  "policy":"Employee discount is a PERCENTAGE off \u2014 the exact % still needs confirming, and whether it is valid off shift. Once set, a ring at the wrong % or outside someone\u2019s clocked hours becomes obvious.",
+  "note":"Actual punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
+// [date, employee, clockIn, clockOut, hours]
+const SHIFT_ACTUAL = [];
+// [date, time, check, discountName, amount, employee]
+const SHIFT_DISC = [];
+/*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
 const PFG_ITEMS=[
@@ -661,6 +710,71 @@ const PFG_ITEMS=[
 ];
 
 let pfgMode='all';
+
+/* ---------- Shift & Discounts ---------- */
+function shiftKey(d){ return 'w221plan:'+d; }
+function shiftToday(){
+  const el=document.getElementById('shiftday');
+  el.value = new Date().toISOString().slice(0,10);
+  renderShift();
+}
+function hhmm(t){ return t||''; }
+function toMin(t){
+  if(!t) return null;
+  const m=String(t).match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i); if(!m) return null;
+  let h=+m[1]; const mi=+m[2], ap=(m[3]||'').toUpperCase();
+  if(ap==='PM'&&h<12) h+=12; if(ap==='AM'&&h===12) h=0;
+  return h*60+mi;
+}
+function renderShift(){
+  const dEl=document.getElementById('shiftday');
+  if(!dEl.value) dEl.value = new Date().toISOString().slice(0,10);
+  const d = dEl.value;
+
+  // plan (localStorage, per day)
+  const box=document.getElementById('planbox');
+  let saved=null; try{ saved=localStorage.getItem(shiftKey(d)); }catch(e){}
+  box.textContent = saved || '';
+  if(!box.dataset.wired){
+    box.dataset.wired='1';
+    box.addEventListener('input', ()=>{
+      try{ localStorage.setItem(shiftKey(document.getElementById('shiftday').value), box.textContent); }catch(e){}
+      const n=document.getElementById('plansave'); n.style.display='block';
+      clearTimeout(window.__ps); window.__ps=setTimeout(()=>n.style.display='none',1400);
+    });
+  }
+
+  // actual punches
+  const rows = SHIFT_ACTUAL.filter(r=>r[0]===d);
+  document.getElementById('shiftactual').innerHTML =
+    `<tr><th>Employee</th><th>In</th><th>Out</th><th class="n">Hours</th></tr>` +
+    (rows.length ? rows.map(([dt,e,ci,co,h])=>
+      `<tr><td><b style="color:var(--ink)">${esc(e)}</b></td><td>${esc(hhmm(ci))}</td>
+       <td>${esc(hhmm(co))}</td><td class="n">${h!=null?Number(h).toFixed(2):'—'}</td></tr>`).join('')
+      : `<tr><td colspan="4" style="color:var(--ink-3)">No punches pulled for this day yet.</td></tr>`);
+
+  // discounts
+  const dis = SHIFT_DISC.filter(r=>r[0]===d);
+  document.getElementById('shiftdisc').innerHTML =
+    `<tr><th>Time</th><th>Check</th><th>Discount</th><th class="n">Amount</th><th>Rung by</th><th>On shift?</th></tr>` +
+    (dis.length ? dis.map(([dt,tm,chk,name,amt,emp])=>{
+      const t=toMin(tm);
+      const shift = SHIFT_ACTUAL.find(r=>r[0]===dt && r[1]===emp);
+      let onShift='—', cls='';
+      if(shift && t!=null){
+        const a=toMin(shift[2]), b=toMin(shift[3]);
+        if(a!=null&&b!=null){ const ok = t>=a-15 && t<=b+15; onShift = ok?'yes':'NO'; cls = ok?'':'style="color:#ff9c9b;font-weight:700"'; }
+      }
+      return `<tr><td><b style="color:var(--ink)">${esc(tm)}</b></td><td>${esc(String(chk))}</td>
+      <td>${esc(name)}</td><td class="n">$${Number(amt).toFixed(2)}</td>
+      <td>${esc(emp||'—')}</td><td ${cls}>${onShift}</td></tr>`;
+    }).join('')
+      : `<tr><td colspan="6" style="color:var(--ink-3)">No discounts pulled for this day yet.</td></tr>`);
+
+  document.getElementById('shiftstamp').textContent =
+    SHIFT_ACTUAL.length||SHIFT_DISC.length ? ('data through '+SHIFT_META.updated) : 'waiting on the first Simphony pull';
+  document.getElementById('shiftpolicy').textContent = SHIFT_META.policy + ' ' + SHIFT_META.note;
+}
 
 /* ---------- Clock-Out Watch ---------- */
 function empMedian(a){ if(!a.length) return 0; const b=[...a].sort((x,y)=>x-y), m=b.length>>1;
@@ -1070,6 +1184,18 @@ const SECTIONS = [
     ]
   },
   {
+    icon: "\ud83e\uddfe", kicker: "Daily", title: "Shift & Discounts",
+    bg: "radial-gradient(120% 90% at 20% 10%, #1d5c3a 0%, #0d0e12 70%)",
+    desc: "The plan you wrote for the day next to what the clock actually recorded \u2014 plus every employee discount rung, with times, so you can check that the person you saw eating actually used theirs.",
+    custom: "shift",
+    chips: [
+      {t:"Plan saves <b>per day</b>, in this browser", c:""},
+      {t:"Punches + discounts from <b>Simphony</b>", c:""},
+      {t:"Discount %: <b>confirm</b>", c:"alert"}
+    ],
+    cards: []
+  },
+  {
     icon: "\u23f1\ufe0f", kicker: "Labor", title: "Clock-Out Watch",
     bg: "radial-gradient(120% 90% at 20% 10%, #5c2d63 0%, #0d0e12 70%)",
     desc: "Who forgets to clock out, and what it costs. Every day since 7/1 is measured against that weekday's own median — a punch longer than the store is open cannot be real time worked.",
@@ -1318,7 +1444,10 @@ function select(i){
   document.getElementById("cards").innerHTML = html;
   const isPFG = s.custom === "pfg";
   const isEMP = s.custom === "emp";
-  document.getElementById("cards").style.display = (isPFG||isEMP) ? "none" : "flex";
+  const isSH  = s.custom === "shift";
+  document.getElementById("shiftwrap").style.display = isSH ? "block" : "none";
+  if (isSH) renderShift();
+  document.getElementById("cards").style.display = (isPFG||isEMP||isSH) ? "none" : "flex";
   document.getElementById("pfgwrap").style.display = isPFG ? "block" : "none";
   document.getElementById("empwrap").style.display = isEMP ? "block" : "none";
   if (isPFG) renderPFG();
