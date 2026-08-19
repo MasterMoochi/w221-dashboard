@@ -359,9 +359,10 @@
 
   <div class="group" style="padding:14px 18px;margin-top:12px;">
     <h3 style="font-size:14.5px;margin-bottom:2px;">🧾 Employee discounts rung this day</h3>
-    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Every discount ring with its time, so you can match it to someone you saw eating. Rings outside a person’s clocked hours are highlighted.</div>
+    <div style="color:var(--ink-3);font-size:11.5px;margin-bottom:9px;">Every discount ring with its time, so you can match it to someone you saw eating. Policy is 50% off, on or off shift, own meal only — so what gets flagged is a ring that took off more than one meal’s worth.</div>
     <div class="empscroll"><table class="emptbl" id="shiftdisc"></table></div>
-    <div style="color:var(--ink-3);font-size:11px;margin-top:9px;" id="shiftpolicy"></div>
+    <div style="font-size:12px;margin-top:10px;color:var(--ink-2);" id="shiftsum"></div>
+    <div style="color:var(--ink-3);font-size:11px;margin-top:7px;" id="shiftpolicy"></div>
   </div>
 </div>
 
@@ -546,11 +547,11 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-08-18", "updatedBy": "catch-up + labor investigation",
+  "updated": "2026-08-19", "updatedBy": "punch corrected + 50% discount policy set",
   "daily":   { "date": "2026-08-17", "netSales": 2167.04, "transactions": 162, "laborPct": 23.4, "alerts": ["Net sales 26% below the Monday norm — only 162 transactions", "Unexplained cash gap \u2212$136.52 (paid outs $140.00 vs variance $3.48)"] },
-  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "cogsPct": 21.0, "alerts": ["SOLVED: ~$187 of the labor rise was a missed clock-out, not real hours — see system alerts", "Real hours were FLAT week-over-week while sales fell 6.4% — that is the 1.8 pts that is actually yours to fix"] },
+  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "laborPctCorrected": 20.3, "cogsPct": 21.0, "alerts": ["CLOSED: the missed clock-out is fixed in the POS. Backing out the ~13 phantom hours takes this week from 21.2% labor to about 20.3% — reports will show it on the next pull", "What is left is real: hours were FLAT week-over-week while sales fell 6.4%. That 1.8 pts is the part that is actually yours to fix"] },
   "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/17: $49,914.71 net; Peachworks projects $91,021 for the month — down from the $92,511 projection a day earlier." },
-  "systemAlerts": ["MISSED CLOCK-OUT 8/16: Carina Carrasco, 10:11 AM \u2192 force-closed 3:45 AM = 17.57 hrs. Confirmed by Simphony\u2019s own Auto Clock Out Report. Still uncorrected \u2014 fixing it drops the week of 8/10 from 21.2% labor to ~20.2%.", "CORRECTION: overtime is NOT zero. Simphony shows 46.76 OT hours and $1,052.10 of OT pay in August MTD, 37.11 hrs of it in Dinner. The earlier \u201czero OT\u201d reading came from the Peachworks feed, which only sees two employees.", "Peachworks\u2019 labor feed carries 2 employee IDs and 1 job code \u2014 403 hrs for all of 2026 against ~5,000 worked. Use Simphony for anything labor. Worth a ticket to get the job codes mapped.", "Employee discount % still unset \u2014 the Shift & Discounts tile logs every ring but can\u2019t judge the amount until it knows the policy.", "Monday 8/17 landed 26% under the Monday norm at $2,167 on 162 transactions \u2014 watch whether that is the pre-semester lull."]
+  "systemAlerts": ["FIXED 8/19: Carina Carrasco\u2019s 8/16 punch (10:11 AM \u2192 force-closed 3:45 AM, 17.57 hrs) has been corrected in the POS. The week of 8/10 should settle around 20.3% labor instead of 21.2% once reports refresh.", "Employee discount policy is set: \u003cb\u003e50% off, valid on or off shift, own meal only\u003c/b\u003e. The Shift &amp; Discounts tile now flags by size \u2014 any ring taking off more than $8.00 is more than one meal.", "Dinner overtime is the live labor issue: 37.11 of August\u2019s 46.76 OT hours sit in one daypart ($1,052 of OT pay MTD). Look at the dinner schedule before the 8/31 launches.", "Peachworks\u2019 labor feed carries 2 employee IDs and 1 job code \u2014 403 hrs for all of 2026 against ~5,000 worked. Use Simphony for anything labor. Worth a ticket to get the job codes mapped.", "Monday 8/17 landed 26% under the Monday norm at $2,167 on 162 transactions \u2014 watch whether that is the pre-semester lull."]
 };
 /*LIVE-END*/
 function liveCardHTML(){
@@ -565,7 +566,7 @@ function liveCardHTML(){
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-19", "text": "THIS WEEK\n\u2022 Confirm the employee discount % \u2014 the Shift & Discounts tile can\u2019t judge a ring until it knows the number\n\u2022 Fix Carina\u2019s 8/16 punch (17.57 hrs, force-closed 3:45 AM) \u2014 worth ~1 pt of labor on the week of 8/10\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hours are in one daypart. Look at the dinner schedule before the 8/31 launches\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag all go live\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide on extending\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
+const WB = { "updated": "2026-08-19", "text": "THIS WEEK\n\u2022 DONE \u2713 8/16 punch corrected \u2014 week of 8/10 should land ~20.3% labor, confirm on the next report pull\n\u2022 DONE \u2713 Employee discount set at 50%, on or off shift, own meal only\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hours are in one daypart. Look at the dinner schedule before the 8/31 launches\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag all go live\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide on extending\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
@@ -612,13 +613,16 @@ function renderAlerts(){
 
 
 /*EMP-START*/
-const EMP_META = { "updated":"2026-08-18", "storeOpenHrs":12,
+const EMP_META = { "updated":"2026-08-19", "storeOpenHrs":12,
   "coverage":"SOURCE: Oracle Simphony \u2014 the Auto Clock Out Report is the system's own log of punches it had to close itself, so it is authoritative, not a heuristic. Simphony auto-closes an open punch at 3:45 AM. Peachworks is NOT usable for this: its labor feed carries only two employee IDs and one job code (403 hrs for all of 2026 against roughly 5,000 worked), because the other job codes are not mapped in the integration." };
 // Simphony "Auto Clock Out Report" — the system's own record of punches it had to close. Year to date, W221.
 // [businessDate, employee, clockIn, clockOut, status]
 const EMP_AUTO = [
-["2026-08-16","Carina Carrasco","8/16/2026 10:11 AM","8/17/2026 3:45 AM","Scheduled Clock Out"],
-["2026-03-02","Marissa Caston","3/2/2026 3:47 PM","3/3/2026 3:45 AM","Scheduled Clock Out"]];
+["2026-08-16","Carina Carrasco","8/16/2026 10:11 AM","8/17/2026 3:45 AM","CORRECTED in the POS 8/19"],
+["2026-03-02","Marissa Caston","3/2/2026 3:47 PM","3/3/2026 3:45 AM","Not corrected"]];
+// business dates whose punches have been corrected in the POS since the feed below was pulled
+const EMP_FIXED = { "2026-08-16": { "who":"Carina Carrasco", "on":"2026-08-19",
+  "was":17.56, "note":"Punch corrected in the POS on 8/19. The hours and labor $ below are the pre-correction feed \u2014 they refresh on the next Simphony pull." } };
 const EMP_OT = { "period":"August MTD (8/1\u20138/18)", "totalHours":669.75, "otHours":46.76, "otPay":1052.10, "totalPay":9823.74, "avgRate":14.67 };
 const EMP_NORMS = {"Mon":37.20,"Tue":38.81,"Wed":43.31,"Thu":41.85,"Fri":41.34,"Sat":38.42,"Sun":28.90};
 // [date, dow, hours, labor$, netSales]
@@ -655,9 +659,9 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-08-18", "pct":null,
-  "policy":"Employee discount is a PERCENTAGE off \u2014 the exact % still needs confirming, and whether it is valid off shift. Once set, a ring at the wrong % or outside someone\u2019s clocked hours becomes obvious.",
-  "note":"Actual punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
+const SHIFT_META = { "updated":"2026-08-19", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+  "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
+  "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours]
 const SHIFT_ACTUAL = [];
 // [date, time, check, discountName, amount, employee]
@@ -755,25 +759,36 @@ function renderShift(){
 
   // discounts
   const dis = SHIFT_DISC.filter(r=>r[0]===d);
+  const cap = SHIFT_META.capDisc;
+  let over=0, given=0;
   document.getElementById('shiftdisc').innerHTML =
-    `<tr><th>Time</th><th>Check</th><th>Discount</th><th class="n">Amount</th><th>Rung by</th><th>On shift?</th></tr>` +
+    `<tr><th>Time</th><th>Check</th><th>Discount</th><th class="n">Amount</th><th>Rung by</th><th>On shift?</th><th>Size check</th></tr>` +
     (dis.length ? dis.map(([dt,tm,chk,name,amt,emp])=>{
       const t=toMin(tm);
       const shift = SHIFT_ACTUAL.find(r=>r[0]===dt && r[1]===emp);
-      let onShift='—', cls='';
+      let onShift='\u2014';
       if(shift && t!=null){
         const a=toMin(shift[2]), b=toMin(shift[3]);
-        if(a!=null&&b!=null){ const ok = t>=a-15 && t<=b+15; onShift = ok?'yes':'NO'; cls = ok?'':'style="color:#ff9c9b;font-weight:700"'; }
+        if(a!=null&&b!=null) onShift = (t>=a-15 && t<=b+15) ? 'yes' : 'off shift';
       }
+      const A = Number(amt)||0; given += A;
+      const big = A > cap; if(big) over++;
+      const size = big
+        ? `<span style="color:#ff9c9b;font-weight:700">more than one meal \u2014 check</span>`
+        : `<span style="color:var(--ink-3)">one meal</span>`;
       return `<tr><td><b style="color:var(--ink)">${esc(tm)}</b></td><td>${esc(String(chk))}</td>
-      <td>${esc(name)}</td><td class="n">$${Number(amt).toFixed(2)}</td>
-      <td>${esc(emp||'—')}</td><td ${cls}>${onShift}</td></tr>`;
+      <td>${esc(name)}</td><td class="n"${big?' style="color:#ff9c9b;font-weight:700"':''}>$${A.toFixed(2)}</td>
+      <td>${esc(emp||'\u2014')}</td><td style="color:var(--ink-3)">${onShift}</td><td>${size}</td></tr>`;
     }).join('')
-      : `<tr><td colspan="6" style="color:var(--ink-3)">No discounts pulled for this day yet.</td></tr>`);
+      : `<tr><td colspan="7" style="color:var(--ink-3)">No discounts pulled for this day yet.</td></tr>`);
+  document.getElementById('shiftsum').innerHTML = dis.length
+    ? `<b style="color:var(--ink)">${dis.length}</b> ring${dis.length===1?'':'s'} \u00b7 <b style="color:var(--ink)">$${given.toFixed(2)}</b> given away \u00b7 `
+      + (over ? `<b style="color:#ff9c9b">${over} bigger than one meal</b>` : `<span style="color:#8ee6a8">all within one meal</span>`)
+    : '';
 
   document.getElementById('shiftstamp').textContent =
     SHIFT_ACTUAL.length||SHIFT_DISC.length ? ('data through '+SHIFT_META.updated) : 'waiting on the first Simphony pull';
-  document.getElementById('shiftpolicy').textContent = SHIFT_META.policy + ' ' + SHIFT_META.note;
+  document.getElementById('shiftpolicy').innerHTML = SHIFT_META.policy + ' ' + SHIFT_META.note;
 }
 
 /* ---------- Clock-Out Watch ---------- */
@@ -817,11 +832,13 @@ function renderEMP(){
 
   // alert bar
   const openIssues = [];
-  EMP_AUTO.forEach(([d,e,ci,co])=>{
+  EMP_AUTO.forEach(([d,e,ci,co,st])=>{
+    if(/^CORRECTED/i.test(st||'')) return;
     const hrs=(new Date(co)-new Date(ci))/3600000;
-    openIssues.push(`<li><b>${esc(e)}</b> — clocked in ${esc(ci)}, never clocked out. Simphony force-closed it at <b>${esc(co)}</b> = <b>${hrs.toFixed(2)} hrs</b>. Correct the punch in the POS${d==='2026-08-16'?' — this one is still uncorrected and is inflating the week of 8/10':''}.</li>`);
+    openIssues.push(`<li><b>${esc(e)}</b> — clocked in ${esc(ci)}, never clocked out. Simphony force-closed it at <b>${esc(co)}</b> = <b>${hrs.toFixed(2)} hrs</b>. Correct the punch in the POS.</li>`);
   });
   A.people.forEach(p=> p.bad.forEach(b=>{ if(EMP_AUTO.some(a=>a[0]===b.d)) return;
+    if(EMP_FIXED[b.d]) return;
     openIssues.push(`<li><b>${esc(p.name)}</b> — <b>${b.h.toFixed(2)} hrs</b> on ${b.d} against a ${p.med.toFixed(1)}-hr norm. The store is open about ${A.open} hrs, so roughly <b>${(b.h-p.med).toFixed(1)} phantom hours</b> (≈$${((b.h-p.med)*rate).toFixed(0)}). Fix the punch in the POS.</li>`);
   }));
   const ab = document.getElementById('empalert');
@@ -853,12 +870,15 @@ function renderEMP(){
       <td>${p.lastBad||'—'}</td></tr>`;
     }).join('');
   document.getElementById('empauto').innerHTML =
-    `<tr><th>Business date</th><th>Employee</th><th>Clocked in</th><th>Force-closed at</th><th>Hours</th></tr>` +
+    `<tr><th>Business date</th><th>Employee</th><th>Clocked in</th><th>Force-closed at</th><th class="n">Hours</th><th>Status</th></tr>` +
     EMP_AUTO.map(([d,e,ci,co,st])=>{
       const hrs=(new Date(co)-new Date(ci))/3600000;
+      const fixed=/^CORRECTED/i.test(st||'');
+      const col = fixed ? '#8ee6a8' : '#ff9c9b';
       return `<tr><td><b style="color:var(--ink)">${d}</b></td><td><b style="color:var(--ink)">${esc(e)}</b></td>
-      <td>${esc(ci)}</td><td style="color:#ff9c9b">${esc(co)}</td>
-      <td class="n"><b style="color:#ff9c9b">${hrs.toFixed(2)}</b></td></tr>`;
+      <td>${esc(ci)}</td><td style="color:${col}">${esc(co)}</td>
+      <td class="n"><b style="color:${col}">${hrs.toFixed(2)}</b></td>
+      <td style="color:${col};font-weight:${fixed?'700':'400'}">${fixed?'\u2713 '+esc(st):esc(st||'open')}</td></tr>`;
     }).join('');
   document.getElementById('empcoverage').textContent = EMP_META.coverage;
 
@@ -868,11 +888,12 @@ function renderEMP(){
      <th class="n">Excess hrs</th><th class="n">Est. cost</th><th class="n">Labor %</th><th>Named</th></tr>` +
     (A.flagged.length ? A.flagged.map(f=>{
       const named = EMP_PUNCH.filter(r=>r[0]===f.d && r[2]>A.open).map(r=>r[1]).join(', ');
+      const fx = EMP_FIXED[f.d];
       return `<tr><td><b style="color:var(--ink)">${f.d}</b></td><td>${f.dow}</td>
       <td class="n">${f.h.toFixed(2)}</td><td class="n">${f.norm.toFixed(2)}</td>
       <td class="n">${f.ratio.toFixed(2)}×</td><td class="n">${f.excess.toFixed(2)}</td>
       <td class="n">$${Math.round(f.cost)}</td><td class="n">${f.laborPct.toFixed(1)}%</td>
-      <td>${named? esc(named) : '<span style="color:var(--ink-3)">not in feed</span>'}</td></tr>`;
+      <td>${named? esc(named) : '<span style="color:var(--ink-3)">not in feed</span>'}${fx?' <span class="sev" style="background:rgba(90,200,140,.16);color:#8ee6a8;border-color:rgba(90,200,140,.35)">punch fixed '+fx.on.slice(5)+'</span>':''}</td></tr>`;
     }).join('') : `<tr><td colspan="9" style="color:var(--ink-3)">No flagged days — clean.</td></tr>`);
 
   // norms
@@ -1191,7 +1212,7 @@ const SECTIONS = [
     chips: [
       {t:"Plan saves <b>per day</b>, in this browser", c:""},
       {t:"Punches + discounts from <b>Simphony</b>", c:""},
-      {t:"Discount %: <b>confirm</b>", c:"alert"}
+      {t:"Discount: <b>50% off</b> \u00b7 own meal \u00b7 any time", c:"go"}
     ],
     cards: []
   },
@@ -1202,7 +1223,7 @@ const SECTIONS = [
     custom: "emp",
     chips: [
       {t:"<b>2 auto clock-outs</b> in 2026", c:"alert"},
-      {t:"8/16: <b>Carina 17.56 hrs</b>", c:"alert"},
+      {t:"8/16 Carina 17.56 hrs \u2014 <b>fixed 8/19</b>", c:"go"},
       {t:"OT: <b>46.8 hrs / $1,052</b> in Aug MTD", c:"alert"}
     ],
     cards: []
@@ -1323,7 +1344,7 @@ const SECTIONS = [
       {t:"Shift lead", s:"", ul:["<b>Jacob Kresin</b> — 878 reg hrs + <b>571 OT hrs</b> YTD. That's 39% overtime — at time-and-a-half it's likely thousands/month. Worth a second shift lead or schedule rebalance."]},
       {t:"Crew (YTD reg hours)", s:"", ul:["Maria Perez Marin — 749","Marissa Caston — 740","Ahmad Muslih — 661 (+39 OT)","Andrew Renier — 628 (+8 OT)","Kooper Blackwelder — 593","Jamal Saqri — 433","Ejay Rosal — 290","Carina Carrasco — 161","Kareem Muslih — 154"]},
       {t:"Alerts", s:"", ul:["<span class='due'>OT watch:</span> August MTD overtime is <b>46.8 hrs / $1,052</b> — and <b>37.1 of those hours are in Dinner</b>. Kresin's 571 YTD OT hrs is the standing driver. (Peachworks reported OT as zero — it was wrong; Simphony is the source.)","<span class='due'>8/31:</span> everyone trained on Small Shakes builds before launch","ServSafe (Mu) on file since Aug 2025 — check expiry (5-yr cert)","Work permits needed for any under-16 hires (IL)"]},
-      {t:"Employee discounts", s:"Policy is a PERCENTAGE off \u2014 the exact % still needs confirming, and whether it is valid off shift. Tracking is now live: the <b>Shift &amp; Discounts</b> tile logs every ring with its time and checks it against that person\u2019s clocked hours.", ul:["Policy: <i>% off \u2014 confirm the number</i>","Source: Simphony Library \u2192 \u201cDiscounts by Revenue Center and Check\u201d","A ring outside someone\u2019s shift is flagged in red on the Shift tile"]},
+      {t:"Employee discounts \u2014 50% off", s:"Policy is set: \u003cb\u003e50% off, valid anytime (on shift or off), covering that person\u2019s own meal only\u003c/b\u003e. Because timing is allowed, the thing to watch is size \u2014 the \u003cb\u003eShift &amp; Discounts\u003c/b\u003e tile logs every ring and flags any that took off more than one meal.", ul:["At 50% off, one meal comes off at roughly \u003cb\u003e$4\u2013$7\u003c/b\u003e \u2014 anything over \u003cb\u003e$8.00\u003c/b\u003e is flagged for a look","A ring off shift is normal and is logged, not flagged","Source: Simphony Library \u2192 \u201cDiscounts by Revenue Center and Check\u201d","Set 8/19. If the cap should be a hard dollar limit instead, say the number."]},
       {t:"Hiring pipeline", s:"", ul:["Twilia Moore — application on file (Applications folder)","Post before the semester crush — students want August jobs"], p:"Desktop/Wiener/Applications/"}
     ]
   },
