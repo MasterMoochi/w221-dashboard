@@ -1265,11 +1265,12 @@ const SECTIONS = [
     live: true,
     icon: "💰", kicker: "Money", title: "Financials",
     bg: "radial-gradient(120% 90% at 20% 10%, #0b5d3a 0%, #0d0e12 70%)",
-    desc: "H1 2026: $519,680 in sales, $37,128 net income (7.1%). The margin story is food cost — every point is about $1,000/month.",
+    desc: "2026 through 8/23: about $683.8k in net sales. H1 closed at $519,680 with $37,128 net income (7.1%) \u2014 prime cost 55.9%, opex 36.9%. The margin story is the food line: every point of prime is roughly $900/month.",
     chips: [
-      {t:"H1 net <b>$37,128</b>", c:""},
+      {t:"YTD sales <b>~$683.8k</b> thru 8/23", c:""},
+      {t:"H1 prime <b>55.9%</b> \u00b7 opex <b>36.9%</b>", c:""},
       {t:"Best month: <b>Jul $103.5k</b>", c:"go"},
-      {t:"Food cost <b>+7.8 pts</b> since Jan", c:"alert"}
+      {t:"Aug pacing <b>~$92k</b>", c:""}
     ],
     cards: [
       {t:"🎯 Main trackers — direct links", s:"The sheets your scheduled tasks keep filled:", ul:[
@@ -1287,9 +1288,18 @@ const SECTIONS = [
         "<b>H1 sales $519,680 & net income $37,128</b> ← <a href='https://docs.google.com/spreadsheets/d/1m0he5y9YBApRrQm_juKTfdBbqUeT_EtyVrrIo-44Hn8/edit' target='_blank'>221 Monthly P/L Sheet ↗</a>",
         "<b>July $103,459</b> ← corporate Sales Analysis email (filed via Gmail; also in the promo-tracker artifact)",
         "<b>Food cost 27.4% → 35.2%</b> ← P/L food line ÷ net sales, Jan–Jun",
+        "<b>Prime 55.9% / opex 36.9% + the monthly strip</b> ← <a href='https://docs.google.com/spreadsheets/d/10bMgoq0jobbUA4qCmaSPNRFIlLzINI3fCkfk3SSgBcU/edit' target='_blank'>Bing Bong sheet ↗</a>, Monthly p/l tab (the P/L source going forward)",
+        "<b>Aug MTD $68.5k thru 8/23</b> ← Peachworks daily net sales, same feed as the tracker",
         "<b>Live card above</b> ← <a href='https://docs.google.com/spreadsheets/d/1qsBx_PE-HdjZhD7iOcNoLMOg34DaT4xYsapWazep-2M/edit' target='_blank'>Performance Tracker ↗</a> via the scheduled tasks"
       ]},
-      {t:"Monthly net sales", s:"Jan 75.5k · Feb 76.5k · Mar 91.4k · Apr 92.5k · May 94.7k · Jun 89.0k · <b>Jul 103.5k</b>", ul:[]},
+      {t:"\ud83d\udcca Prime cost & OpEx by month \u2014 from the Monthly p/l tab", s:"Prime = COGS + fully-loaded labor. OpEx = everything below the prime line. H1: prime <b>$290.6k / 55.9%</b> \u00b7 opex <b>$192.0k / 36.9%</b> \u00b7 EBITDA <b>$37.1k / 7.1%</b>.", ul:[
+        "Prime %: Jan <b>55.4</b> \u00b7 Feb <b>51.4</b> \u00b7 Mar <b>54.3</b> \u00b7 Apr <b>61.4</b> \u00b7 May <b>54.5</b> \u00b7 Jun <b>57.7</b> \u2014 Feb best, April the food-spike month",
+        "OpEx $: Jan 30.9k \u00b7 Feb 29.6k \u00b7 Mar 31.4k \u00b7 Apr 29.4k \u00b7 May <b>37.2k</b> (the $5,010 repairs month) \u00b7 Jun 33.5k \u2014 a normal month is ~$30\u201331k",
+        "Inside opex: rent+equipment $7k flat \u00b7 royalty+advertising \u2248 10% of sales \u00b7 delivery stack (DoorDash/Uber/Olo) \u2248 $2.1k \u00b7 utilities ~$3.5k",
+        "Labor holds steady at ~20\u201321% loaded \u2014 prime swings come from the food line (Feb $23.5k \u2192 Apr $37.1k)",
+        "July & August prime land when those P/Ls close on the 3rd-of-month run"
+      ]},
+      {t:"Monthly net sales", s:"Jan 75.5k · Feb 76.5k · Mar 91.4k · Apr 92.5k · May 94.7k · Jun 89.0k · <b>Jul 103.5k</b> · Aug thru 8/23 <b>68.5k</b> (pacing ~92k)", ul:[]},
       {t:"Folder", s:"<b>Invoices</b> folder in Wiener has the invoice confirmation zip; Wasserstrom + AR invoices arrive by email.", ul:[], p:"Desktop/Wiener/Invoices/"},
       {t:"Ideas", s:"", ul:["Audit chili/cheese portioning + waste log (June spike)","Track Wednesday attachment rate weekly","Push first-party delivery (DSP fees ≈ 2.3% of sales)"]}
     ]
