@@ -547,11 +547,11 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-08-19", "updatedBy": "punch corrected + 50% discount policy set",
-  "daily":   { "date": "2026-08-17", "netSales": 2167.04, "transactions": 162, "laborPct": 23.4, "alerts": ["Net sales 26% below the Monday norm — only 162 transactions", "Unexplained cash gap \u2212$136.52 (paid outs $140.00 vs variance $3.48)"] },
-  "weekly":  { "weekStart": "2026-08-10", "netSales": 20254.76, "laborPct": 21.2, "laborPctCorrected": 20.2, "cogsPct": 21.0, "alerts": ["CLOSED: the missed clock-out is fixed in the POS. Backing out the ~13 phantom hours takes this week from 21.2% labor to about 20.2% — reports will show it on the next pull", "What is left is real: hours were FLAT week-over-week while sales fell 6.4%. That 1.8 pts is the part that is actually yours to fix"] },
+  "updated": "2026-08-24", "updatedBy": "Wednesday audit + May/June backfill + week catch-up",
+  "daily":   { "date": "2026-08-23", "netSales": 2139.97, "transactions": 137, "laborPct": 18.7, "alerts": ["Sunday landed soft at $2,140 on 137 checks — second soft weekend day since the semester started; watch the pattern, not the day"] },
+  "weekly":  { "weekStart": "2026-08-17", "netSales": 20760.28, "laborPct": 18.7, "cogsPct": null, "alerts": ["Labor landed at 18.7% \u2014 back to normal after the punch fix. Sales +2.5% over the prior week", "Wiener Wednesday 8/19 did $3,773 (+25% vs the rest of the week) \u2014 the promo is still pulling in week 8 of 9"] },
   "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE. August MTD through 8/17: $49,914.71 net; Peachworks projects $91,021 for the month — down from the $92,511 projection a day earlier." },
-  "systemAlerts": ["FIXED 8/19: Carina Carrasco\u2019s 8/16 punch (10:11 AM \u2192 force-closed 3:45 AM, 17.57 hrs) has been corrected in the POS. The week of 8/10 should settle around 20.2% labor instead of 21.16% once reports refresh.", "Employee discount policy is set: \u003cb\u003e50% off, valid on or off shift, own meal only\u003c/b\u003e. The Shift &amp; Discounts tile now flags by size \u2014 any ring taking off more than $8.00 is more than one meal.", "Dinner overtime is the live labor issue: 37.11 of August\u2019s 46.76 OT hours sit in one daypart ($1,052 of OT pay MTD). Look at the dinner schedule before the 8/31 launches.", "Peachworks\u2019 labor feed carries 2 employee IDs and 1 job code \u2014 403 hrs for all of 2026 against ~5,000 worked. Use Simphony for anything labor. Worth a ticket to get the job codes mapped.", "Monday 8/17 landed 26% under the Monday norm at $2,167 on 162 transactions \u2014 watch whether that is the pre-semester lull."]
+  "systemAlerts": ["NEW FIND (5/1): Andrew Renier\u2019s punch 5/1 4:48 PM \u2192 closed 5/2 4:29 PM = 23.69 hrs, marked \u2018On time\u2019 \u2014 so it never hit the Auto Clock Out Report. ~17 phantom hrs / ~$240. Punches closed manually the next day slip past the auto report; that makes it worth scanning Time Card Detail monthly.", "Discount tracking is live with its first week: $19.22 of Employee discounts and $48.64 of Manager comps 8/17\u201323. One employee ring \u2014 $9.28 at 10:54 PM on 8/21 \u2014 is over the one-meal cap; it\u2019s flagged on the Shift & Discounts tile.", "Dinner overtime is still the live labor issue: 37.11 of August\u2019s 46.76 OT hours sit in one daypart. Look at the dinner schedule before the 8/31 launches.", "Peachworks\u2019 labor feed carries 2 employee IDs and 1 job code \u2014 use Simphony for anything labor. Ticket to map the job codes still open.", "Second soft weekend day since the semester started (8/17 $2,167, 8/23 $2,140). The audit says Wednesdays hold up (+20\u201325%) \u2014 the softness is Sun/Mon."]
 };
 /*LIVE-END*/
 function liveCardHTML(){
@@ -566,7 +566,7 @@ function liveCardHTML(){
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-19", "text": "THIS WEEK\n\u2022 DONE \u2713 8/16 punch corrected \u2014 week of 8/10 should land ~20.2% labor, confirm on the next report pull\n\u2022 DONE \u2713 Employee discount set at 50%, on or off shift, own meal only\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hours are in one daypart. Look at the dinner schedule before the 8/31 launches\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag all go live\n\u2022 Wiener Wednesday 4/$4 ends 8/31 \u2014 decide on extending\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
+const WB = { "updated": "2026-08-24", "text": "THIS WEEK\n\u2022 DONE \u2713 Wednesday audit Apr\u2013Aug: promo lift is real (+22% vs +7% baseline, \u2248 +$450/Wed) \u2014 use it for the extend/kill call before 8/31\n\u2022 DONE \u2713 Tracker backfilled May 1 \u2192 Aug 23, daily + weekly, sales reconciled to the P/L\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hrs in one daypart \u2014 look at the dinner schedule before 8/31\n\u2022 Check the flagged $9.28 employee ring (8/21, 10:54 PM, check 152)\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag go live \u2014 train Small Shakes builds\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
@@ -613,7 +613,7 @@ function renderAlerts(){
 
 
 /*EMP-START*/
-const EMP_META = { "updated":"2026-08-19", "storeOpenHrs":12,
+const EMP_META = { "updated":"2026-08-24", "storeOpenHrs":12,
   "coverage":"SOURCE: Oracle Simphony \u2014 the Auto Clock Out Report is the system's own log of punches it had to close itself, so it is authoritative, not a heuristic. Simphony auto-closes an open punch at 3:45 AM. Peachworks is NOT usable for this: its labor feed carries only two employee IDs and one job code (403 hrs for all of 2026 against roughly 5,000 worked), because the other job codes are not mapped in the integration." };
 // Simphony "Auto Clock Out Report" — the system's own record of punches it had to close. Year to date, W221.
 // [businessDate, employee, clockIn, clockOut, status]
@@ -642,7 +642,9 @@ const EMP_DAYS = [
 ["2026-08-06","Thu",42.99,688.29,3026.00],["2026-08-07","Fri",43.01,611.64,3239.09],["2026-08-08","Sat",38.50,551.02,2797.26],
 ["2026-08-09","Sun",28.17,392.46,2877.41],["2026-08-10","Mon",41.32,577.49,2752.08],["2026-08-11","Tue",40.83,602.27,2842.15],
 ["2026-08-12","Wed",43.78,697.94,3196.78],["2026-08-13","Thu",42.20,695.32,3025.88],["2026-08-14","Fri",41.34,594.69,3081.90],
-["2026-08-15","Sat",33.41,488.65,2871.18],["2026-08-16","Sun",43.81,629.80,2484.79],["2026-08-17","Mon",36.53,506.14,2167.04]];
+["2026-08-15","Sat",33.41,488.65,2871.18],["2026-08-16","Sun",43.81,629.80,2484.79],["2026-08-17","Mon",36.53,506.14,2167.04],
+["2026-08-18","Tue",43.28,616.95,2855.68],["2026-08-19","Wed",37.65,560.37,3773.48],["2026-08-20","Thu",41.87,683.70,3172.82],
+["2026-08-21","Fri",40.53,572.97,3843.27],["2026-08-22","Sat",39.40,562.11,2808.02],["2026-08-23","Sun",28.79,400.58,2139.97]];
 // [date, employee, hours, jobId]
 const EMP_PUNCH = [
 ["2026-08-02","Carina Carrasco",5.65,"301"],["2026-08-02","Eduar Gramajo",4.61,"301"],
@@ -659,13 +661,84 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-08-19", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-08-24", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
-// [date, employee, clockIn, clockOut, hours]
-const SHIFT_ACTUAL = [];
-// [date, time, check, discountName, amount, employee]
-const SHIFT_DISC = [];
+// [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
+const SHIFT_ACTUAL = [
+["2026-08-20","Kooper Blackwelder","4:03 PM","11:02 PM",6.99],
+["2026-08-21","Kooper Blackwelder","4:33 PM","11:24 PM",6.84],
+["2026-08-22","Kooper Blackwelder","4:16 PM","9:15 PM",4.97],
+["2026-08-23","Kooper Blackwelder","4:36 PM","9:01 PM",4.42],
+["2026-08-18","Carina Carrasco","11:20 AM","4:01 PM",4.68],
+["2026-08-19","Carina Carrasco","11:10 AM","4:00 PM",4.83],
+["2026-08-20","Carina Carrasco","10:15 AM","3:30 PM",5.25],
+["2026-08-17","Marissa Caston","3:59 PM","10:00 PM",6.01],
+["2026-08-18","Marissa Caston","4:10 PM","9:04 PM",4.90],
+["2026-08-19","Marissa Caston","4:02 PM","9:00 PM",4.96],
+["2026-08-21","Marissa Caston","11:03 AM","4:06 PM",5.04],
+["2026-08-22","Marissa Caston","4:02 PM","11:10 PM",7.14],
+["2026-08-23","Marissa Caston","3:59 PM","10:01 PM",6.03],
+["2026-08-17","Kaomy Garcia","4:17 PM","9:05 PM",4.80],
+["2026-08-18","Kaomy Garcia","11:13 AM","4:00 PM",4.78],
+["2026-08-20","Eduar Gramajo","5:03 PM","9:28 PM",4.41],
+["2026-08-21","Eduar Gramajo","5:16 PM","11:18 PM",6.03],
+["2026-08-22","Eduar Gramajo","5:01 PM","9:02 PM",4.02],
+["2026-08-18","Jacob Kresin","3:46 PM","11:16 PM",7.50],
+["2026-08-19","Jacob Kresin","11:41 AM","11:20 PM",11.65],
+["2026-08-20","Jacob Kresin","11:59 AM","11:01 PM",11.03],
+["2026-08-21","Jacob Kresin","10:05 AM","2:13 PM",4.13],
+["2026-08-21","Jacob Kresin","4:09 PM","11:27 PM",7.29],
+["2026-08-22","Jacob Kresin","10:58 AM","1:42 PM",2.74],
+["2026-08-22","Jacob Kresin","3:15 PM","11:11 PM",7.93],
+["2026-08-23","Jacob Kresin","11:27 AM","12:10 PM",0.71],
+["2026-08-23","Jacob Kresin","12:36 PM","10:01 PM",9.43],
+["2026-08-17","Twilia Moore","3:59 PM","8:39 PM",4.66],
+["2026-08-18","Twilia Moore","3:59 PM","9:00 PM",5.01],
+["2026-08-20","Twilia Moore","11:25 AM","4:00 PM",4.58],
+["2026-08-22","Twilia Moore","10:58 AM","2:58 PM",4.00],
+["2026-08-17","Maria Perez Marin","10:04 AM","1:08 PM",3.07],
+["2026-08-17","Maria Perez Marin","1:43 PM","3:58 PM",2.26],
+["2026-08-18","Maria Perez Marin","9:57 AM","1:07 PM",3.18],
+["2026-08-18","Maria Perez Marin","1:40 PM","3:58 PM",2.29],
+["2026-08-19","Maria Perez Marin","10:09 AM","1:05 PM",2.93],
+["2026-08-19","Maria Perez Marin","1:37 PM","4:01 PM",2.39],
+["2026-08-20","Maria Perez Marin","4:55 PM","11:02 PM",6.12],
+["2026-08-21","Maria Perez Marin","5:10 PM","11:18 PM",6.14],
+["2026-08-22","Maria Perez Marin","10:06 AM","12:57 PM",2.85],
+["2026-08-22","Maria Perez Marin","1:29 PM","4:01 PM",2.54],
+["2026-08-17","Andrew Renier","11:01 AM","1:55 PM",2.90],
+["2026-08-17","Andrew Renier","3:03 PM","11:06 PM",8.05],
+["2026-08-18","Andrew Renier","4:10 PM","11:13 PM",7.05],
+["2026-08-19","Andrew Renier","4:01 PM","11:14 PM",7.22],
+["2026-08-21","Andrew Renier","11:03 AM","4:07 PM",5.06],
+["2026-08-23","Andrew Renier","11:04 AM","1:52 PM",2.79],
+["2026-08-23","Andrew Renier","2:32 PM","4:45 PM",2.21],
+["2026-08-17","Ejay Rosal","11:08 AM","1:57 PM",2.82],
+["2026-08-17","Ejay Rosal","3:06 PM","4:02 PM",0.94],
+["2026-08-18","Ejay Rosal","11:04 AM","1:57 PM",2.89],
+["2026-08-18","Ejay Rosal","3:00 PM","4:00 PM",1.00],
+["2026-08-19","Ejay Rosal","11:10 AM","1:55 PM",2.75],
+["2026-08-19","Ejay Rosal","3:04 PM","3:59 PM",0.92],
+["2026-08-20","Ejay Rosal","11:18 AM","1:50 PM",2.54],
+["2026-08-20","Ejay Rosal","3:06 PM","4:03 PM",0.95],
+["2026-08-22","Jamal Saqri","12:02 PM","3:15 PM",3.21],
+["2026-08-23","Jamal Saqri","11:59 AM","3:11 PM",3.20]];
+// [date, time, check, discountName, amount, employee] — Simphony "Discounts by Revenue Center and Check", 8/17–8/23. "register (Jimmy)" = the shared front-register account; the Reference name (who it was for) is used when the ring carried one.
+const SHIFT_DISC = [
+["2026-08-17","12:56 PM",36,"Employee Discount",2.69,"register (Jimmy)"],
+["2026-08-17","1:42 PM",54,"Manager Discount",2.69,"Ejay Rosal"],
+["2026-08-18","12:56 PM",231,"Employee Discount",4.00,"register (Jimmy)"],
+["2026-08-19","3:37 PM",535,"Manager Discount",6.58,"Jacob Kresin"],
+["2026-08-19","3:37 PM",535,"Manager Discount",2.59,"Jacob Kresin"],
+["2026-08-21","7:40 PM",119,"Manager Discount",4.99,"Jacob Kresin"],
+["2026-08-21","7:40 PM",119,"Manager Discount",3.24,"Jacob Kresin"],
+["2026-08-21","10:54 PM",152,"Employee Discount",9.28,"register (Jimmy)"],
+["2026-08-22","3:41 PM",246,"Manager Discount",11.98,"register (Jimmy)"],
+["2026-08-22","3:41 PM",246,"Manager Discount",4.99,"Jacob Kresin"],
+["2026-08-23","3:44 PM",402,"Employee Discount",3.25,"register (Jimmy)"],
+["2026-08-23","5:59 PM",432,"Manager Discount",8.99,"register (Jimmy)"],
+["2026-08-23","5:59 PM",432,"Manager Discount",2.59,"Jacob Kresin"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
@@ -765,11 +838,12 @@ function renderShift(){
     `<tr><th>Time</th><th>Check</th><th>Discount</th><th class="n">Amount</th><th>Rung by</th><th>On shift?</th><th>Size check</th></tr>` +
     (dis.length ? dis.map(([dt,tm,chk,name,amt,emp])=>{
       const t=toMin(tm);
-      const shift = SHIFT_ACTUAL.find(r=>r[0]===dt && r[1]===emp);
+      const shifts = SHIFT_ACTUAL.filter(r=>r[0]===dt && r[1]===emp);
       let onShift='\u2014';
-      if(shift && t!=null){
-        const a=toMin(shift[2]), b=toMin(shift[3]);
-        if(a!=null&&b!=null) onShift = (t>=a-15 && t<=b+15) ? 'yes' : 'off shift';
+      if(shifts.length && t!=null){
+        onShift='off shift';
+        for(const s of shifts){ const a=toMin(s[2]), b=toMin(s[3]);
+          if(a!=null&&b!=null && t>=a-15 && t<=b+15){ onShift='yes'; break; } }
       }
       const A = Number(amt)||0; given += A;
       const big = A > cap; if(big) over++;
@@ -1161,10 +1235,18 @@ const SECTIONS = [
     desc: "The live scoreboard built from your corporate Sales Analysis and P/L — open the promo-tracker-221 artifact in the sidebar for the full interactive version.",
     chips: [
       {t:"July: <b>$103,459</b> — best month", c:"go"},
-      {t:"Wed lift <b>+31.6%</b>", c:"go"},
+      {t:"Wed lift: <b>+22%</b> vs <b>+7%</b> pre-promo", c:"go"},
       {t:"Food cost <b>35.2%</b> and climbing", c:"alert"}
     ],
     cards: [
+      {t:"\ud83d\udcc5 Wednesday audit \u2014 Apr\u2013Aug (updated 8/19)", s:"Wednesday's edge over the other six days, month by month. Sales pulled from Peachworks and verified to the penny against the P/L months.", ul:[
+        "April: <b>+16.8%</b> ($3,505 vs $3,000) \u00b7 May: <b>+11.2%</b> \u00b7 June: <b>+3.4%</b> \u2014 Wednesdays were <b>fading fast</b> before the promo",
+        "July, 4/$4 live: <b>+22.2%</b> ($3,640 vs $2,979) \u00b7 Aug 1\u201317: <b>+20.5%</b>",
+        "Against the May+June baseline (+7.3%), Wiener Wednesday is worth roughly <b>+$430\u2013470 per Wednesday</b> incremental",
+        "Worst pre-promo Wednesday: 6/17 at <b>$2,151</b> \u2014 the promo hasn't had a single Wednesday that weak",
+        "Checks tell the same story: promo Wednesdays run ~275\u2013290 checks vs ~220 on other days",
+        "With the window closing 8/31: the trend it fixed was real \u2014 factor that into the extend/kill call"
+      ]},
       {t:"July highlights", s:"", ul:["Wednesdays averaged <b>$4,180</b> vs $3,175 other days","<b>294 chili dogs</b> per Wednesday vs 99 baseline","Hot Dog Day 7/15: <b>371 dogs</b>, $4,424 (+39%)","54 cooler bags sold before the deal even starts"]},
       {t:"Top sellers (July $)", s:"", ul:["Chili Cheese Dog — $15,598","Chili Dog — $10,889","Chili Cheese Fries — $8,634","Corn Dog — $6,986"]},
       {t:"Watch list", s:"", ul:["Food cost: 27.4% (Jan) → <b>35.2%</b> (Jun) — July P/L will show if promos covered it","Labor solid at ~22–24%","Root Beer Float Day 8/6 — verify redemptions vs 19/store benchmark"]},
