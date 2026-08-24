@@ -566,7 +566,7 @@ function liveCardHTML(){
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-24", "text": "THIS WEEK\n\u2022 DONE \u2713 Wednesday audit Apr\u2013Aug: promo lift is real (+22% vs +7% baseline, \u2248 +$450/Wed) \u2014 use it for the extend/kill call before 8/31\n\u2022 DONE \u2713 Tracker backfilled May 1 \u2192 Aug 23, daily + weekly, sales reconciled to the P/L\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hrs in one daypart \u2014 look at the dinner schedule before 8/31\n\u2022 Check the flagged $9.28 employee ring (8/21, 10:54 PM, check 152)\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag go live \u2014 train Small Shakes builds\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
+const WB = { "updated": "2026-08-24", "text": "THIS WEEK\n\u2022 DONE \u2713 Wednesday audit + profitability: same ~$513/Wed promo spend as the old buy-down, 3\u00d7 the pull, \u2248 +$290 gross profit per Wednesday. Numbers are on the Promo Tracker tile for the 8/31 call\n\u2022 DONE \u2713 Tracker backfilled May 1 \u2192 Aug 23, daily + weekly, sales reconciled to the P/L\n\u2022 Dinner overtime: 37.1 of August\u2019s 46.8 OT hrs in one daypart \u2014 look at the dinner schedule before 8/31\n\u2022 Check the flagged $9.28 employee ring (8/21, 10:54 PM, check 152)\n\u2022 Newspaper ad: confirm $4 vs $8 meal deal, then submit\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag go live \u2014 train Small Shakes builds\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03)\n\u2022 Ask Galardi/Peachworks to map the rest of the job codes into the labor feed" };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
@@ -1246,6 +1246,14 @@ const SECTIONS = [
         "Worst pre-promo Wednesday: 6/17 at <b>$2,151</b> \u2014 the promo hasn't had a single Wednesday that weak",
         "Checks tell the same story: promo Wednesdays run ~275\u2013290 checks vs ~220 on other days",
         "With the window closing 8/31: the trend it fixed was real \u2014 factor that into the extend/kill call"
+      ]},
+      {t:"\ud83d\udcb0 Is the promo actually profitable? Yes \u2014 here is the math", s:"Promo Dollars (the discount value given away) and Tastee Sales are now filled for every day May 1 \u2192 Aug 23, straight from the SALES RECAP month recaps.", ul:[
+        "The surprise: Wednesdays were <b>already carrying ~$512 of promo dollars</b> in May/June (the old GGI buy-down era) \u2014 for only a +7% lift",
+        "The 4/$4 version spends <b>the same ~$513 per Wednesday</b> and pulls <b>+22%</b>. Same discount budget, three times the pull",
+        "Net sales are already net of the discounts \u2014 so the <b>+$450/Wednesday lift is real collected revenue</b>",
+        "At ~35% food cost and flat labor (hours didn\u2019t move), that\u2019s roughly <b>+$290 gross profit per Wednesday</b>, \u2248 <b>$2,600 over the 9-week window</b> vs the June trajectory",
+        "Verdict for 8/31: the promo isn\u2019t buying sales with margin \u2014 it\u2019s redeploying the same promo spend far more effectively than the buy-down did",
+        "Watch item: Tastee sales run <b>~$200/day in mid-Aug vs ~$270 in May/June</b> \u2014 soft-serve is fading as the semester starts; the $2.99 shakes launch 8/31 lands at the right time"
       ]},
       {t:"July highlights", s:"", ul:["Wednesdays averaged <b>$4,180</b> vs $3,175 other days","<b>294 chili dogs</b> per Wednesday vs 99 baseline","Hot Dog Day 7/15: <b>371 dogs</b>, $4,424 (+39%)","54 cooler bags sold before the deal even starts"]},
       {t:"Top sellers (July $)", s:"", ul:["Chili Cheese Dog — $15,598","Chili Dog — $10,889","Chili Cheese Fries — $8,634","Corn Dog — $6,986"]},
