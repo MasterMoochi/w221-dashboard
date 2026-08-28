@@ -635,9 +635,16 @@ function renderAlerts(){
   (LIVE.weekly && LIVE.weekly.alerts || []).forEach(a => items.push(`Weekly (wk of ${LIVE.weekly.weekStart}): <b>${a}</b>`));
   (LIVE.systemAlerts || []).forEach(a => items.push(a));
   const bar = document.getElementById("alertbar");
-  if (!items.length) { bar.style.display = "none"; return; }
-  bar.style.display = "block";
+  if (!items.length) { bar.innerHTML = ""; bar.style.display = "none"; return; }
   bar.innerHTML = `<div class="at">⚠ Alerts · from your trackers</div><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+  syncAlertVis();
+}
+/* Alerts show only on the Promo HQ tile */
+function syncAlertVis(){
+  const bar = document.getElementById("alertbar");
+  if (!bar) return;
+  const onHQ = (typeof cur !== "undefined") && cur >= 0 && SECTIONS[cur] && SECTIONS[cur].title === "Promo HQ";
+  bar.style.display = (bar.innerHTML && onHQ) ? "block" : "none";
 }
 
 
@@ -1621,6 +1628,7 @@ SECTIONS.forEach((s, i) => {
 let cur = -1;
 function select(i){
   if (i === cur) return; cur = i;
+  syncAlertVis();
   const s = SECTIONS[i];
   document.querySelectorAll(".tileWrap").forEach((t,j)=>t.classList.toggle("on", j===i));
   document.getElementById("bg").style.background = s.bg;
