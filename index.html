@@ -202,6 +202,12 @@
   .card a { color: #8ab8f2; text-decoration: none; }
   .card a:hover { text-decoration: underline; }
   .due { color: #ffd166; font-weight: 600; }
+  .hrchart { display:flex; align-items:flex-end; gap:3px; height:112px; margin:12px 0 2px; }
+  .hrcol { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; min-width:0; }
+  .hrbar { width:100%; background:#f2545f; border-radius:4px 4px 0 0; min-height:2px; }
+  .hrlab { font-size:9px; color:var(--ink-3); margin-top:4px; }
+  .hrpk { font-size:10.5px; color:var(--ink-2); font-weight:700; margin-bottom:3px; white-space:nowrap; }
+  .hrcap { font-size:11px; color:var(--ink-3); margin-top:2px; }
   .addcard { border-style: dashed; }
   .addcard input, .addcard textarea {
     width: 100%; background: rgba(255,255,255,.07); border: 1px solid var(--chip-br); border-radius: 7px;
@@ -547,26 +553,49 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-08-27", "updatedBy": "alerts & whiteboard cleanup",
-  "daily":   { "date": "2026-08-26", "netSales": 3239.70, "transactions": 237, "laborPct": 20.0, "alerts": ["Cash CLEAN \u2014 deposits + variance match cash payments to the penny; the drawer was $5.64 short and it\u2019s booked. Nothing missing", "Wiener Wednesday did $3,240 (+25% vs the rest of the week) on $630 of promo \u2014 second-best Wednesday of August"] },
+  "updated": "2026-08-28", "updatedBy": "daily catch-up 8/27 + debrief tile",
+  "daily":   { "date": "2026-08-27", "netSales": 2832.36, "transactions": 213, "laborPct": 29.1,
+    "debrief": "Lunch carried the day \u2014 noon rang $537, then 1 PM fell to $137 and never fully recovered. Dinner held $220\u2013300 from 3 to 7 PM; the last two hours did under $100 combined. The drawer is clean: no paid outs, +$8.00 banked.",
+    "alerts": ["Labor 29.1% \u2014 50.6 hrs vs a ~43-hr Thursday norm at $16.26 avg rate, the highest % logged this year. Check Time Card Detail for a long punch \u2014 Simphony was signed out during the catch-up"] },
   "weekly":  { "weekStart": "2026-08-17", "netSales": 20760.28, "laborPct": 18.7, "cogsPct": null, "alerts": ["Labor landed at 18.7% \u2014 back to normal after the punch fix. Sales +2.5% over the prior week", "Wiener Wednesday 8/19 did $3,773 (+25% vs the rest of the week) \u2014 the promo is still pulling in week 8 of 9"] },
-  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE at $95,649. August MTD through 8/26: $76,627 net \u2014 pacing to roughly $91k for the month." },
+  "monthly": { "month": "2026-07", "netSales": 95649, "foodCostPct": null, "netIncome": null, "notes": "July COMPLETE at $95,649. August MTD through 8/27: $79,459 net \u2014 pacing to roughly $91k for the month." },
   "systemAlerts": ["OPEN \u2014 Renier 5/1 punch: 4:48 PM \u2192 closed next day 4:29 PM = 23.69 hrs, marked \u2018On time\u2019 so it never hit the Auto Clock Out Report (~$240 phantom + OT knock-on). Reviewed on screen 8/26 \u2014 Mu to decide fix vs leave. Punches closed manually the next day slip past the auto report, so scan Time Card Detail monthly.", "Discounts current through 8/26. The 8/25 after-5PM employee ring checked out \u2014 check 864, 2-Pc Tender + Ranch + Sml Fry at 50% ($3.30, cash) \u2014 but the second employee who ate that night was never rung. Standing rule worth setting: every employee meal gets rung under that employee\u2019s own discount.", "Dinner overtime is still the live labor issue: 37.11 of August\u2019s 46.76 OT hours sit in one daypart. Look at the dinner schedule before the 8/31 launches.", "Peachworks\u2019 labor feed carries 2 employee IDs and 1 job code \u2014 use Simphony for anything labor. Ticket to map the job codes still open.", "Second soft weekend day since the semester started (8/17 $2,167, 8/23 $2,140), and Mon\u2013Tue this week ran 24\u201327% labor on the trough. Wednesdays hold up (+20\u201325%) \u2014 the softness is Sun\u2013Tue."]
 };
 /*LIVE-END*/
+/*HR-START*/
+const HOURLY = { "date": "2026-08-27", "hours": [["9a",16.97],["10a",180.75],["11a",397.04],["12p",536.85],["1p",137.12],["2p",179.78],["3p",218.76],["4p",215.96],["5p",227.97],["6p",301.07],["7p",250.55],["8p",92.78],["9p",5.95],["10p",70.81]] };
+/*HR-END*/
+function debriefChartHTML(){
+  if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
+  const max = Math.max(...HOURLY.hours.map(h=>h[1]));
+  const peak = HOURLY.hours.findIndex(h=>h[1]===max);
+  const bars = HOURLY.hours.map((h,i)=>{
+    const pct = Math.max(2, Math.round(h[1]/max*100));
+    const lab = i===peak ? `<div class="hrpk">$${Math.round(h[1])}</div>` : "";
+    return `<div class="hrcol" title="${h[0]} \u2014 $${h[1].toFixed(2)}">${lab}<div class="hrbar" style="height:${pct}%"></div><div class="hrlab">${h[0]}</div></div>`;
+  }).join("");
+  return `<div class="hrchart">${bars}</div><div class="hrcap">Net sales by hour \u00b7 ${HOURLY.date} \u00b7 hover a bar for the exact figure</div>`;
+}
 function liveCardHTML(){
   const f = [], d = LIVE.daily, w = LIVE.weekly, m = LIVE.monthly;
   const money = n => "$" + (+n).toLocaleString();
-  if (d && d.date) f.push(`<b>${d.date}:</b> ${money(d.netSales)} net · ${d.transactions ?? "?"} trans · labor ${d.laborPct ?? "?"}%` + (d.alerts && d.alerts.length ? ` · <span class='due'>⚠ ${d.alerts.join("; ")}</span>` : ""));
-  if (w && w.weekStart) f.push(`<b>Week of ${w.weekStart}:</b> ${money(w.netSales)} net · labor ${w.laborPct ?? "?"}% · COGS ${w.cogsPct ?? "?"}%` + (w.alerts && w.alerts.length ? ` · <span class='due'>⚠ ${w.alerts.join("; ")}</span>` : ""));
-  if (m && m.month) f.push(`<b>${m.month}:</b>` + (m.netSales ? " " + money(m.netSales) + " net" : "") + (m.foodCostPct ? " · food " + m.foodCostPct + "%" : "") + (m.netIncome ? " · net income " + money(m.netIncome) : "") + (m.notes ? " — " + m.notes : ""));
-  if (!f.length) f.push("No live rows yet — the daily and weekly scheduled tasks fill this automatically.");
-  return { t: "📡 Live from Performance Tracker", s: "Auto-updated by your scheduled tasks · last update: <b>" + LIVE.updated + "</b> (" + LIVE.updatedBy + ")", ul: f };
+  if (d && d.date) {
+    const dow = new Date(d.date + "T12:00:00").toLocaleDateString("en-US", {weekday:"long"});
+    let hd = `<b>${dow} ${d.date}</b> \u2014 ${money(d.netSales)} net \u00b7 ${d.transactions ?? "?"} checks \u00b7 labor ${d.laborPct ?? "?"}%`;
+    if (typeof HOURLY !== "undefined" && HOURLY.date === d.date) hd += debriefChartHTML();
+    f.push(hd);
+    if (d.debrief) f.push(d.debrief);
+    if (d.alerts && d.alerts.length) f.push(`<span class='due'>\u26a0 ${d.alerts.join("; ")}</span>`);
+  }
+  if (w && w.weekStart) f.push(`<b>Week of ${w.weekStart}:</b> ${money(w.netSales)} net \u00b7 labor ${w.laborPct ?? "?"}% \u00b7 COGS ${w.cogsPct ?? "?"}%` + (w.alerts && w.alerts.length ? ` \u00b7 <span class='due'>\u26a0 ${w.alerts.join("; ")}</span>` : ""));
+  if (m && m.month) f.push(`<b>${m.month}:</b>` + (m.netSales ? " " + money(m.netSales) + " net" : "") + (m.foodCostPct ? " \u00b7 food " + m.foodCostPct + "%" : "") + (m.netIncome ? " \u00b7 net income " + money(m.netIncome) : "") + (m.notes ? " \u2014 " + m.notes : ""));
+  if (!f.length) f.push("No live rows yet \u2014 the daily and weekly scheduled tasks fill this automatically.");
+  return { t: "\ud83d\udcc5 Yesterday\u2019s debrief", s: "Auto-updated by your scheduled tasks \u00b7 last update: <b>" + LIVE.updated + "</b> (" + LIVE.updatedBy + ")", ul: f };
 }
 
 /* ---- Whiteboard: freeform homepage notes. Claude saves edits between the WB markers. ---- */
 /*WB-START*/
-const WB = { "updated": "2026-08-27", "text": "THIS WEEK\n\u2022 Labor early-week: Mon 24.2%, Tue 27.2%, Wed back to 20.0% \u2014 semester trough; trim the Mon\u2013Tue schedule\n\u2022 Dinner overtime: still the standing issue \u2014 review the dinner schedule before 8/31\n\u2022 Renier 5/1 punch (23.69 hrs, ~$240): reviewed on screen 8/26 \u2014 decide fix vs leave\n\u2022 Newspaper ad: $4 meal deal CONFIRMED \u2014 submit the ad\n\u2022 Employee meals: 8/25 second eater never rung \u2014 set the rule that every employee meal is rung under that employee\u2019s own discount\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag go live \u2014 train Small Shakes builds\n\u2022 Wiener Wednesday: KEEPING it past 8/31 (\u2248 +$290 gross profit per Wednesday per the audit)\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03) \u2014 still open\n\u2022 Job-code mapping ticket with Galardi/Peachworks \u2014 still open\n\nCLEARED 8/27 \u2713 Kresin\u2019s 8/26 12.70-hr punch handled \u00b7 8/21 $9.28 ring checked \u00b7 Wednesday audit + tracker backfill done & filed" };
+const WB = { "updated": "2026-08-28", "text": "THIS WEEK\n\u2022 Labor early-week: Mon 24.2%, Tue 27.2%, Wed back to 20.0% \u2014 semester trough; trim the Mon\u2013Tue schedule\n\u2022 Dinner overtime: still the standing issue \u2014 review the dinner schedule before 8/31\n\u2022 Renier 5/1 punch (23.69 hrs, ~$240): reviewed on screen 8/26 \u2014 decide fix vs leave\n\u2022 Newspaper ad: $4 meal deal CONFIRMED \u2014 submit the ad\n\u2022 Employee meals: 8/25 second eater never rung \u2014 set the rule that every employee meal is rung under that employee\u2019s own discount\n\u2022 8/31: $8 Meal Deal, $2.99 shakes, $17.76 cooler bag go live \u2014 train Small Shakes builds\n\u2022 Wiener Wednesday: KEEPING it past 8/31 (\u2248 +$290 gross profit per Wednesday per the audit)\n\u2022 8/27: labor hit 29.1% (50.6 hrs, $16.26 avg rate) \u2014 find the long punch once Simphony\u2019s signed back in\n\u2022 8/12 cash: $87 unaccounted (paid outs $933.79 vs variance $847.03) \u2014 still open\n\u2022 Job-code mapping ticket with Galardi/Peachworks \u2014 still open\n\nCLEARED 8/27 \u2713 Kresin\u2019s 8/26 12.70-hr punch handled \u00b7 8/21 $9.28 ring checked \u00b7 Wednesday audit + tracker backfill done & filed" };
 /*WB-END*/
 function initWB(){
   const el = document.getElementById("wbtext");
@@ -645,7 +674,8 @@ const EMP_DAYS = [
 ["2026-08-15","Sat",33.41,488.65,2871.18],["2026-08-16","Sun",43.81,629.80,2484.79],["2026-08-17","Mon",36.53,506.14,2167.04],
 ["2026-08-18","Tue",43.28,616.95,2855.68],["2026-08-19","Wed",37.65,560.37,3773.48],["2026-08-20","Thu",41.87,683.70,3172.82],
 ["2026-08-21","Fri",40.53,572.97,3843.27],["2026-08-22","Sat",39.40,562.11,2808.02],["2026-08-23","Sun",28.79,400.58,2139.97],
-["2026-08-24","Mon",39.02,553.04,2288.60],["2026-08-25","Tue",44.92,703.56,2590.63],["2026-08-26","Wed",39.10,648.61,3239.70]];
+["2026-08-24","Mon",39.02,553.04,2288.60],["2026-08-25","Tue",44.92,703.56,2590.63],["2026-08-26","Wed",39.10,648.61,3239.70],
+["2026-08-27","Thu",50.61,822.68,2832.36]];
 // [date, employee, hours, jobId]
 const EMP_PUNCH = [
 ["2026-08-02","Carina Carrasco",5.65,"301"],["2026-08-02","Eduar Gramajo",4.61,"301"],
