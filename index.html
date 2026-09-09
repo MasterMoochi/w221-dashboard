@@ -553,18 +553,26 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-09-07", "updatedBy": "catch-up 9/7 — 9/3 to 9/6 daily rows, week of 8/31, manager discount columns",
-  "daily":   { "date": "2026-09-06", "netSales": 2714.42, "transactions": 166, "laborPct": 16.2,
-    "debrief": "Sunday 9/6, the back end of Labor Day weekend: $2,714 net on 166 checks, a $16.35 average, which is 13.5% under last Sunday ($3,138) and the softest Sunday since mid August. Lunch carried it, $359 at 11am and $433 at noon, then it fell off to $105 by 3pm before a modest dinner bump of $292 at 4pm and $311 at 5pm. Labor was the lightest of the week at 31.1 hours and 16.2%, so the schedule flexed to the day. Cash was clean, $2.00 over with no paid outs. One employee discount ($3.84), no manager discounts, but 6 manager voids ($6.49) on a slow day. Promo dollars held at $196, the fourth straight day over $190 since Wiener Wednesday, so the $8 Meal Deal is ringing every day now, not just Wednesdays.",
-    "alerts": ["MANAGER VOIDS on 4 of the last 4 days: 1 on 9/3, 2 on 9/5 ($4.99), 6 on 9/6 ($6.49). Small dollars, but a normal day has zero", "9/5 error corrects $235.25 = 8.7% of net (over the 8% line) plus 12 cancels for $171.05, the most cancels in a day since 8/12", "9/5 paid outs $1,210.11, just over the $1,200 line (bank variance $1,189.33, gap −$20.78, fine)", "9/5 manager discount $12.35 on one check (Tender 2 piece + 6 poppers + pastrami), Jacob rang it and jacob authorized it at 4:05 PM. Manager discounts 9/3 to 9/6: 5 checks, $34.50, all comped to $0.00; 4 of the 5 rung by Jacob and authorized by jacob", "9/4 employee discount $6.34 (Jacob, corn dog + 2 cheeseburgers) over the $6 line", "Sunday 9/6 net $2,714, 13.5% under last Sunday. Thu was +3.4%, Fri −4.4%, Sat −6.6%, so the weekend faded as it went"] },
+  "updated": "2026-09-09", "updatedBy": "daily run 9/9 — 9/8 daily row, 9/7 and 9/8 discount rows",
+  "daily": {
+      "date": "2026-09-08",
+      "netSales": 2659.1,
+      "transactions": 200,
+      "laborPct": 20.8,
+      "debrief": "Tuesday 9/8: $2,659 net on 200 checks, a $13.30 average, which is 2.1% under last Tuesday ($2,715 on 195) and 3.3% under the four-Tuesday average, but on the most checks of any Tuesday since 8/25. A slow open ($41 at 9am, $14 at 10am), then lunch carried it at $418 for the noon hour and $314 at 1pm before the 3pm dip to $108. Dinner was steady rather than peaky, $253 to $298 every hour from 4pm through 6pm, then $226 at 7pm and an $87 close at 10pm. Labor was 38.98 hours at 20.8%, two points better than last Tuesday (22.9%). Cash: $35 paid out and the bank $7.29 short, both inside the lines. No employee discounts; one manager discount, $5.35 on check 742 at 7:10pm (Kaomy Garcia, two orders of jalapeno poppers with ranch, authorized by Jacob). 44 voids for $49.08, 33 error corrects for $206.30 (7.8% of net, just under the 8% line), 6 cancels for $64.31, 2 returns and 4 no-sales. Promo dollars eased to $134 and Tastee ran $201. Auto clock-outs: none.",
+      "alerts": [
+          "9/8 clean on every threshold. Watch items: error corrects 7.8% of net sit just under the 8% line, and zero employee discounts alongside one manager discount ($5.35, Kaomy, auth Jacob) is the staff-meal-through-the-manager-button pattern",
+          "9/7 (not published yesterday): error corrects $330.33 = 12.8% of net, over the 8% line; manager discounts $20.05 on two checks, over the $15 day limit, with check 507 ($11.46) rung and authorized by Jacob; employee discount $2.64 on check 453 rung on the shared Jimmy 221 login with 7 items"
+      ]
+  },
   "weekly":  { "weekStart": "2026-08-31", "netSales": 19860.51, "laborPct": 21.1, "cogsPct": 26.7, "alerts": ["Net $19,861, down 2.2% from $20,313, while labor rose from 20.0% to 21.1% — the hours did not come down with the sales", "COGS 26.7%: food only $3,626 (light, delivery timing) but Operations/Cleaning came in at $1,605.56, the biggest other-GL line since the $2,849 Distribution Cost in June. Find that invoice", "Category mix: hot dogs 39.3% (from 42.0%), fries 26.2% (from 24.5%), corn dogs 9.7%, drinks 12.3%, Tastee 7.8%, burgers 5.5%. The $8 Meal Deal is shifting the mix toward fries", "Manager discounts for the week: 8 checks, $59.99, MORE than the 12 employee discounts at $41.77"] },
   "monthly": { "month": "2026-08", "netSales": 91219.25, "foodCostPct": 29.5, "netIncome": 17839.67, "notes": "August CLOSED, all 31 days. $91,219.25 net, down 3.93% against a very strong August 2025 ($94,952.28). COGS $26,925.64 = 29.5% of net sales, high because a $5,105 bulk paper order landed in the week of 8/3. Labor $17,605.91 = 19.3%. Prime cost 48.8%. EBITDA (est.) $18,428.95; net income is blank on the tracker until depreciation goes in. September MTD after 6 days: $17,462.03 net, 1,215 checks, labor 20.6%." },
   "systemAlerts": ["THE DAILY TASK MISSED AGAIN: nothing was written for 9/3, 9/4, 9/5 or 9/6, and the weekly task did not write the week of 8/31 on Monday 9/7. All of it was caught up by hand on 9/7. That is 6 missed daily runs in 7 days (9/1, 9/2, 9/4, 9/5, 9/6, 9/7). The scheduled task itself needs to be looked at, not the prompt.", "NEW 9/3: the Daily tab now has Manager Discount count and dollars in columns N and O, right beside the employee discount columns, filled for every day since 5/1. Manager Discount is a separate register button with no cap, and every one of the 55 rung since 5/1 comped the check to exactly $0.00 ($412.47 total). August employee discounts were $81.46; August manager discounts were $119.76 on 17 checks. The uncapped button now carries more comp dollars than the capped one.", "Manager discounts by authorizer since 8/4: jacob about 89%. The pattern on 9/2 (zero employee discounts, two staff-looking meals comped whole under Manager Discount by the same person who rang them) repeated on 9/4 and 9/5.", "Week of 8/31 category mix came from 7 single-day Simphony System Financial API replays summed, which is the method that finally works; the remaining backlog (weeks 5/4 to 8/17) can now be filled the same way.", "ERROR CORRECTS May–Aug: $54,257, which is 14.6% of net sales. Two days explain most of it: 5/4 ($12,838) and 8/12 ($17,003 plus $3,830 in cancels). Those look like whole-order re-rings or a register event, not normal mistakes. The week of 8/24 was 6.1%, the week of 8/31 was 5.7%. Ask what happened on 5/4 and 8/12.", "The tracker was rebuilt on a PEACHWORKS AND SIMPHONY ONLY basis on 8/31 and 9/1. Every month, both prior years and all 18 weeks since 5/4 come from Peachworks report 300. The workbook is no longer a source for anything on the tracker.", "OPEN — depreciation and amortization from the tax return is the one number blocking a real net income on the Monthly tab (Q20).", "OPEN — the $4,000 a month other operating line looks light. Compare one closed month against the Haj Financial Services statement to calibrate it.", "OPEN — Renier 5/1 punch: 23.69 hrs, about $240 phantom. Still unfixed.", "OPEN — $2,848.70 Distribution Cost in the week of 6/22, still unexplained, and now a $1,605.56 Operations/Cleaning line in the week of 8/31.", "OPEN — cash: 9/2 −$37.93; 8/31 −$37.69; 8/28 unexplained +$95.59; 8/12 −$87. 9/3 to 9/6 were all clean.", "BEFORE the Kraft and Plastipak fliers go out, the FREE SMALL FRY badge deal has to be set up as its own named discount in Simphony so it can be tracked. A \"Coupon Small Fry\" discount (ID 79897213) already exists; check whether it can be used."]
 };
 /*LIVE-END*/
 /*HR-START*/
-const HOURLY = { "date": "2026-09-06", "hours": [["9a",48.69],["10a",131.53],["11a",359.11],["12p",432.53],["1p",341.50],["2p",153.79],["3p",105.23],["4p",292.15],["5p",311.34],["6p",243.74],["7p",114.97],["8p",104.66],["9p",75.18]] };
-/*HR-END*/
+    const HOURLY = {"date":"2026-09-08","hours":[["9a",40.96],["10a",14.35],["11a",199.30],["12p",418.41],["1p",313.80],["2p",234.10],["3p",107.51],["4p",258.35],["5p",253.50],["6p",298.07],["7p",225.91],["8p",159.61],["9p",47.75],["10p",87.48]]};
+    /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
   const max = Math.max(...HOURLY.hours.map(h=>h[1]));
@@ -702,7 +710,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-09-06", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-09-08", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -834,7 +842,11 @@ const SHIFT_DISC = [
 ["2026-09-05", "7:19 PM", 203, "Employee Discount", 1.35, "Jacob Kresin"],
 ["2026-09-05", "8:06 PM", 212, "Manager Discount", 6.59, "Jacob Kresin"],
 ["2026-09-05", "9:21 PM", 227, "Employee Discount", 2.68, "Jacob Kresin"],
-["2026-09-06", "8:31 PM", 395, "Employee Discount", 3.84, "Andrew Renier"]];
+["2026-09-06", "8:31 PM", 395, "Employee Discount", 3.84, "Andrew Renier"],
+  ["2026-09-07","1:03 PM",453,"Employee Discount",2.64,"register (Jimmy)"],
+  ["2026-09-07","3:09 PM",493,"Manager Discount",8.59,"Jamal Saqri"],
+  ["2026-09-07","4:28 PM",507,"Manager Discount",11.46,"Jacob Kresin"],
+  ["2026-09-08","7:10 PM",742,"Manager Discount",5.35,"Kaomy Garcia"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
