@@ -553,16 +553,18 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-09-09", "updatedBy": "daily run 9/9 — 9/8 daily row, 9/7 and 9/8 discount rows",
+  "updated": "2026-09-10", "updatedBy": "daily run 9/10 — 9/9 daily row and discount rows",
   "daily": {
-      "date": "2026-09-08",
-      "netSales": 2659.1,
-      "transactions": 200,
-      "laborPct": 20.8,
-      "debrief": "Tuesday 9/8: $2,659 net on 200 checks, a $13.30 average, which is 2.1% under last Tuesday ($2,715 on 195) and 3.3% under the four-Tuesday average, but on the most checks of any Tuesday since 8/25. A slow open ($41 at 9am, $14 at 10am), then lunch carried it at $418 for the noon hour and $314 at 1pm before the 3pm dip to $108. Dinner was steady rather than peaky, $253 to $298 every hour from 4pm through 6pm, then $226 at 7pm and an $87 close at 10pm. Labor was 38.98 hours at 20.8%, two points better than last Tuesday (22.9%). Cash: $35 paid out and the bank $7.29 short, both inside the lines. No employee discounts; one manager discount, $5.35 on check 742 at 7:10pm (Kaomy Garcia, two orders of jalapeno poppers with ranch, authorized by Jacob). 44 voids for $49.08, 33 error corrects for $206.30 (7.8% of net, just under the 8% line), 6 cancels for $64.31, 2 returns and 4 no-sales. Promo dollars eased to $134 and Tastee ran $201. Auto clock-outs: none.",
+      "date": "2026-09-09",
+      "netSales": 3012.91,
+      "transactions": 245,
+      "laborPct": 22.6,
+      "debrief": "Wednesday 9/9: $3,013 net on 245 checks, a $12.30 average, which is 6.3% under last Wednesday ($3,217 on 235) and 10% under the four-Wednesday average ($3,357). The most checks since 8/19 but the lowest average in weeks, with $392 in promo dollars doing the pulling. Lunch was the whole day: $421 at 11am, $603 for the noon hour and $434 at 1pm, then $150 to $300 an hour through the evening with a $294 bump at 7pm and a $17 close. Labor was 43.49 hours at 22.6%, up from 20.8% last Wednesday. Cash: $10 paid out and the bank $5.10 short, both fine. Two employee discounts for $6.50 (Twilia Moore $2.50 on check 880; $4.00 on check 942 rung on the Jimmy 221 login) and one manager discount, $8.00 on check 943 also on Jimmy 221, one minute after 942 and with no authorizer line on the detail. 56 voids for $103.25 including 23 manager voids for $38.06, 42 error corrects for $276.74 (9.2% of net), 7 cancels for $93.59 and 8 no-sales. App share 2.0%. Auto clock-outs: none.",
       "alerts": [
-          "9/8 clean on every threshold. Watch items: error corrects 7.8% of net sit just under the 8% line, and zero employee discounts alongside one manager discount ($5.35, Kaomy, auth Jacob) is the staff-meal-through-the-manager-button pattern",
-          "9/7 (not published yesterday): error corrects $330.33 = 12.8% of net, over the 8% line; manager discounts $20.05 on two checks, over the $15 day limit, with check 507 ($11.46) rung and authorized by Jacob; employee discount $2.64 on check 453 rung on the shared Jimmy 221 login with 7 items"
+          "9/9 voids $103.25 on 56 checks, over the $100 line, including 23 MANAGER VOIDS for $38.06 — the most manager voids in a day since the 9/6 run",
+          "9/9 error corrects $276.74 = 9.2% of net, over the 8% line",
+          "9/9 three discounts on the shared Jimmy 221 login: employee $4.00 on check 942 at 3:58 PM (10 line items, over the 6-item cap) and manager $8.00 on check 943 at 3:59 PM with no authorizer, which reads as one staff meal split across both buttons; plus employee $2.50 on check 880 (Twilia)",
+          "9/9 check average $12.30, under the $12.50 weekday floor on a $392 promo day, and app share 2.0%, under the 8% floor"
       ]
   },
   "weekly":  { "weekStart": "2026-08-31", "netSales": 19860.51, "laborPct": 21.1, "cogsPct": 26.7, "alerts": ["Net $19,861, down 2.2% from $20,313, while labor rose from 20.0% to 21.1% — the hours did not come down with the sales", "COGS 26.7%: food only $3,626 (light, delivery timing) but Operations/Cleaning came in at $1,605.56, the biggest other-GL line since the $2,849 Distribution Cost in June. Find that invoice", "Category mix: hot dogs 39.3% (from 42.0%), fries 26.2% (from 24.5%), corn dogs 9.7%, drinks 12.3%, Tastee 7.8%, burgers 5.5%. The $8 Meal Deal is shifting the mix toward fries", "Manager discounts for the week: 8 checks, $59.99, MORE than the 12 employee discounts at $41.77"] },
@@ -571,7 +573,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-09-08","hours":[["9a",40.96],["10a",14.35],["11a",199.30],["12p",418.41],["1p",313.80],["2p",234.10],["3p",107.51],["4p",258.35],["5p",253.50],["6p",298.07],["7p",225.91],["8p",159.61],["9p",47.75],["10p",87.48]]};
+    const HOURLY = {"date":"2026-09-09","hours":[["9a",33.93],["10a",89.48],["11a",420.76],["12p",602.74],["1p",433.67],["2p",203.88],["3p",181.67],["4p",206.55],["5p",169.01],["6p",146.66],["7p",293.81],["8p",127.24],["9p",86.39],["10p",17.12]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -710,7 +712,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-09-08", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-09-09", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -846,7 +848,10 @@ const SHIFT_DISC = [
   ["2026-09-07","1:03 PM",453,"Employee Discount",2.64,"register (Jimmy)"],
   ["2026-09-07","3:09 PM",493,"Manager Discount",8.59,"Jamal Saqri"],
   ["2026-09-07","4:28 PM",507,"Manager Discount",11.46,"Jacob Kresin"],
-  ["2026-09-08","7:10 PM",742,"Manager Discount",5.35,"Kaomy Garcia"]];
+  ["2026-09-08","7:10 PM",742,"Manager Discount",5.35,"Kaomy Garcia"],
+  ["2026-09-09","1:05 PM",880,"Employee Discount",2.50,"Twilia Moore"],
+  ["2026-09-09","3:58 PM",942,"Employee Discount",4.00,"register (Jimmy)"],
+  ["2026-09-09","3:59 PM",943,"Manager Discount",8.00,"register (Jimmy)"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
