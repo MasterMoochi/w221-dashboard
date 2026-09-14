@@ -553,18 +553,18 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-09-11", "updatedBy": "daily run 9/11 — 9/10 daily row and discount rows",
+  "updated": "2026-09-14", "updatedBy": "daily run 9/14 — 9/13 daily row, 9/11–9/12 discount rows",
   "daily": {
-      "date": "2026-09-10",
-      "netSales": 2633.84,
-      "transactions": 206,
-      "laborPct": 24.9,
-      "debrief": "Thursday 9/10: $2,634 net on 206 checks, a $12.79 average, which is 10% under last Thursday ($2,929 on 218) and 12% under the four-Thursday average ($2,990). The day was front-loaded: $439 at 11am and $341 at noon, then a soft mid-afternoon ($136 at 1pm, $146 at 2pm) before dinner rebuilt to $324 at 6pm and $296 at 7pm. Labor was 39.38 hours at 24.9%, up from 23.6% last Thursday and a hair under the 25% line on the lighter sales. Cash: $770 paid out with the bank $742.62 over, a $27 gap, fine. Four employee discounts for $8.48 — three by Jacob Kresin ($1.35, $1.25 on a 9-item check, $3.88) and $2.00 on check 48 rung on the Jimmy 221 login — and two manager discounts for $10.63: $5.35 on check 120 (Jacob, authorized by Mu) and $5.28 on check 179 at 5:14pm on the Jimmy 221 login, authorized by Jacob. 37 voids for $81.83, 41 error corrects for $180.64 (6.9% of net), no cancels, no manager voids, 7 no-sales. App share 6.4%, with a $13.80 Othr Delivry line folded into delivery. Auto clock-outs: none.",
+      "date": "2026-09-13",
+      "netSales": 2002.82,
+      "transactions": 125,
+      "laborPct": 23.8,
+      "debrief": "Sunday 9/13: $2,003 net on 125 checks, a $16.02 average, which is 26% under last Sunday ($2,714 on 166) and 23% under the four-Sunday average ($2,619), on the fewest checks of the last five Sundays. There was no peak: $224, $215 and $235 through the lunch hours, $170 an hour mid-afternoon, a $271 hour at 5pm that was the high point of the day, then $199 at 7pm and an $80 close. Labor was 34.0 hours at 23.8% — hours were light, sales were lighter, and last Sunday ran 16.2%. Cash: no paid outs, bank $6.67 short. No employee or manager discounts at all. 30 voids for $109.10, 22 error corrects for $195.96 (9.8% of net), 2 cancels at $0.00, 4 no-sales. App share 12.2%. Auto clock-outs: none Friday, Saturday or Sunday. Friday and Saturday rows were backfilled by the noon run.",
       "alerts": [
-          "9/10 two discounts on the shared Jimmy 221 login: employee $2.00 on check 48 at 10:43 AM and manager $5.28 on check 179 at 5:14 PM (authorized by Jacob)",
-          "9/10 Jacob Kresin rang three of the four employee discounts plus one manager discount in one day; check 141 carried 9 line items, over the 6-item cap",
-          "9/10 app share 6.4%, under the 8% floor for the second day running (2.0% on 9/9)",
-          "9/10 labor 24.9% on $2,634 net, right at the 25% line — hours were normal (39.38), sales were light"
+          "9/13 net $2,003, 23% under the four-Sunday average and 26% under last Sunday, on 125 checks — the fewest of the last five Sundays. Labor 23.8% on 34 hours",
+          "9/13 voids $109.10 on 30 checks, over the $100 line; error corrects $195.96 = 9.8% of net, over the 8% line",
+          "9/12 (backfill): manager discounts $21.55 on two checks, over the $15 day limit — check 607 ($9.79, 34 line items) rung and authorized by Jacob, check 669 ($11.76 at 9:41 PM, 24 line items) with no authorizer; app share 6.8%",
+          "9/11 (backfill): employee discount $6.34 on check 451 (Jacob, 13 items) over both the $6 and 6-item caps; manager discount $6.00 on check 470 at 11:22 PM rung and authorized by Jacob; manager discount $2.59 on check 362 on the Jimmy 221 login; app share 7.1%. Jacob is on 6 of the 7 discounts Fri–Sat"
       ]
   },
   "weekly":  { "weekStart": "2026-08-31", "netSales": 19860.51, "laborPct": 21.1, "cogsPct": 26.7, "alerts": ["Net $19,861, down 2.2% from $20,313, while labor rose from 20.0% to 21.1% — the hours did not come down with the sales", "COGS 26.7%: food only $3,626 (light, delivery timing) but Operations/Cleaning came in at $1,605.56, the biggest other-GL line since the $2,849 Distribution Cost in June. Find that invoice", "Category mix: hot dogs 39.3% (from 42.0%), fries 26.2% (from 24.5%), corn dogs 9.7%, drinks 12.3%, Tastee 7.8%, burgers 5.5%. The $8 Meal Deal is shifting the mix toward fries", "Manager discounts for the week: 8 checks, $59.99, MORE than the 12 employee discounts at $41.77"] },
@@ -573,7 +573,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-09-10","hours":[["9a",32.37],["10a",37.14],["11a",438.80],["12p",341.44],["1p",135.57],["2p",145.51],["3p",214.39],["4p",260.67],["5p",192.01],["6p",324.33],["7p",296.15],["8p",145.36],["9p",47.69],["10p",22.41]]};
+    const HOURLY = {"date":"2026-09-13","hours":[["10a",24.40],["11a",223.71],["12p",215.00],["1p",235.42],["2p",170.13],["3p",170.67],["4p",140.36],["5p",271.22],["6p",180.32],["7p",199.38],["8p",92.41],["9p",79.80]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -712,7 +712,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-09-10", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-09-13", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -857,7 +857,14 @@ const SHIFT_DISC = [
   ["2026-09-10","2:30 PM",130,"Employee Discount",1.35,"Jacob Kresin"],
   ["2026-09-10","3:06 PM",141,"Employee Discount",1.25,"Jacob Kresin"],
   ["2026-09-10","5:14 PM",179,"Manager Discount",5.28,"register (Jimmy)"],
-  ["2026-09-10","9:00 PM",242,"Employee Discount",3.88,"Jacob Kresin"]];
+  ["2026-09-10","9:00 PM",242,"Employee Discount",3.88,"Jacob Kresin"],
+  ["2026-09-11","3:10 PM",362,"Manager Discount",2.59,"register (Jimmy)"],
+  ["2026-09-11","8:29 PM",450,"Employee Discount",2.50,"Jacob Kresin"],
+  ["2026-09-11","8:29 PM",451,"Employee Discount",6.34,"Jacob Kresin"],
+  ["2026-09-11","11:22 PM",470,"Manager Discount",6.00,"Jacob Kresin"],
+  ["2026-09-12","4:24 PM",591,"Employee Discount",1.35,"Jacob Kresin"],
+  ["2026-09-12","5:07 PM",607,"Manager Discount",9.79,"Jacob Kresin"],
+  ["2026-09-12","9:41 PM",669,"Manager Discount",11.76,"Jacob Kresin"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
