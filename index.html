@@ -96,6 +96,13 @@
     color:var(--ink); padding:6px 10px; font:inherit; font-size:13px; }
   .plansave { font-size:11.5px; color:#ffd166; margin-top:7px; display:none; }
   /* Calendar */
+  .schbtn { font:inherit; font-size:12.5px; padding:6px 12px; border-radius:8px; border:1px solid var(--chip-br); background:rgba(255,255,255,.08); color:var(--ink); cursor:pointer; }
+  .schbtn:hover { background:rgba(255,255,255,.16); }
+  .schbtn.primary { background:#d95926; border-color:#d95926; color:#fff; font-weight:700; }
+  .schcell { width:64px; font:inherit; font-size:12.5px; text-align:center; padding:4px 4px; border-radius:6px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:var(--ink); }
+  .schcell:focus { outline:2px solid #ffd166; border-color:transparent; }
+  .schcell::placeholder { color:rgba(255,255,255,.22); }
+  .schgrid td { padding:4px 6px; }
   .calwrap { max-width: 1000px; padding: 14px 40px 40px; }
   .calhead { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
   .calhead h2 { font-size: 20px; font-weight: 750; min-width: 200px; text-align: center; }
@@ -535,17 +542,39 @@
 </div><!-- /view-tr -->
 
 <div id="view-sch" style="display:none">
-<div class="calwrap">
-  <h2 style="font-size:20px; font-weight:750; margin-bottom:2px;">Schedule Creator <span style="font-size:12px; color:#ffd166; font-weight:600;">v1</span></h2>
-  <p style="color:var(--ink-3); font-size:12.5px; margin-bottom:12px;">Labor forecast from your last 4 weeks of real sales (same-weekday averages through 8/9, from the Performance Tracker). Adjust the two dials — the grid recomputes. Daypart split from your old Schedule Optimizer: Lunch 35% · Afternoon 15% · Dinner 30% · Late 20%.</p>
-  <div style="display:flex; gap:22px; flex-wrap:wrap; margin-bottom:14px; font-size:13.5px; color:var(--ink-2);">
-    <label>Target labor % <input id="schpct" type="number" value="20" min="10" max="35" step="0.5" style="width:64px; margin-left:6px; background:rgba(255,255,255,.08); border:1px solid var(--chip-br); border-radius:7px; color:var(--ink); padding:5px 8px; font:inherit;" oninput="renderSch()"></label>
-    <label>Avg wage $/hr <input id="schwage" type="number" value="14" min="10" max="25" step="0.25" style="width:70px; margin-left:6px; background:rgba(255,255,255,.08); border:1px solid var(--chip-br); border-radius:7px; color:var(--ink); padding:5px 8px; font:inherit;" oninput="renderSch()"></label>
+<div class="calwrap" style="max-width:1100px;">
+  <h2 style="font-size:20px; font-weight:750; margin-bottom:2px;">Schedule Builder <span style="font-size:12px; color:#ffd166; font-weight:600;">v2</span></h2>
+  <p style="color:var(--ink-3); font-size:12.5px; margin-bottom:12px;">Type shifts the way you write them on the sheet (<b>10-4</b>, <b>5-cl</b>, <b>11-3</b>, <b>off</b>). The floor chart and labor recompute as you type. Saves on this device per week. Mo's row never counts toward hours or labor.</p>
+
+  <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-bottom:12px; font-size:13px; color:var(--ink-2);">
+    <label>Week of <input id="schweek" type="date" class="shiftdate" onchange="schWeekChange()"></label>
+    <label>Avg wage $/hr <input id="schwage" type="number" value="14.7" min="10" max="25" step="0.1" style="width:66px; margin-left:6px; background:rgba(255,255,255,.08); border:1px solid var(--chip-br); border-radius:7px; color:var(--ink); padding:5px 8px; font:inherit;" oninput="renderSch()"></label>
+    <span style="flex:1"></span>
+    <button class="schbtn" onclick="schLoadProposal()">Load Claude's proposal</button>
+    <button class="schbtn" onclick="schClear()">Clear week</button>
+    <button class="schbtn" onclick="schPrint()">Print</button>
+    <button class="schbtn primary" onclick="schEmail()">Email to shop</button>
   </div>
-  <div class="group" style="padding:8px 14px; overflow-x:auto;">
-    <table id="schtable" style="border-collapse:collapse; width:100%; font-size:13px; min-width:640px;"></table>
+  <div id="schtoast" style="display:none; font-size:12.5px; color:#3dc789; margin-bottom:10px;"></div>
+
+  <div class="group" style="padding:10px 14px 12px;">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;">
+      <h3 style="font-size:14px; font-weight:700;">People on the floor by hour</h3>
+      <span style="font-size:11.5px; color:var(--ink-3);">red = 1 or none · green = 4 or more · Mo not counted</span>
+    </div>
+    <div class="empscroll" style="max-height:none; margin-top:8px;"><table class="emptbl" id="schfloor"></table></div>
   </div>
-  <p style="color:var(--ink-3); font-size:12px; margin-top:10px;">Hours = forecast sales × labor % ÷ wage. Baselines bake in on publish — ask Claude to refresh after big weeks. v2 ideas: name-level shift assignment from the Team roster, OT guardrails (Kresin cap!), and export for Jacob — say the word.</p>
+
+  <div class="group" style="padding:10px 14px 12px;">
+    <div class="empscroll" style="max-height:none;"><table class="emptbl schgrid" id="schgrid"></table></div>
+    <div id="schweekline" style="font-size:13px; color:var(--ink); margin-top:10px;"></div>
+  </div>
+
+  <div class="group" style="padding:10px 14px 12px;">
+    <h3 style="font-size:14px; font-weight:700; margin-bottom:6px;">Notes on this week's proposal</h3>
+    <ul id="schnotes" style="font-size:12.5px; color:var(--ink-2); padding-left:18px; line-height:1.55;"></ul>
+  </div>
+  <p style="color:var(--ink-3); font-size:12px; margin-top:6px;"><b>Email to shop</b> opens a Gmail message to 221@galardimail.com with the schedule filled in; you hit Send. The table version is copied to your clipboard at the same time, so paste it into the message if you want the grid to print cleanly. <b>Print</b> opens a clean one-page sheet.</p>
 </div>
 </div><!-- /view-sch -->
 
@@ -1806,33 +1835,175 @@ function renderTrends(){
     `<br><span style="color:#3dc789">2026 pace ≈ $${pace}k</span> — tracking ahead of 2025's $1,011k. July was the best month on record ($95.6k net).`;
 }
 
-/* ---- Schedule Creator v1 (4-week same-weekday averages thru 8/9) ---- */
+/* ---- Schedule Builder v2: name-level grid, floor coverage, print + email to shop ---- */
 /*SCH-START*/
-const SCH_DAYS = [["Mon",3036],["Tue",2879],["Wed",3686],["Thu",3084],["Fri",3286],["Sat",2886],["Sun",2604]];
-const SCH_PARTS = [["Lunch 11–2",0.35],["Aftn 2–5",0.15],["Dinner 5–9",0.30],["Late 9–cl",0.20]];
+const SCH_ROSTER = [
+  {n:"Jacob (MG)", role:"manager"},
+  {n:"Mo", owner:true},
+  {n:"EJ"}, {n:"Marissa"}, {n:"Maria"},
+  {n:"Andrew", minor:true},
+  {n:"Kooper"}, {n:"Jamal"}, {n:"Twilia"}, {n:"Erika"}, {n:"Kaomy"}, {n:"Eduardo"}
+];
+const SCH_AVG = {Mon:2507, Tue:2798, Wed:3359, Thu:2937, Fri:3336, Sat:2815, Sun:2671};  // 5-week same-weekday averages, net sales
+const SCH_CLOSE = {Mon:23, Tue:23, Wed:23, Thu:23, Fri:23, Sat:23, Sun:22};             // "cl" = 10 PM close + cleanup (Sun 9 PM)
+const SCH_PROPOSAL = {
+  week: "2026-09-21",
+  shifts: {
+    "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Thu:"11-cl", Fri:"11-cl", Sat:"2-cl"},
+    "Mo": {},
+    "EJ": {},
+    "Marissa": {Mon:"4-9", Tue:"4-9", Fri:"11-4", Sat:"4-cl", Sun:"4-cl"},
+    "Maria": {Mon:"10-4", Tue:"10-4", Wed:"10-4", Thu:"5-cl", Fri:"5-cl", Sat:"10-4"},
+    "Andrew": {Mon:"5-cl", Tue:"5-cl", Wed:"5-cl", Sun:"4-cl"},
+    "Kooper": {Wed:"4-cl", Fri:"4-cl"},
+    "Jamal": {Thu:"4-9", Sun:"10-3"},
+    "Twilia": {Mon:"10-3", Wed:"11-9", Thu:"10-4", Fri:"10-3", Sun:"11-9"},
+    "Erika": {Tue:"10-4", Wed:"10-4", Thu:"10-4", Fri:"10-4", Sat:"10-3", Sun:"10-4"},
+    "Kaomy": {Mon:"11-3", Tue:"11-3", Sat:"12-4"},
+    "Eduardo": {Fri:"5-9", Sat:"5-9"}
+  },
+  notes: [
+    "From the availability calendar: EJ is off Mon 9/21 through Thu 9/24 and never works Fri to Sun, so EJ is out this week. Her 11-4 lunches go to Kaomy (Mon/Tue), Erika (Tue to Thu) and Twilia (Mon/Thu).",
+    "Twilia has to be gone by 4 PM Mon 9/21 (scheduled 10-3) and is OFF Tue 9/22. Same the week after: out by 4 Mon 9/28, off Tue 9/29.",
+    "Jacob is OFF Sun 9/27 and off Wed as he has been. There is a crossed-out request and a 'Jacob off' near Fri 9/25 or Sat 9/26 on the calendar that could not be read for sure; confirm with him. No manager is written in for Wed or Sun, Mo slots in.",
+    "Jacob at 51 hrs: Mon/Tue 2-cl, Thu/Fri 11-cl, Sat 2-cl. He has been running 60 to 72.",
+    "Kaomy's Mon/Tue were scribbled off the 9/14 sheet and she was marked off Sun 9/13. Penciled Mon 11-3, Tue 11-3, Sat 12-4. If she is gone, Twilia takes Mon 10-4 (out by 4).",
+    "Corina shows on the calendar as 10-2 Thu/Fri the first two weeks of September but is on no printed schedule. If she is a new hire, Thu and Fri 10-2 are open for her (+8 hrs).",
+    "Andrew (minor) is down to four closes: Mon/Tue/Wed 5-cl and Sun 4-cl. Sat evening is Jacob, Marissa 4-cl and Eduardo 5-9.",
+    "Kooper is at 14 hrs (Wed and Fri 4-cl). Add him Sat 4-9 if he wants the hours.",
+    "Targets: 2 at open, 3 through lunch (4 on Fri), 2 to 3 mid-afternoon, 3 at dinner (4 on Fri), 2 to close plus the manager. Sales averages are the last 5 weeks by weekday; hourly curve from the 9/2 and 9/6 Peachworks reports."
+  ]
+};
 /*SCH-END*/
-function renderSch(){
-  const pct = parseFloat(document.getElementById("schpct").value)||20;
-  const wage = parseFloat(document.getElementById("schwage").value)||14;
-  let html = `<tr style="color:var(--ink-3);"><th style="text-align:left;padding:7px 9px;">Day</th><th style="text-align:right;padding:7px 9px;">Forecast sales</th><th style="text-align:right;padding:7px 9px;">Labor $</th><th style="text-align:right;padding:7px 9px;">Total hrs</th>` +
-    SCH_PARTS.map(p=>`<th style="text-align:right;padding:7px 9px;">${p[0]}</th>`).join("") + `</tr>`;
-  let tS=0,tL=0,tH=0;
-  SCH_DAYS.forEach(d=>{
-    const lab=d[1]*pct/100, hrs=lab/wage; tS+=d[1]; tL+=lab; tH+=hrs;
-    const wed = d[0]==="Wed";
-    html += `<tr style="border-top:1px solid rgba(255,255,255,.07);${wed?"background:rgba(217,89,38,.08);":""}">` +
-      `<td style="padding:7px 9px;"><b style="color:var(--ink)">${d[0]}</b>${wed?" 🌭":""}</td>` +
-      `<td style="text-align:right;padding:7px 9px;color:var(--ink-2)">$${d[1].toLocaleString()}</td>` +
-      `<td style="text-align:right;padding:7px 9px;color:var(--ink-2)">$${Math.round(lab)}</td>` +
-      `<td style="text-align:right;padding:7px 9px;"><b style="color:var(--ink)">${hrs.toFixed(1)}</b></td>` +
-      SCH_PARTS.map(p=>`<td style="text-align:right;padding:7px 9px;color:var(--ink-2)">${(hrs*p[1]).toFixed(1)}</td>`).join("") + `</tr>`;
+const SCH_DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+let SCH = {};  // current week's shifts {name:{Mon:"10-4",...}}
+
+function schMonday(d){ const x=new Date(d); const day=(x.getDay()+6)%7; x.setDate(x.getDate()-day); return x; }
+function schISO(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function schWeekKey(){ return "w221sch:"+document.getElementById("schweek").value; }
+function schDates(){ const m=new Date(document.getElementById("schweek").value+"T12:00:00"); return SCH_DAYS.map((d,i)=>{const x=new Date(m); x.setDate(m.getDate()+i); return (x.getMonth()+1)+"/"+x.getDate();}); }
+
+/* "10-4" -> [10,16]; "5-cl" -> [17,close]; "off"/"" -> null */
+function schParse(s, day){
+  if(!s) return null; s=String(s).trim().toLowerCase().replace(/\s+/g,"").replace("–","-").replace("—","-");
+  if(s==="off"||s==="x"||s==="-") return null;
+  const m=s.match(/^(\d{1,2})(?::(\d{2}))?(a|p|am|pm)?-(cl|close|\d{1,2})(?::(\d{2}))?(a|p|am|pm)?$/);
+  if(!m) return null;
+  let a=parseInt(m[1],10), b;
+  if(m[3]&&m[3][0]==="p"&&a<12) a+=12; else if(m[3]&&m[3][0]==="a"&&a===12) a=0; else if(a<10) a+=12;   // 1-9 = PM, 10/11 = AM, 12 = noon
+  if(m[4]==="cl"||m[4]==="close") b=SCH_CLOSE[day];
+  else { b=parseInt(m[4],10); if(m[6]&&m[6][0]==="p"&&b<12) b+=12; else if(m[6]&&m[6][0]==="a"){} else if(b<=a-12||b<10||(b<=12&&a>=12)) b+=12; if(b<=a) b+=12; }
+  if(b<=a||a<6||b>24) return null;
+  return [a,b];
+}
+function schCanon(s,day){ const p=schParse(s,day); if(!p) return (s&&String(s).trim()?"OFF":""); const f=h=>h>12?h-12:h; const isCl=/cl/i.test(s); return f(p[0])+"-"+(isCl?"cl":f(p[1])); }
+
+function schLoad(){
+  let saved=null; try{ saved=JSON.parse(localStorage.getItem(schWeekKey())||"null"); }catch(e){}
+  if(saved) SCH=saved;
+  else if(document.getElementById("schweek").value===SCH_PROPOSAL.week) SCH=JSON.parse(JSON.stringify(SCH_PROPOSAL.shifts));
+  else SCH={};
+}
+function schSave(){ try{ localStorage.setItem(schWeekKey(), JSON.stringify(SCH)); }catch(e){} }
+function schWeekChange(){ const el=document.getElementById("schweek"); el.value=schISO(schMonday(new Date(el.value+"T12:00:00"))); schLoad(); renderSch(); }
+function schLoadProposal(){ document.getElementById("schweek").value=SCH_PROPOSAL.week; SCH=JSON.parse(JSON.stringify(SCH_PROPOSAL.shifts)); schSave(); renderSch(); schToast("Loaded Claude's proposal for the week of "+SCH_PROPOSAL.week+"."); }
+function schClear(){ SCH={}; schSave(); renderSch(); }
+function schToast(msg){ const t=document.getElementById("schtoast"); t.textContent=msg; t.style.display="block"; clearTimeout(t._h); t._h=setTimeout(()=>t.style.display="none",6000); }
+function schEdit(name, day, el){
+  const v=schCanon(el.value, day);
+  if(!SCH[name]) SCH[name]={};
+  if(v&&v!=="OFF") SCH[name][day]=v; else delete SCH[name][day];
+  el.value=v; schSave(); renderSch(true);
+}
+
+function schCompute(){
+  const wage=parseFloat(document.getElementById("schwage").value)||14.7;
+  const cov={}, dayHrs={}, perHrs={}; let weekHrs=0;
+  SCH_DAYS.forEach(d=>{ cov[d]={}; for(let h=10;h<SCH_CLOSE[d];h++) cov[d][h]=0; dayHrs[d]=0; });
+  SCH_ROSTER.forEach(r=>{
+    perHrs[r.n]=0;
+    SCH_DAYS.forEach(d=>{
+      const p=schParse((SCH[r.n]||{})[d], d); if(!p) return;
+      if(r.owner) return;                                   // Mo: on the sheet if he writes himself in, never in hours or labor
+      for(let h=p[0];h<p[1];h++) if(cov[d][h]!==undefined) cov[d][h]++;
+      dayHrs[d]+=p[1]-p[0]; perHrs[r.n]+=p[1]-p[0];
+    });
   });
-  html += `<tr style="border-top:2px solid rgba(255,255,255,.18);"><td style="padding:7px 9px;"><b style="color:var(--ink)">Week</b></td>` +
-    `<td style="text-align:right;padding:7px 9px;color:var(--ink-2)">$${Math.round(tS).toLocaleString()}</td>` +
-    `<td style="text-align:right;padding:7px 9px;color:var(--ink-2)">$${Math.round(tL).toLocaleString()}</td>` +
-    `<td style="text-align:right;padding:7px 9px;"><b style="color:var(--ink)">${tH.toFixed(0)}</b></td>` +
-    SCH_PARTS.map(p=>`<td style="text-align:right;padding:7px 9px;color:var(--ink-2)">${(tH*p[1]).toFixed(0)}</td>`).join("") + `</tr>`;
-  document.getElementById("schtable").innerHTML = html;
+  SCH_DAYS.forEach(d=>weekHrs+=dayHrs[d]);
+  const net=Object.values(SCH_AVG).reduce((a,b)=>a+b,0);
+  return {wage,cov,dayHrs,perHrs,weekHrs,net,weekPct:weekHrs*wage/net};
+}
+
+function renderSch(keepFocus){
+  const wk=document.getElementById("schweek");
+  if(!wk.value){ wk.value=SCH_PROPOSAL.week; schLoad(); }
+  const c=schCompute(), dates=schDates();
+  // floor by hour (first, above the grid)
+  const hrs=[]; for(let h=10;h<23;h++) hrs.push(h);
+  const lab=h=>h===12?"12p":h<12?h+"a":(h-12)+"p";
+  let f=`<tr><th></th>${hrs.map(h=>`<th class="n">${lab(h)}</th>`).join("")}<th class="n">hrs</th><th class="n">labor</th></tr>`;
+  SCH_DAYS.forEach(d=>{
+    const pct=c.dayHrs[d]*c.wage/SCH_AVG[d];
+    f+=`<tr><td><b style="color:var(--ink)">${d}</b> <span style="color:var(--ink-3)">${dates[SCH_DAYS.indexOf(d)]}</span></td>`+
+      hrs.map(h=>{ const v=c.cov[d][h]; if(v===undefined) return `<td class="n" style="color:var(--ink-3)">·</td>`;
+        const bg=v<=1?"rgba(227,73,72,.28)":v>=4?"rgba(61,199,137,.22)":"transparent";
+        return `<td class="n" style="background:${bg};color:var(--ink)">${v}</td>`; }).join("")+
+      `<td class="n"><b style="color:var(--ink)">${c.dayHrs[d]}</b></td><td class="n" style="color:${pct>0.21?"#e34948":"var(--ink-2)"}">${(pct*100).toFixed(1)}%</td></tr>`;
+  });
+  document.getElementById("schfloor").innerHTML=f;
+  // grid
+  let g=`<tr><th>Employee</th><th class="n">hrs</th>${SCH_DAYS.map((d,i)=>`<th>${d} ${dates[i]}</th>`).join("")}</tr>`;
+  SCH_ROSTER.forEach(r=>{
+    const tag=r.owner?' <span style="color:var(--ink-3);font-size:10.5px">owner, not counted</span>':r.minor?' <span style="color:#ffd166;font-size:10.5px">minor</span>':r.role?` <span style="color:var(--ink-3);font-size:10.5px">${r.role}</span>`:"";
+    g+=`<tr${r.owner?' style="opacity:.6"':''}><td><b style="color:var(--ink)">${r.n}</b>${tag}</td><td class="n"><b style="color:var(--ink)">${r.owner?"":c.perHrs[r.n]}</b></td>`+
+      SCH_DAYS.map(d=>{ const v=(SCH[r.n]||{})[d]||""; return `<td style="padding:3px 4px"><input class="schcell" value="${v}" placeholder="off" data-n="${r.n}" data-d="${d}" onchange="schEdit(this.dataset.n,this.dataset.d,this)"></td>`; }).join("")+`</tr>`;
+  });
+  g+=`<tr style="border-top:2px solid rgba(255,255,255,.18)"><td><b style="color:var(--ink)">Scheduled hours</b></td><td class="n"><b style="color:var(--ink)">${c.weekHrs}</b></td>${SCH_DAYS.map(d=>`<td class="n"><b style="color:var(--ink)">${c.dayHrs[d]}</b></td>`).join("")}</tr>`;
+  g+=`<tr><td>Avg net, last 5 wks</td><td></td>${SCH_DAYS.map(d=>`<td class="n">$${SCH_AVG[d].toLocaleString()}</td>`).join("")}</tr>`;
+  g+=`<tr><td>Labor % @ $${c.wage}/hr</td><td class="n">${(c.weekPct*100).toFixed(1)}%</td>${SCH_DAYS.map(d=>{const p=c.dayHrs[d]*c.wage/SCH_AVG[d];return `<td class="n" style="color:${p>0.21?"#e34948":"var(--ink-2)"}">${(p*100).toFixed(1)}%</td>`;}).join("")}</tr>`;
+  document.getElementById("schgrid").innerHTML=g;
+  document.getElementById("schweekline").innerHTML=`<b>${c.weekHrs} hrs</b> · $${c.net.toLocaleString()} projected net · <b style="color:${c.weekPct>0.21?"#e34948":"#3dc789"}">${(c.weekPct*100).toFixed(1)}% labor</b> at $${c.wage}/hr`;
+  document.getElementById("schnotes").innerHTML=(wk.value===SCH_PROPOSAL.week?SCH_PROPOSAL.notes:["No proposal for this week yet. Send Claude the availability calendar and the last posted sheet and ask for one."]).map(n=>`<li>${n}</li>`).join("");
+}
+
+/* ---- print + email ---- */
+function schSheetHTML(){
+  const dates=schDates(), c=schCompute(), wk=document.getElementById("schweek").value;
+  const td='padding:6px 8px;border:1px solid #999;text-align:center;font:13px Arial,Helvetica,sans-serif;';
+  let h=`<h2 style="font:bold 18px Arial,Helvetica,sans-serif;margin:0 0 4px">Weekly Work Schedule - Wienerschnitzel #221</h2>`+
+    `<div style="font:12px Arial,Helvetica,sans-serif;color:#444;margin-bottom:10px">Week of ${wk} &middot; cl = close (10 PM, Sun 9 PM) plus cleanup</div>`+
+    `<table style="border-collapse:collapse;width:100%"><tr style="background:#eee"><th style="${td}text-align:left">Employee</th><th style="${td}">Hrs</th>${SCH_DAYS.map((d,i)=>`<th style="${td}">${d}<br>${dates[i]}</th>`).join("")}</tr>`;
+  SCH_ROSTER.forEach(r=>{
+    h+=`<tr><td style="${td}text-align:left"><b>${r.n}</b></td><td style="${td}">${r.owner?"":c.perHrs[r.n]||""}</td>${SCH_DAYS.map(d=>`<td style="${td}">${(SCH[r.n]||{})[d]||"OFF"}</td>`).join("")}</tr>`;
+  });
+  h+=`<tr style="background:#eee"><td style="${td}text-align:left"><b>Total hours</b></td><td style="${td}"><b>${c.weekHrs}</b></td>${SCH_DAYS.map(d=>`<td style="${td}"><b>${c.dayHrs[d]}</b></td>`).join("")}</tr></table>`;
+  return h;
+}
+function schSheetText(){
+  const dates=schDates(), c=schCompute(), wk=document.getElementById("schweek").value;
+  const pad=(s,n)=>String(s).padEnd(n);
+  let t=`WIENERSCHNITZEL #221  WEEK OF ${wk}\ncl = close (10 PM, Sun 9 PM) plus cleanup\n\n`;
+  t+=pad("",12)+SCH_DAYS.map((d,i)=>pad(d+" "+dates[i],9)).join("")+"HRS\n";
+  SCH_ROSTER.forEach(r=>{ t+=pad(r.n.replace(" (MG)",""),12)+SCH_DAYS.map(d=>pad((SCH[r.n]||{})[d]||"off",9)).join("")+(r.owner?"":c.perHrs[r.n])+"\n"; });
+  t+=pad("TOTAL",12)+SCH_DAYS.map(d=>pad(c.dayHrs[d],9)).join("")+c.weekHrs+"\n";
+  return t;
+}
+function schPrint(){
+  const w=window.open("","_blank"); if(!w){ schToast("Pop-up blocked. Allow pop-ups for this page and try again."); return; }
+  w.document.write(`<!doctype html><title>Schedule ${document.getElementById("schweek").value}</title><body style="margin:24px;background:#fff;color:#000">${schSheetHTML()}<script>setTimeout(()=>print(),300)<\/script></body>`);
+  w.document.close();
+}
+async function schEmail(){
+  const wk=document.getElementById("schweek").value, html=schSheetHTML(), text=schSheetText();
+  let copied=false;
+  try{ await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]); copied=true; }
+  catch(e){ try{ await navigator.clipboard.writeText(text); copied=true; }catch(e2){} }
+  const su=encodeURIComponent("Schedule week of "+wk+" (print for the wall)");
+  const body=encodeURIComponent(text+"\n\n(Sent from the 221 dashboard. Paste the copied table version above this line if you want the grid.)");
+  const url=`https://mail.google.com/mail/?view=cm&fs=1&to=221@galardimail.com&su=${su}&body=${body}`;
+  const w=window.open(url,"_blank");
+  if(!w) location.href=`mailto:221@galardimail.com?subject=${su}&body=${body}`;
+  schToast((copied?"Table copied to clipboard. ":"")+"Gmail opened with the schedule to 221@galardimail.com; hit Send.");
 }
 
 /* ---- Calendar: PM schedule + data cadence + promo dates from emails ---- */
