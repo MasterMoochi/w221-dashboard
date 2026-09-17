@@ -544,7 +544,7 @@
 <div id="view-sch" style="display:none">
 <div class="calwrap" style="max-width:1100px;">
   <h2 style="font-size:20px; font-weight:750; margin-bottom:2px;">Schedule Builder <span style="font-size:12px; color:#ffd166; font-weight:600;">v2</span></h2>
-  <p style="color:var(--ink-3); font-size:12.5px; margin-bottom:12px;">Type shifts the way you write them on the sheet (<b>10-4</b>, <b>5-cl</b>, <b>11-3</b>, <b>off</b>). The floor chart and labor recompute as you type. Saves on this device per week. Mo's row never counts toward hours or labor.</p>
+  <p style="color:var(--ink-3); font-size:12.5px; margin-bottom:12px;">Type shifts the way you write them on the sheet (<b>10-4</b>, <b>5-cl</b>, <b>11-3</b>, <b>off</b>). The floor chart and labor recompute as you type. Saves on this device per week. Mo's row never counts toward hours or labor. Posted weeks are kept so any week can be compared with the one before it.</p>
 
   <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-bottom:12px; font-size:13px; color:var(--ink-2);">
     <label>Week of <input id="schweek" type="date" class="shiftdate" onchange="schWeekChange()"></label>
@@ -568,6 +568,15 @@
   <div class="group" style="padding:10px 14px 12px;">
     <div class="empscroll" style="max-height:none;"><table class="emptbl schgrid" id="schgrid"></table></div>
     <div id="schweekline" style="font-size:13px; color:var(--ink); margin-top:10px;"></div>
+  </div>
+
+  <div class="group" style="padding:10px 14px 12px;">
+    <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;">
+      <h3 style="font-size:14px; font-weight:700;" id="schcmptitle">Compared with last week</h3>
+      <span style="font-size:11.5px; color:var(--ink-3);" id="schcmpnote"></span>
+    </div>
+    <div class="empscroll" style="max-height:none; margin-top:8px;"><table class="emptbl" id="schcmp"></table></div>
+    <div style="margin-top:8px;"><button class="schbtn" onclick="schGoPrev()">Open last week's sheet</button> <button class="schbtn" onclick="schGoNext()">Back to this week</button></div>
   </div>
 
   <div class="group" style="padding:10px 14px 12px;">
@@ -1840,8 +1849,7 @@ function renderTrends(){
 const SCH_ROSTER = [
   {n:"Jacob (MG)", role:"manager"},
   {n:"Mo", owner:true},
-  {n:"EJ"}, {n:"Marissa"}, {n:"Maria"},
-  {n:"Andrew", minor:true},
+  {n:"EJ"}, {n:"Marissa"}, {n:"Maria"}, {n:"Andrew"},
   {n:"Kooper"}, {n:"Jamal"}, {n:"Twilia"}, {n:"Erika"}, {n:"Kaomy"}, {n:"Eduardo"}
 ];
 const SCH_AVG = {Mon:2507, Tue:2798, Wed:3359, Thu:2937, Fri:3336, Sat:2815, Sun:2671};  // 5-week same-weekday averages, net sales
@@ -1849,30 +1857,44 @@ const SCH_CLOSE = {Mon:23, Tue:23, Wed:23, Thu:23, Fri:23, Sat:23, Sun:22};     
 const SCH_PROPOSAL = {
   week: "2026-09-21",
   shifts: {
-    "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Thu:"11-cl", Fri:"11-cl", Sat:"2-cl"},
+    "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Wed:"4-cl", Thu:"11-cl", Fri:"11-cl", Sun:"3-cl"},
     "Mo": {},
     "EJ": {},
-    "Marissa": {Mon:"4-9", Tue:"4-9", Fri:"11-4", Sat:"4-cl", Sun:"4-cl"},
+    "Marissa": {Mon:"11-4", Tue:"11-4", Fri:"11-4", Sat:"4-cl", Sun:"4-cl"},
     "Maria": {Mon:"10-4", Tue:"10-4", Wed:"10-4", Thu:"5-cl", Fri:"5-cl", Sat:"10-4"},
-    "Andrew": {Mon:"5-cl", Tue:"5-cl", Wed:"5-cl", Sun:"4-cl"},
+    "Andrew": {Mon:"5-cl", Tue:"5-cl", Fri:"5-9", Sat:"5-cl"},
     "Kooper": {Wed:"4-cl", Fri:"4-cl"},
-    "Jamal": {Thu:"4-9", Sun:"10-3"},
+    "Jamal": {Thu:"11-3", Sun:"10-3"},
     "Twilia": {Mon:"10-3", Wed:"11-9", Thu:"10-4", Fri:"10-3", Sun:"11-9"},
-    "Erika": {Tue:"10-4", Wed:"10-4", Thu:"10-4", Fri:"10-4", Sat:"10-3", Sun:"10-4"},
-    "Kaomy": {Mon:"11-3", Tue:"11-3", Sat:"12-4"},
-    "Eduardo": {Fri:"5-9", Sat:"5-9"}
+    "Erika": {Tue:"10-2", Wed:"10-4", Thu:"10-4", Fri:"10-4", Sat:"10-3", Sun:"10-4"},
+    "Kaomy": {Mon:"4-9", Tue:"4-9", Sat:"12-5"},
+    "Eduardo": {Thu:"5-9", Sat:"5-9"}
   },
   notes: [
-    "From the availability calendar: EJ is off Mon 9/21 through Thu 9/24 and never works Fri to Sun, so EJ is out this week. Her 11-4 lunches go to Kaomy (Mon/Tue), Erika (Tue to Thu) and Twilia (Mon/Thu).",
+    "From the availability calendar: EJ is off Mon 9/21 through Thu 9/24 and never works Fri to Sun, so EJ is out this week. Her 11-4 lunches go to Marissa (Mon/Tue), Erika (Tue to Thu) and Twilia (Mon/Thu).",
     "Twilia has to be gone by 4 PM Mon 9/21 (scheduled 10-3) and is OFF Tue 9/22. Same the week after: out by 4 Mon 9/28, off Tue 9/29.",
-    "Jacob is OFF Sun 9/27 and off Wed as he has been. There is a crossed-out request and a 'Jacob off' near Fri 9/25 or Sat 9/26 on the calendar that could not be read for sure; confirm with him. No manager is written in for Wed or Sun, Mo slots in.",
-    "Jacob at 51 hrs: Mon/Tue 2-cl, Thu/Fri 11-cl, Sat 2-cl. He has been running 60 to 72.",
-    "Kaomy's Mon/Tue were scribbled off the 9/14 sheet and she was marked off Sun 9/13. Penciled Mon 11-3, Tue 11-3, Sat 12-4. If she is gone, Twilia takes Mon 10-4 (out by 4).",
-    "Corina shows on the calendar as 10-2 Thu/Fri the first two weeks of September but is on no printed schedule. If she is a new hire, Thu and Fri 10-2 are open for her (+8 hrs).",
-    "Andrew (minor) is down to four closes: Mon/Tue/Wed 5-cl and Sun 4-cl. Sat evening is Jacob, Marissa 4-cl and Eduardo 5-9.",
-    "Kooper is at 14 hrs (Wed and Fri 4-cl). Add him Sat 4-9 if he wants the hours.",
+    "Jacob is off Saturday only. He is at 56 hrs: Mon/Tue 2-cl, Wed 4-cl, Thu/Fri 11-cl, Sun 3-cl. Saturday has no manager on paper (Marissa 4-cl closes with Andrew), Mo slots in.",
+    "Kaomy is back on her Mon and Tue 4-9 evenings, plus Sat 12-5 so Saturday is not down to one person between 3 and 5.",
+    "Marissa moves to lunches Mon/Tue (11-4) because Kaomy has the evenings; she keeps Fri 11-4 and the Sat/Sun closes. Her Wed 4-9 is dropped because Wed dinner already has Twilia, Jacob and Kooper.",
+    "Andrew: Mon/Tue 5-cl, Fri 5-9, Sat 5-cl (22 hrs). Kooper Wed and Fri 4-cl (14). Eduardo Thu and Sat 5-9. Jamal Thu 11-3 and Sun 10-3.",
     "Targets: 2 at open, 3 through lunch (4 on Fri), 2 to 3 mid-afternoon, 3 at dinner (4 on Fri), 2 to close plus the manager. Sales averages are the last 5 weeks by weekday; hourly curve from the 9/2 and 9/6 Peachworks reports."
   ]
+};
+/* Posted weeks, typed from the sheet on the wall (handwritten edits included). Add one entry per week to keep the comparison going. */
+const SCH_HISTORY = {
+  "2026-09-14": { note:"as posted on the wall, from the 9/16 photo", shifts:{
+    "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Thu:"11-cl", Fri:"11-cl", Sat:"11-cl", Sun:"5-cl"},
+    "EJ": {Mon:"11-4", Tue:"11-4"},
+    "Marissa": {Mon:"4-9", Tue:"4-9", Wed:"4-9", Fri:"11-4", Sat:"4-10", Sun:"4-cl"},
+    "Maria": {Mon:"10-4", Tue:"10-4", Wed:"10-4", Thu:"5-cl", Fri:"5-cl", Sat:"10-4"},
+    "Andrew": {Mon:"5-cl", Tue:"5-cl", Wed:"11-cl", Sat:"5-cl", Sun:"4-cl"},
+    "Kooper": {Wed:"4-cl", Fri:"4-cl", Sat:"4-9"},
+    "Jamal": {Thu:"4-9", Sun:"11-3"},
+    "Twilia": {Mon:"10-4", Wed:"11-9", Thu:"11-4", Fri:"11-5", Sun:"11-9"},
+    "Erika": {Tue:"11-4", Wed:"11-4", Thu:"10-4", Fri:"10-4", Sat:"11-3", Sun:"10-3"},
+    "Kaomy": {Sat:"11-3"},
+    "Eduardo": {Thu:"5-9", Fri:"5-cl"}
+  }}
 };
 /*SCH-END*/
 const SCH_DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
@@ -1900,10 +1922,14 @@ function schCanon(s,day){ const p=schParse(s,day); if(!p) return (s&&String(s).t
 
 function schLoad(){
   let saved=null; try{ saved=JSON.parse(localStorage.getItem(schWeekKey())||"null"); }catch(e){}
-  if(saved) SCH=saved;
-  else if(document.getElementById("schweek").value===SCH_PROPOSAL.week) SCH=JSON.parse(JSON.stringify(SCH_PROPOSAL.shifts));
-  else SCH={};
+  SCH=JSON.parse(JSON.stringify(saved||schKnown(document.getElementById("schweek").value)||{}));
 }
+/* shifts we know for a week without user edits: this week's proposal or a posted week */
+function schKnown(wk){ if(wk===SCH_PROPOSAL.week) return SCH_PROPOSAL.shifts; if(SCH_HISTORY[wk]) return SCH_HISTORY[wk].shifts; return null; }
+function schShiftsFor(wk){ let saved=null; try{ saved=JSON.parse(localStorage.getItem("w221sch:"+wk)||"null"); }catch(e){} return saved||schKnown(wk)||null; }
+function schShiftWeek(wk,n){ const d=new Date(wk+"T12:00:00"); d.setDate(d.getDate()+7*n); return schISO(d); }
+function schGoPrev(){ const el=document.getElementById("schweek"); el.value=schShiftWeek(el.value,-1); schLoad(); renderSch(); }
+function schGoNext(){ const el=document.getElementById("schweek"); el.value=schShiftWeek(el.value,1); schLoad(); renderSch(); }
 function schSave(){ try{ localStorage.setItem(schWeekKey(), JSON.stringify(SCH)); }catch(e){} }
 function schWeekChange(){ const el=document.getElementById("schweek"); el.value=schISO(schMonday(new Date(el.value+"T12:00:00"))); schLoad(); renderSch(); }
 function schLoadProposal(){ document.getElementById("schweek").value=SCH_PROPOSAL.week; SCH=JSON.parse(JSON.stringify(SCH_PROPOSAL.shifts)); schSave(); renderSch(); schToast("Loaded Claude's proposal for the week of "+SCH_PROPOSAL.week+"."); }
@@ -1916,14 +1942,15 @@ function schEdit(name, day, el){
   el.value=v; schSave(); renderSch(true);
 }
 
-function schCompute(){
+function schCompute(shifts){
+  const S=shifts||SCH;
   const wage=parseFloat(document.getElementById("schwage").value)||14.7;
   const cov={}, dayHrs={}, perHrs={}; let weekHrs=0;
   SCH_DAYS.forEach(d=>{ cov[d]={}; for(let h=10;h<SCH_CLOSE[d];h++) cov[d][h]=0; dayHrs[d]=0; });
   SCH_ROSTER.forEach(r=>{
     perHrs[r.n]=0;
     SCH_DAYS.forEach(d=>{
-      const p=schParse((SCH[r.n]||{})[d], d); if(!p) return;
+      const p=schParse((S[r.n]||{})[d], d); if(!p) return;
       if(r.owner) return;                                   // Mo: on the sheet if he writes himself in, never in hours or labor
       for(let h=p[0];h<p[1];h++) if(cov[d][h]!==undefined) cov[d][h]++;
       dayHrs[d]+=p[1]-p[0]; perHrs[r.n]+=p[1]-p[0];
@@ -1963,7 +1990,24 @@ function renderSch(keepFocus){
   g+=`<tr><td>Labor % @ $${c.wage}/hr</td><td class="n">${(c.weekPct*100).toFixed(1)}%</td>${SCH_DAYS.map(d=>{const p=c.dayHrs[d]*c.wage/SCH_AVG[d];return `<td class="n" style="color:${p>0.21?"#e34948":"var(--ink-2)"}">${(p*100).toFixed(1)}%</td>`;}).join("")}</tr>`;
   document.getElementById("schgrid").innerHTML=g;
   document.getElementById("schweekline").innerHTML=`<b>${c.weekHrs} hrs</b> · $${c.net.toLocaleString()} projected net · <b style="color:${c.weekPct>0.21?"#e34948":"#3dc789"}">${(c.weekPct*100).toFixed(1)}% labor</b> at $${c.wage}/hr`;
-  document.getElementById("schnotes").innerHTML=(wk.value===SCH_PROPOSAL.week?SCH_PROPOSAL.notes:["No proposal for this week yet. Send Claude the availability calendar and the last posted sheet and ask for one."]).map(n=>`<li>${n}</li>`).join("");
+  document.getElementById("schnotes").innerHTML=(wk.value===SCH_PROPOSAL.week?SCH_PROPOSAL.notes:SCH_HISTORY[wk.value]?["Posted week, "+SCH_HISTORY[wk.value].note+". Edits you make here are saved on this device only."]:["No proposal for this week yet. Send Claude the availability calendar and the last posted sheet and ask for one."]).map(n=>`<li>${n}</li>`).join("");
+  // compare with the week before
+  const pk=schShiftWeek(wk.value,-1), ps=schShiftsFor(pk);
+  const title=document.getElementById("schcmptitle"), note=document.getElementById("schcmpnote"), tbl=document.getElementById("schcmp");
+  const pm=new Date(pk+"T12:00:00"); title.textContent="Compared with the week of "+(pm.getMonth()+1)+"/"+pm.getDate();
+  if(!ps){ note.textContent=""; tbl.innerHTML=`<tr><td style="color:var(--ink-3)">No sheet on file for the week of ${pk}. Ask Claude to add it from a photo.</td></tr>`; }
+  else{
+    const pc=schCompute(ps); note.textContent=(SCH_HISTORY[pk]?SCH_HISTORY[pk].note:"from this device")+" · hours only, Mo excluded";
+    const dlt=(a,b)=>{const x=a-b; return x===0?`<span style="color:var(--ink-3)">=</span>`:`<span style="color:${x>0?"#e34948":"#3dc789"}">${x>0?"+":""}${x}</span>`;};
+    let t=`<tr><th></th>${SCH_DAYS.map(d=>`<th class="n">${d}</th>`).join("")}<th class="n">week</th><th class="n">labor</th></tr>`;
+    t+=`<tr><td>Week of ${(pm.getMonth()+1)}/${pm.getDate()}</td>${SCH_DAYS.map(d=>`<td class="n">${pc.dayHrs[d]}</td>`).join("")}<td class="n"><b style="color:var(--ink)">${pc.weekHrs}</b></td><td class="n">${(pc.weekPct*100).toFixed(1)}%</td></tr>`;
+    t+=`<tr><td>This week</td>${SCH_DAYS.map(d=>`<td class="n">${c.dayHrs[d]}</td>`).join("")}<td class="n"><b style="color:var(--ink)">${c.weekHrs}</b></td><td class="n">${(c.weekPct*100).toFixed(1)}%</td></tr>`;
+    t+=`<tr style="border-top:1px solid rgba(255,255,255,.14)"><td>Change</td>${SCH_DAYS.map(d=>`<td class="n">${dlt(c.dayHrs[d],pc.dayHrs[d])}</td>`).join("")}<td class="n">${dlt(c.weekHrs,pc.weekHrs)}</td><td class="n">${(()=>{const x=Math.round((c.weekPct-pc.weekPct)*1000)/10; return x===0?`<span style="color:var(--ink-3)">=</span>`:`<span style="color:${x>0?"#e34948":"#3dc789"}">${x>0?"+":""}${x} pts</span>`;})()}</td></tr>`;
+    t+=`<tr><th style="padding-top:10px">By person</th><th class="n" colspan="3">last week</th><th class="n" colspan="2">this week</th><th class="n" colspan="2">change</th><th colspan="2"></th></tr>`;
+    SCH_ROSTER.filter(r=>!r.owner).forEach(r=>{ const a=pc.perHrs[r.n]||0, b=c.perHrs[r.n]||0; if(!a&&!b) return;
+      t+=`<tr><td><b style="color:var(--ink)">${r.n}</b></td><td class="n" colspan="3">${a}</td><td class="n" colspan="2">${b}</td><td class="n" colspan="2">${dlt(b,a)}</td><td colspan="2"></td></tr>`; });
+    tbl.innerHTML=t;
+  }
 }
 
 /* ---- print + email ---- */
