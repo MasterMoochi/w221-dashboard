@@ -103,6 +103,12 @@
   .schcell:focus { outline:2px solid #ffd166; border-color:transparent; }
   .schcell::placeholder { color:rgba(255,255,255,.22); }
   .schgrid td { padding:4px 6px; }
+  .schgrid th:first-child, .schgrid td:first-child { width:190px; min-width:150px; }
+  .schgrid th.c, .schgrid td.c { text-align:center; font-variant-numeric:tabular-nums; width:76px; min-width:76px; }
+  .schgrid th.n, .schgrid td.n { width:56px; min-width:56px; }
+  .schgrid td.cell { padding:3px 6px; text-align:center; width:76px; min-width:76px; }
+  .schgrid td.ro { text-align:center; width:76px; min-width:76px; color:var(--ink); }
+  .schgrid td.ro.off { color:rgba(255,255,255,.28); }
   .calwrap { max-width: 1000px; padding: 14px 40px 40px; }
   .calhead { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
   .calhead h2 { font-size: 20px; font-weight: 750; min-width: 200px; text-align: center; }
@@ -572,11 +578,11 @@
 
   <div class="group" style="padding:10px 14px 12px;">
     <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;">
-      <h3 style="font-size:14px; font-weight:700;" id="schcmptitle">Compared with last week</h3>
+      <h3 style="font-size:14px; font-weight:700;" id="schcmptitle">Last week's sheet</h3>
       <span style="font-size:11.5px; color:var(--ink-3);" id="schcmpnote"></span>
     </div>
-    <div class="empscroll" style="max-height:none; margin-top:8px;"><table class="emptbl" id="schcmp"></table></div>
-    <div style="margin-top:8px;"><button class="schbtn" onclick="schGoPrev()">Open last week's sheet</button> <button class="schbtn" onclick="schGoNext()">Back to this week</button></div>
+    <div class="empscroll" style="max-height:none; margin-top:8px;"><table class="emptbl schgrid" id="schcmp"></table></div>
+    <div style="font-size:11.5px; color:var(--ink-3); margin-top:8px;">Change column is this week minus last week per person. Green means fewer hours than last week, red means more.</div>
   </div>
 
   <div class="group" style="padding:10px 14px 12px;">
@@ -1979,33 +1985,36 @@ function renderSch(keepFocus){
   });
   document.getElementById("schfloor").innerHTML=f;
   // grid
-  let g=`<tr><th>Employee</th><th class="n">hrs</th>${SCH_DAYS.map((d,i)=>`<th>${d} ${dates[i]}</th>`).join("")}</tr>`;
+  let g=`<tr><th>Employee</th><th class="n">hrs</th>${SCH_DAYS.map((d,i)=>`<th class="c">${d} ${dates[i]}</th>`).join("")}</tr>`;
   SCH_ROSTER.forEach(r=>{
     const tag=r.owner?' <span style="color:var(--ink-3);font-size:10.5px">owner, not counted</span>':r.minor?' <span style="color:#ffd166;font-size:10.5px">minor</span>':r.role?` <span style="color:var(--ink-3);font-size:10.5px">${r.role}</span>`:"";
     g+=`<tr${r.owner?' style="opacity:.6"':''}><td><b style="color:var(--ink)">${r.n}</b>${tag}</td><td class="n"><b style="color:var(--ink)">${r.owner?"":c.perHrs[r.n]}</b></td>`+
-      SCH_DAYS.map(d=>{ const v=(SCH[r.n]||{})[d]||""; return `<td style="padding:3px 4px"><input class="schcell" value="${v}" placeholder="off" data-n="${r.n}" data-d="${d}" onchange="schEdit(this.dataset.n,this.dataset.d,this)"></td>`; }).join("")+`</tr>`;
+      SCH_DAYS.map(d=>{ const v=(SCH[r.n]||{})[d]||""; return `<td class="cell"><input class="schcell" value="${v}" placeholder="off" data-n="${r.n}" data-d="${d}" onchange="schEdit(this.dataset.n,this.dataset.d,this)"></td>`; }).join("")+`</tr>`;
   });
-  g+=`<tr style="border-top:2px solid rgba(255,255,255,.18)"><td><b style="color:var(--ink)">Scheduled hours</b></td><td class="n"><b style="color:var(--ink)">${c.weekHrs}</b></td>${SCH_DAYS.map(d=>`<td class="n"><b style="color:var(--ink)">${c.dayHrs[d]}</b></td>`).join("")}</tr>`;
-  g+=`<tr><td>Avg net, last 5 wks</td><td></td>${SCH_DAYS.map(d=>`<td class="n">$${SCH_AVG[d].toLocaleString()}</td>`).join("")}</tr>`;
-  g+=`<tr><td>Labor % @ $${c.wage}/hr</td><td class="n">${(c.weekPct*100).toFixed(1)}%</td>${SCH_DAYS.map(d=>{const p=c.dayHrs[d]*c.wage/SCH_AVG[d];return `<td class="n" style="color:${p>0.21?"#e34948":"var(--ink-2)"}">${(p*100).toFixed(1)}%</td>`;}).join("")}</tr>`;
+  g+=`<tr style="border-top:2px solid rgba(255,255,255,.18)"><td><b style="color:var(--ink)">Scheduled hours</b></td><td class="n"><b style="color:var(--ink)">${c.weekHrs}</b></td>${SCH_DAYS.map(d=>`<td class="c"><b style="color:var(--ink)">${c.dayHrs[d]}</b></td>`).join("")}</tr>`;
+  g+=`<tr><td>Avg net, last 5 wks</td><td></td>${SCH_DAYS.map(d=>`<td class="c">$${SCH_AVG[d].toLocaleString()}</td>`).join("")}</tr>`;
+  g+=`<tr><td>Labor % @ $${c.wage}/hr</td><td class="n">${(c.weekPct*100).toFixed(1)}%</td>${SCH_DAYS.map(d=>{const p=c.dayHrs[d]*c.wage/SCH_AVG[d];return `<td class="c" style="color:${p>0.21?"#e34948":"var(--ink-2)"}">${(p*100).toFixed(1)}%</td>`;}).join("")}</tr>`;
   document.getElementById("schgrid").innerHTML=g;
   document.getElementById("schweekline").innerHTML=`<b>${c.weekHrs} hrs</b> · $${c.net.toLocaleString()} projected net · <b style="color:${c.weekPct>0.21?"#e34948":"#3dc789"}">${(c.weekPct*100).toFixed(1)}% labor</b> at $${c.wage}/hr`;
   document.getElementById("schnotes").innerHTML=(wk.value===SCH_PROPOSAL.week?SCH_PROPOSAL.notes:SCH_HISTORY[wk.value]?["Posted week, "+SCH_HISTORY[wk.value].note+". Edits you make here are saved on this device only."]:["No proposal for this week yet. Send Claude the availability calendar and the last posted sheet and ask for one."]).map(n=>`<li>${n}</li>`).join("");
-  // compare with the week before
+  // last week's full sheet, read-only, with per-person change
   const pk=schShiftWeek(wk.value,-1), ps=schShiftsFor(pk);
   const title=document.getElementById("schcmptitle"), note=document.getElementById("schcmpnote"), tbl=document.getElementById("schcmp");
-  const pm=new Date(pk+"T12:00:00"); title.textContent="Compared with the week of "+(pm.getMonth()+1)+"/"+pm.getDate();
-  if(!ps){ note.textContent=""; tbl.innerHTML=`<tr><td style="color:var(--ink-3)">No sheet on file for the week of ${pk}. Ask Claude to add it from a photo.</td></tr>`; }
+  const pm=new Date(pk+"T12:00:00"), pdates=SCH_DAYS.map((d,i)=>{const x=new Date(pm); x.setDate(pm.getDate()+i); return (x.getMonth()+1)+"/"+x.getDate();});
+  title.textContent="Last week's sheet, week of "+(pm.getMonth()+1)+"/"+pm.getDate();
+  if(!ps){ note.textContent=""; tbl.innerHTML=`<tr><td style="color:var(--ink-3)">No sheet on file for the week of ${pk}. Send Claude a photo of it and it will be added.</td></tr>`; }
   else{
-    const pc=schCompute(ps); note.textContent=(SCH_HISTORY[pk]?SCH_HISTORY[pk].note:"from this device")+" · hours only, Mo excluded";
+    const pc=schCompute(ps); note.textContent=(SCH_HISTORY[pk]?SCH_HISTORY[pk].note:"saved on this device")+" · Mo not counted";
     const dlt=(a,b)=>{const x=a-b; return x===0?`<span style="color:var(--ink-3)">=</span>`:`<span style="color:${x>0?"#e34948":"#3dc789"}">${x>0?"+":""}${x}</span>`;};
-    let t=`<tr><th></th>${SCH_DAYS.map(d=>`<th class="n">${d}</th>`).join("")}<th class="n">week</th><th class="n">labor</th></tr>`;
-    t+=`<tr><td>Week of ${(pm.getMonth()+1)}/${pm.getDate()}</td>${SCH_DAYS.map(d=>`<td class="n">${pc.dayHrs[d]}</td>`).join("")}<td class="n"><b style="color:var(--ink)">${pc.weekHrs}</b></td><td class="n">${(pc.weekPct*100).toFixed(1)}%</td></tr>`;
-    t+=`<tr><td>This week</td>${SCH_DAYS.map(d=>`<td class="n">${c.dayHrs[d]}</td>`).join("")}<td class="n"><b style="color:var(--ink)">${c.weekHrs}</b></td><td class="n">${(c.weekPct*100).toFixed(1)}%</td></tr>`;
-    t+=`<tr style="border-top:1px solid rgba(255,255,255,.14)"><td>Change</td>${SCH_DAYS.map(d=>`<td class="n">${dlt(c.dayHrs[d],pc.dayHrs[d])}</td>`).join("")}<td class="n">${dlt(c.weekHrs,pc.weekHrs)}</td><td class="n">${(()=>{const x=Math.round((c.weekPct-pc.weekPct)*1000)/10; return x===0?`<span style="color:var(--ink-3)">=</span>`:`<span style="color:${x>0?"#e34948":"#3dc789"}">${x>0?"+":""}${x} pts</span>`;})()}</td></tr>`;
-    t+=`<tr><th style="padding-top:10px">By person</th><th class="n" colspan="3">last week</th><th class="n" colspan="2">this week</th><th class="n" colspan="2">change</th><th colspan="2"></th></tr>`;
-    SCH_ROSTER.filter(r=>!r.owner).forEach(r=>{ const a=pc.perHrs[r.n]||0, b=c.perHrs[r.n]||0; if(!a&&!b) return;
-      t+=`<tr><td><b style="color:var(--ink)">${r.n}</b></td><td class="n" colspan="3">${a}</td><td class="n" colspan="2">${b}</td><td class="n" colspan="2">${dlt(b,a)}</td><td colspan="2"></td></tr>`; });
+    let t=`<tr><th>Employee</th><th class="n">hrs</th><th class="n">change</th>${SCH_DAYS.map((d,i)=>`<th class="c">${d} ${pdates[i]}</th>`).join("")}</tr>`;
+    SCH_ROSTER.forEach(r=>{
+      const a=pc.perHrs[r.n]||0, b=c.perHrs[r.n]||0;
+      t+=`<tr${r.owner?' style="opacity:.6"':''}><td><b style="color:var(--ink)">${r.n}</b></td><td class="n"><b style="color:var(--ink)">${r.owner?"":a}</b></td><td class="n">${r.owner?"":dlt(b,a)}</td>`+
+        SCH_DAYS.map(d=>{ const v=(ps[r.n]||{})[d]; return `<td class="ro${v?"":" off"}">${v||"off"}</td>`; }).join("")+`</tr>`;
+    });
+    t+=`<tr style="border-top:2px solid rgba(255,255,255,.18)"><td><b style="color:var(--ink)">Last week's hours</b></td><td class="n"><b style="color:var(--ink)">${pc.weekHrs}</b></td><td class="n"></td>${SCH_DAYS.map(d=>`<td class="c"><b style="color:var(--ink)">${pc.dayHrs[d]}</b></td>`).join("")}</tr>`;
+    t+=`<tr><td>This week's hours</td><td class="n">${c.weekHrs}</td><td class="n">${dlt(c.weekHrs,pc.weekHrs)}</td>${SCH_DAYS.map(d=>`<td class="c">${c.dayHrs[d]} <span style="font-size:11px">${dlt(c.dayHrs[d],pc.dayHrs[d])}</span></td>`).join("")}</tr>`;
+    t+=`<tr><td>Labor % @ $${c.wage}/hr</td><td class="n">${(pc.weekPct*100).toFixed(1)}%</td><td class="n">${(()=>{const x=Math.round((c.weekPct-pc.weekPct)*1000)/10; return x===0?`<span style="color:var(--ink-3)">=</span>`:`<span style="color:${x>0?"#e34948":"#3dc789"}">${x>0?"+":""}${x}</span>`;})()}</td>${SCH_DAYS.map(d=>{const p=pc.dayHrs[d]*c.wage/SCH_AVG[d];return `<td class="c" style="color:${p>0.21?"#e34948":"var(--ink-2)"}">${(p*100).toFixed(1)}%</td>`;}).join("")}</tr>`;
     tbl.innerHTML=t;
   }
 }
