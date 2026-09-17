@@ -597,17 +597,17 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-09-16", "updatedBy": "daily run 9/16 — 9/15 daily row, 9/14–9/15 discount rows",
+  "updated": "2026-09-17", "updatedBy": "daily run 9/17 — 9/16 daily row and discount row",
   "daily": {
-      "date": "2026-09-15",
-      "netSales": 2786.75,
-      "transactions": 208,
-      "laborPct": 20,
-      "debrief": "Tuesday 9/15: $2,787 net on 208 checks, a $13.40 average, which is 4.8% over last Tuesday ($2,659 on 200) and 3% over the four-Tuesday average ($2,705). Lunch ran $345 at 11am, $382 for the noon hour, $272 at 1pm and a second push of $324 at 2pm; dinner was a steady $240 to $267 from 4pm through 6pm, then $181 at 7pm and a $135 finish over the last two hours. Labor was 35.08 hours at 20.0%, six hours lighter than a typical Tuesday and a shade better than last week. Cash: no paid outs, bank $17.31 short, and the Dispatch/Tips column came in at −$18.45. One employee discount ($2.00 on check 29 at 11:37am) and one manager discount ($7.63 on check 113 at 2:25pm, authorized by Jacob) — both rung on the Jimmy 221 login. 34 voids for $34.08, 12 error corrects for $76.95 (2.8% of net), 6 cancels for $45.46, 1 no-sale. App share 11.1%. Auto clock-outs: none Monday or Tuesday. Monday 9/14 was backfilled this run.",
+      "date": "2026-09-16",
+      "netSales": 3546.73,
+      "transactions": 253,
+      "laborPct": 15.4,
+      "debrief": "Wednesday 9/16: $3,547 net on 253 checks, a $14.02 average — the best Wednesday since 8/19, 18% over last Wednesday ($3,013 on 245) and 7% over the four-Wednesday average ($3,311), with $585 in promo dollars behind it. Lunch was enormous: $400 at 11am and $676 for the noon hour, then the afternoon never dropped below $276 from 1pm through 4pm, with a second $342 peak at 7pm. Labor was 39.48 hours at 15.4%, normal hours on a big day. Cash: no paid outs, bank $7.58 short. One employee discount ($6.00 on check 472 at 10:40pm, Kooper Blackwelder, 8 line items) and no manager discounts. The problem is voids: 28 for $284.58, of which 13 were manager voids for $217.52 — the most manager-void dollars in a day this month by a wide margin. 43 error corrects for $172.41 (4.9% of net), 2 cancels for $16.66, 10 no-sales. App share 4.0%. Auto clock-outs: none.",
       "alerts": [
-          "9/15 both discounts on the shared Jimmy 221 login — employee $2.00 on check 29, manager $7.63 on check 113 (auth Jacob). That makes five of five Mon–Tue on the register login",
-          "9/14 (backfill): manager discounts $16.15 on two checks, over the $15 day limit — check 896 ($8.76, auth Jacob) and check 907 ($7.39) with \"mistake mess up\" typed in place of an authorizer; all three of the day's discounts on the Jimmy 221 login; app share 2.8%, under the floor; $886 paid out, covered by the bank variance",
-          "9/15 Dispatch/Tips column negative (−$18.45), the third time in five days"
+          "9/16 MANAGER VOIDS: 13 for $217.52 — total voids $284.58 on 28 checks, nearly triple the $100 line. Worth pulling the void detail for who and what",
+          "9/16 app share 4.0%, under the 8% floor; delivery and pickup were $142 on a $3,547 day",
+          "9/16 employee discount on check 472 carried 8 line items, over the 6-item cap ($6.00, Kooper, 10:40 PM)"
       ]
   },
   "weekly":  { "weekStart": "2026-08-31", "netSales": 19860.51, "laborPct": 21.1, "cogsPct": 26.7, "alerts": ["Net $19,861, down 2.2% from $20,313, while labor rose from 20.0% to 21.1% — the hours did not come down with the sales", "COGS 26.7%: food only $3,626 (light, delivery timing) but Operations/Cleaning came in at $1,605.56, the biggest other-GL line since the $2,849 Distribution Cost in June. Find that invoice", "Category mix: hot dogs 39.3% (from 42.0%), fries 26.2% (from 24.5%), corn dogs 9.7%, drinks 12.3%, Tastee 7.8%, burgers 5.5%. The $8 Meal Deal is shifting the mix toward fries", "Manager discounts for the week: 8 checks, $59.99, MORE than the 12 employee discounts at $41.77"] },
@@ -616,7 +616,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-09-15","hours":[["9a",57.28],["10a",49.42],["11a",345.29],["12p",382.12],["1p",272.05],["2p",323.70],["3p",178.49],["4p",240.32],["5p",266.78],["6p",231.36],["7p",180.90],["8p",124.19],["9p",68.14],["10p",66.71]]};
+    const HOURLY = {"date":"2026-09-16","hours":[["9a",5.35],["10a",174.69],["11a",399.57],["12p",675.69],["1p",279.84],["2p",318.98],["3p",342.43],["4p",276.54],["5p",216.22],["6p",234.48],["7p",342.38],["8p",165.96],["9p",54.87],["10p",59.73]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -755,7 +755,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-09-15", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-09-16", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -912,7 +912,8 @@ const SHIFT_DISC = [
   ["2026-09-14","3:49 PM",896,"Manager Discount",8.76,"register (Jimmy)"],
   ["2026-09-14","4:43 PM",907,"Manager Discount",7.39,"register (Jimmy)"],
   ["2026-09-15","11:37 AM",29,"Employee Discount",2.00,"register (Jimmy)"],
-  ["2026-09-15","2:25 PM",113,"Manager Discount",7.63,"register (Jimmy)"]];
+  ["2026-09-15","2:25 PM",113,"Manager Discount",7.63,"register (Jimmy)"],
+  ["2026-09-16","10:40 PM",472,"Employee Discount",6.00,"Kooper Blackwelder"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
