@@ -568,7 +568,7 @@
       <h3 style="font-size:14px; font-weight:700;">People on the floor by hour</h3>
       <span style="font-size:11.5px; color:var(--ink-3);">red = 1 or none · green = 4 or more · Mo not counted</span>
     </div>
-    <div class="empscroll" style="max-height:none; margin-top:8px;"><table class="emptbl" id="schfloor"></table></div>
+    <div class="empscroll" style="max-height:none; margin-top:8px;"><table class="emptbl schgrid" id="schfloor"></table></div>
   </div>
 
   <div class="group" style="padding:10px 14px 12px;">
@@ -1872,7 +1872,7 @@ const SCH_PROPOSAL = {
     "Andrew": {Mon:"5-cl", Tue:"5-cl", Fri:"5-9", Sat:"5-cl"},
     "Kooper": {Wed:"4-cl", Fri:"4-cl"},
     "Jamal": {Thu:"11-3", Sun:"10-3"},
-    "Twilia": {Mon:"10-3", Wed:"11-9", Thu:"10-4", Fri:"10-3", Sun:"11-9"},
+    "Twilia": {Mon:"10-3", Wed:"11-9", Thu:"10-5", Fri:"10-3", Sun:"11-9"},
     "Erika": {Tue:"10-2", Wed:"10-4", Thu:"10-4", Fri:"10-4", Sat:"10-3", Sun:"10-4"},
     "Kaomy": {Mon:"4-9", Tue:"4-9", Sat:"12-5"},
     "Eduardo": {Thu:"5-9", Sat:"5-9"}
@@ -1972,18 +1972,17 @@ function renderSch(keepFocus){
   const wk=document.getElementById("schweek");
   if(!wk.value){ wk.value=SCH_PROPOSAL.week; schLoad(); }
   const c=schCompute(), dates=schDates();
-  // floor by hour (first, above the grid)
+  // floor by hour (first, above the grid): hours down the side, days across
   const hrs=[]; for(let h=10;h<23;h++) hrs.push(h);
-  const lab=h=>h===12?"12p":h<12?h+"a":(h-12)+"p";
-  let f=`<tr><th></th>${hrs.map(h=>`<th class="n">${lab(h)}</th>`).join("")}<th class="n">hrs</th><th class="n">labor</th></tr>`;
-  SCH_DAYS.forEach(d=>{
-    const pct=c.dayHrs[d]*c.wage/SCH_AVG[d];
-    f+=`<tr><td><b style="color:var(--ink)">${d}</b> <span style="color:var(--ink-3)">${dates[SCH_DAYS.indexOf(d)]}</span></td>`+
-      hrs.map(h=>{ const v=c.cov[d][h]; if(v===undefined) return `<td class="n" style="color:var(--ink-3)">·</td>`;
-        const bg=v<=1?"rgba(227,73,72,.28)":v>=4?"rgba(61,199,137,.22)":"transparent";
-        return `<td class="n" style="background:${bg};color:var(--ink)">${v}</td>`; }).join("")+
-      `<td class="n"><b style="color:var(--ink)">${c.dayHrs[d]}</b></td><td class="n" style="color:${pct>0.21?"#e34948":"var(--ink-2)"}">${(pct*100).toFixed(1)}%</td></tr>`;
+  const lab=h=>h===12?"12 pm":h<12?h+" am":(h-12)+" pm";
+  let f=`<tr><th>Hour</th><th class="n"></th>${SCH_DAYS.map((d,i)=>`<th class="c">${d} ${dates[i]}</th>`).join("")}</tr>`;
+  hrs.forEach(h=>{
+    f+=`<tr><td><b style="color:var(--ink)">${lab(h)}</b></td><td class="n"></td>`+SCH_DAYS.map(d=>{ const v=c.cov[d][h]; if(v===undefined) return `<td class="c" style="color:var(--ink-3)">·</td>`;
+      const bg=v<=1?"rgba(227,73,72,.28)":v>=4?"rgba(61,199,137,.22)":"transparent";
+      return `<td class="c" style="background:${bg};color:var(--ink)">${v}</td>`; }).join("")+`</tr>`;
   });
+  f+=`<tr style="border-top:2px solid rgba(255,255,255,.18)"><td><b style="color:var(--ink)">Hours</b></td><td class="n"></td>${SCH_DAYS.map(d=>`<td class="c"><b style="color:var(--ink)">${c.dayHrs[d]}</b></td>`).join("")}</tr>`;
+  f+=`<tr><td>Labor %</td><td class="n"></td>${SCH_DAYS.map(d=>{const p=c.dayHrs[d]*c.wage/SCH_AVG[d];return `<td class="c" style="color:${p>0.21?"#e34948":"var(--ink-2)"}">${(p*100).toFixed(1)}%</td>`;}).join("")}</tr>`;
   document.getElementById("schfloor").innerHTML=f;
   // grid
   let g=`<tr><th>Employee</th><th class="n">hrs</th>${SCH_DAYS.map((d,i)=>`<th class="c">${d} ${dates[i]}</th>`).join("")}</tr>`;
