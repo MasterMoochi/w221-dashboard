@@ -1878,33 +1878,47 @@ const SCH_ROSTER = [
 const SCH_AVG = {Mon:2507, Tue:2798, Wed:3359, Thu:2937, Fri:3336, Sat:2815, Sun:2671};  // 5-week same-weekday averages, net sales
 const SCH_CLOSE = {Mon:23, Tue:23, Wed:23, Thu:23, Fri:23, Sat:23, Sun:22};             // "cl" = 10 PM close + cleanup (Sun 9 PM)
 const SCH_PROPOSAL = {
-  week: "2026-09-21",
+  week: "2026-09-28",
   shifts: {
-    "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Wed:"4-cl", Thu:"11-cl", Fri:"11-cl", Sun:"3-cl"},
+    "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Thu:"11-cl", Fri:"11-cl", Sat:"2-cl"},
     "Mo": {},
-    "EJ": {},
-    "Marissa": {Mon:"11-4", Tue:"11-4", Fri:"11-4", Sat:"4-cl", Sun:"4-cl"},
+    "EJ": {Mon:"11-4", Tue:"11-4", Wed:"11-4", Thu:"11-4"},
+    "Marissa": {Mon:"4-9", Wed:"4-9", Fri:"11-4", Sat:"4-cl", Sun:"4-cl"},
     "Maria": {Mon:"10-4", Tue:"10-4", Wed:"10-4", Thu:"5-cl", Fri:"5-cl", Sat:"10-4"},
-    "Andrew": {Mon:"5-cl", Tue:"5-cl", Fri:"5-9", Sat:"5-cl"},
+    "Andrew": {Mon:"5-cl", Tue:"5-cl", Wed:"4-cl", Sun:"4-cl"},
     "Kooper": {Wed:"4-cl", Fri:"4-cl"},
-    "Jamal": {Thu:"11-3", Sun:"10-3"},
-    "Twilia": {Mon:"10-3", Wed:"11-9", Thu:"10-5", Fri:"10-3", Sun:"11-9"},
-    "Erika": {Tue:"10-2", Wed:"10-4", Thu:"10-4", Fri:"10-4", Sat:"10-3", Sun:"10-4"},
-    "Kaomy": {Mon:"4-9", Tue:"4-9", Sat:"12-5"},
-    "Eduardo": {Thu:"5-9", Sat:"5-9"}
+    "Jamal": {Thu:"4-9", Sun:"10-3"},
+    "Twilia": {Mon:"10-3", Wed:"11-9", Fri:"10-4", Sat:"11-5", Sun:"4-9"},
+    "Erika": {Tue:"11-3", Wed:"10-2", Thu:"10-4", Fri:"10-4", Sat:"10-2", Sun:"10-4"},
+    "Kaomy": {Tue:"4-9", Sat:"11-3", Sun:"11-4"},
+    "Eduardo": {Fri:"5-9", Sat:"5-9"}
   },
   notes: [
-    "From the availability calendar: EJ is off Mon 9/21 through Thu 9/24 and never works Fri to Sun, so EJ is out this week. Her 11-4 lunches go to Marissa (Mon/Tue), Erika (Tue to Thu) and Twilia (Mon/Thu).",
-    "Twilia has to be gone by 4 PM Mon 9/21 (scheduled 10-3) and is OFF Tue 9/22. Same the week after: out by 4 Mon 9/28, off Tue 9/29.",
-    "Jacob is off Saturday only. He is at 56 hrs: Mon/Tue 2-cl, Wed 4-cl, Thu/Fri 11-cl, Sun 3-cl. Saturday has no manager on paper (Marissa 4-cl closes with Andrew), Mo slots in.",
-    "Kaomy is back on her Mon and Tue 4-9 evenings, plus Sat 12-5 so Saturday is not down to one person between 3 and 5.",
-    "Marissa moves to lunches Mon/Tue (11-4) because Kaomy has the evenings; she keeps Fri 11-4 and the Sat/Sun closes. Her Wed 4-9 is dropped because Wed dinner already has Twilia, Jacob and Kooper.",
-    "Andrew: Mon/Tue 5-cl, Fri 5-9, Sat 5-cl (22 hrs). Kooper Wed and Fri 4-cl (14). Eduardo Thu and Sat 5-9. Jamal Thu 11-3 and Sun 10-3.",
-    "Targets: 2 at open, 3 through lunch (4 on Fri), 2 to 3 mid-afternoon, 3 at dinner (4 on Fri), 2 to close plus the manager. Sales averages are the last 5 weeks by weekday; hourly curve from the 9/2 and 9/6 Peachworks reports."
+    "EJ is back on his normal 11-4 Mon through Thu. With Maria opening at 10 and EJ at 11 the weekday lunch is covered by the two of them plus one more, so Erika and Twilia are back to shorter lunch shifts.",
+    "From the calendar: Twilia has to be gone by 4 PM Mon 9/28 (scheduled 10-3) and is OFF Tue 9/29. Nothing is written on the calendar yet for Oct 1 to 4, so Thu through Sun assume everyone is available.",
+    "Jacob at 51 hrs: Mon/Tue 2-cl, Thu/Fri 11-cl, Sat 2-cl, off Wed and Sun. No manager on paper Wed or Sun, Mo slots in. If you want him on Sunday instead, put him 3-cl Sun and take him off Sat (Marissa closes Sat with Eduardo, add Andrew 5-cl).",
+    "Maria is off Sunday this time; last week's sheet had her on 7 days. Kaomy takes Sun 11-4 in her place, which also gets Kaomy to 14 hrs (Tue 4-9, Sat 11-3, Sun 11-4).",
+    "Marissa: Mon and Wed 4-9, Fri 11-4, Sat and Sun 4-cl (28). Tuesday evening goes to Kaomy so Marissa and Kaomy are not both on a slow Tuesday night.",
+    "Andrew: Mon/Tue 5-cl, Wed 4-cl (not 11-cl, Wed lunch is full), Sun 4-cl (25). Kooper Wed and Fri 4-cl (14), add him Sun 4-9 in place of Twilia if he wants hours. Eduardo Fri and Sat 5-9. Jamal Thu 4-9 and Sun 10-3.",
+    "Two people at open every day except Tue and Thu, where the 10 o'clock hour is under $170 in sales and one opener holds it. Drop Erika's Wed 10-2 if Wed lunch feels heavy; that takes the week to 264.",
+    "Targets: 2 at open, 3 through lunch (4 on Wed/Fri), 2 to 3 mid-afternoon, 3 at dinner (4 on Wed/Fri), 2 to close plus the manager. Sales averages are the same 5-week weekday averages; ask for a refresh after the Sept 28 daily run if you want the newest weeks in."
   ]
 };
 /* Posted weeks, typed from the sheet on the wall (handwritten edits included). Add one entry per week to keep the comparison going. */
 const SCH_HISTORY = {
+  "2026-09-21": { note:"as posted on the wall, from the 9/23 photo", shifts:{
+    "Jacob (MG)": {Mon:"11-cl", Tue:"11-cl", Wed:"2-cl", Thu:"11-cl", Fri:"11-cl"},
+    "EJ": {},
+    "Marissa": {Mon:"4-9", Tue:"4-9", Wed:"4-9", Fri:"11-4", Sat:"4-10", Sun:"4-cl"},
+    "Maria": {Mon:"10-4", Tue:"10-4", Wed:"10-4", Thu:"5-cl", Fri:"5-cl", Sat:"10-4", Sun:"11-4"},
+    "Andrew": {Mon:"5-cl", Tue:"5-cl", Wed:"11-cl", Sat:"4-cl", Sun:"4-cl"},
+    "Kooper": {Wed:"4-cl", Fri:"4-cl", Sun:"4-9"},
+    "Jamal": {Thu:"4-9", Sun:"11-3"},
+    "Twilia": {Mon:"10-4", Wed:"11-4", Thu:"11-4", Fri:"11-5", Sat:"11-9", Sun:"4-9"},
+    "Erika": {Tue:"11-4", Wed:"11-4", Thu:"10-4", Fri:"10-4", Sat:"11-3", Sun:"10-3"},
+    "Kaomy": {Mon:"4-9", Tue:"4-9", Sat:"11-3"},
+    "Eduardo": {Thu:"5-9", Fri:"5-cl", Sat:"5-10"}
+  }},
   "2026-09-14": { note:"as posted on the wall, from the 9/16 photo", shifts:{
     "Jacob (MG)": {Mon:"2-cl", Tue:"2-cl", Thu:"11-cl", Fri:"11-cl", Sat:"11-cl", Sun:"5-cl"},
     "EJ": {Mon:"11-4", Tue:"11-4"},
