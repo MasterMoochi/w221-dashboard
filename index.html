@@ -244,7 +244,7 @@
   .today ul { margin-left: 18px; }
   .today li { margin: 3px 0; font-size: 13.5px; color: var(--ink-2); }
   .today li b { color: var(--ink); }
-  .cltabs { display: flex; gap: 8px; margin-bottom: 4px; }
+  .cltabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
   .cltab {
     border: 1px solid var(--chip-br); background: var(--chip); color: var(--ink-2);
     border-radius: 99px; padding: 8px 20px; font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; transition: all .15s;
@@ -1308,6 +1308,75 @@ const CL_DATA = {
       "Interior lights set to night mode",
       "Exterior doors locked",
       "Alarm armed; doors verified locked on departure"
+    ]}
+  ],
+  "Lobby close": [
+    { icon:"⏳", name:"Last hour (still open)", items:[
+      "Restock the <b>front counter</b>: bags, napkins, condiment packets, cup carriers",
+      "Restock the <b>drink station</b>: cups, lids, straws; refill ice",
+      "Wipe down tables as guests leave; keep the floor picked up",
+      "Pull and wash anything not needed for the last hour (extra trays, lids)"
+    ]},
+    { icon:"🔐", name:"Lock the lobby", items:[
+      "Lock lobby doors at lobby close time; flip the sign to <b>Closed</b>",
+      "Walk the dining room: anyone still eating finishes, no new orders at the counter"
+    ]},
+    { icon:"🪑", name:"Dining room", items:[
+      "Wipe and <b>sanitize every table</b> with the red bucket, plus chairs, booth seats and backs",
+      "Wipe down high chairs and boosters",
+      "Empty <b>all lobby trash cans</b>, wipe the lids and tops, put in new liners",
+      "Clean door glass, windows and door handles (handprints and smudges)",
+      "Sweep, then <b>mop</b> the lobby, including under tables, booths and corners; put out the wet floor sign"
+    ]},
+    { icon:"🥤", name:"Drink station & front counter", items:[
+      "Pull fountain <b>nozzles and diffusers</b>, soak and wash; wipe the drip tray and ice chute",
+      "Wipe down the drink station counter, condiment pumps and dispensers",
+      "Wipe and sanitize the <b>front counter</b> and POS screen",
+      "Wipe the outside of the shake machine and syrup pumps; wash mixing cups and spindle",
+      "Restock the front counter for the morning crew"
+    ]},
+    { icon:"🚻", name:"Restrooms", items:[
+      "Clean and sanitize toilets, urinals, sinks and mirrors",
+      "Restock toilet paper, paper towels and soap",
+      "Empty trash, new liners",
+      "Sweep and mop; initial the restroom check sheet"
+    ]},
+    { icon:"✅", name:"Before you leave", items:[
+      "Pull your <b>cash drawer</b> and bring it to the manager to count (don't count it alone)",
+      "Tell the manager anything that's broken, low or out",
+      "Manager walks the lobby and signs off before you clock out"
+    ]}
+  ],
+  "Drive-thru close": [
+    { icon:"⏳", name:"Last hour (still open)", items:[
+      "Restock the <b>drive-thru station</b>: cups, lids, straws, bags, napkins, carriers, condiment packets",
+      "Pick up litter in the drive-thru lane and around the menu board",
+      "Wash anything not needed for the last hour; keep orders moving"
+    ]},
+    { icon:"🔐", name:"Close the window", items:[
+      "At close, close and <b>lock the drive-thru window</b>; put out the lane closed sign or cone",
+      "Make sure the last car is served and any open orders are cleared off the KDS"
+    ]},
+    { icon:"🎧", name:"Headsets & drive-thru station", items:[
+      "Wipe down <b>headsets</b>; put headsets and batteries on the chargers",
+      "Pull fountain <b>nozzles and diffusers</b>, soak and wash; wipe the drip tray and ice chute",
+      "<b>Empty the drive-thru ice bin</b>, wipe it out and close the lid",
+      "Wipe and sanitize the drive-thru counter, POS screen and cash drawer area",
+      "Clean the <b>window track and sill</b>, and the window glass inside and out",
+      "Empty the drive-thru trash, new liner",
+      "Sweep and mop the drive-thru area, including under the counters",
+      "Restock the drive-thru station for the morning crew"
+    ]},
+    { icon:"🅿️", name:"Outside", items:[
+      "Walk the lane: pick up trash around the <b>menu board, speaker post and pickup window</b>",
+      "Empty the outdoor trash cans along the lane; new liners",
+      "Wipe down the speaker post and order screen"
+    ]},
+    { icon:"✅", name:"Before you leave", items:[
+      "Pull your <b>cash drawer</b> and bring it to the manager to count (don't count it alone)",
+      "Tell the manager about any remakes or wasted orders so they get logged",
+      "Tell the manager anything that's broken, low or out",
+      "Manager checks the drive-thru and signs off before you clock out"
     ]}
   ],
   Weekly: [
