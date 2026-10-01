@@ -597,27 +597,26 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-09-30", "updatedBy": "daily run 9/30: 9/29 row, hourly, 9/28-9/29 discounts",
+  "updated": "2026-10-01", "updatedBy": "daily run 10/1: 9/30 row, hourly, discounts; September closed on the Monthly tab",
   "daily": {
-      "date": "2026-09-29",
-      "netSales": 2159.92,
-      "transactions": 175,
-      "laborPct": 26.0,
-      "debrief": "Tuesday 9/29: $2,160 net on 175 checks, a $12.34 average, 11.8% under last Tuesday ($2,450 on 180) and 18.6% under the four-Tuesday average ($2,653). Lunch was $270 at 11am and $395 for the noon hour, then a flat $135 to $209 an hour from 1pm through dinner and a $21 close. Labor was 39.60 hours at 26.0%: the hours were normal (four-Tuesday average 38.4), the sales were not. Bank $20.58 short, no paid outs. Two employee discounts for $10.64, both Jacob (check 10, $8.14 with 15 items; check 53, $2.50), and one manager discount, $9.50 on check 983, rung and authorized by Jacob. Drive thru 58.8%, dine in 33.2%, app share 8.0%. Tastee $238, promo $203. No missed clock-outs.",
+      "date": "2026-09-30",
+      "netSales": 3187.39,
+      "transactions": 244,
+      "laborPct": 17.7,
+      "debrief": "Wednesday 9/30: $3,187 net on 244 checks, a $13.06 average, 13.8% over last Wednesday ($2,801) and 1.4% over the four-Wednesday average ($3,144), on $748 of promo. Lunch was $334 at 11am and $383 for the noon hour, a $375 4pm, $353 at 6pm and a steadier-than-usual close ($131 to $152 an hour from 8 to 11pm). Labor was 38.50 hours at 17.7%. Bank $1.33 short, no paid outs. Two employee discounts for $6.33 and one manager discount for $12.16, all three on the Jimmy 221 login. Drive thru 63.9%, dine in 25.3%, app share 10.8%. Tastee $187. No missed clock-outs. 9/29 labor was restated by Peachworks to 38.46 hours, $545.46, 25.3%.",
       "alerts": [
-            "9/29 labor 26.0% on a $2,160 day: normal hours (39.6) against sales 18.6% under the four-Tuesday average",
-            "9/29 check average $12.34, under the $12.50 floor",
-            "9/29 employee discount check 10 ($8.14, 15 items, Jacob) over the $6 and 6-item caps",
-            "9/29 manager discount check 983 ($9.50) rung and authorized by Jacob"
+            "9/30 all three discounts rung on the shared Jimmy 221 login",
+            "9/30 employee discount check 289 ($4.68) with 29 items, over the 6-item cap",
+            "9/30 manager discount check 200 ($12.16) over the $12 single-check line, authorized by jacob"
       ]
 },
   "weekly":  {"weekStart": "2026-09-21", "netSales": 19177.15, "laborPct": 22.0, "cogsPct": 25.2, "alerts": ["Net $19,177, down 5.1% from $20,208, while labor rose from 19.7% to 22.0% — hours did not come down with sales; Monday and Tuesday were both over 25%", "Employee discounts 16 rings, $69.49, over the $60 weekly line (8 of the 16 on the shared Jimmy 221 login); manager discounts 5 checks, $32.46", "COGS 25.2% on $4,824.76 of purchases (food $4,729.24). The two weeks before ran light: food $3,570 (9/7) and $3,589 (9/14), COGS 18.9% and 18.1%, so check Peachworks for a missing or late invoice", "9/25: $360 paid out with only +$0.49 bank variance, $359.51 unexplained", "Category mix: hot dogs 40.7%, fries 26.5%, corn dogs 9.1%, drinks 11.2%, Tastee 6.2%, burgers 5.8%. Offers (promo redemptions) $1,580"]},
-  "monthly": { "month": "2026-08", "netSales": 91219.25, "foodCostPct": 29.5, "netIncome": 17839.67, "notes": "August CLOSED, all 31 days. $91,219.25 net, down 3.93% against a very strong August 2025 ($94,952.28). COGS $26,925.64 = 29.5% of net sales, high because a $5,105 bulk paper order landed in the week of 8/3. Labor $17,605.91 = 19.3%. Prime cost 48.8%. EBITDA (est.) $18,428.95; net income is blank on the tracker until depreciation goes in. September MTD after 6 days: $17,462.03 net, 1,215 checks, labor 20.6%." },
+  "monthly": {"month": "2026-09", "netSales": 84142.96, "foodCostPct": 25.2, "netIncome": null, "notes": "September CLOSED, all 30 days. $84,142.96 net, down 1.6% from September 2025 ($85,545.26). COGS $21,176.80 = 25.2% of net (food $19,185.27, operations/cleaning $1,632.81, paper $358.72). Labor $17,490.04 = 20.8%. Prime cost 46.0%. EBITDA (est.) $18,406.22; net income stays blank until depreciation goes in. 2026 YTD through September: $790,691.51 net, up 1.9% on 2025."},
   "systemAlerts": ["THE DAILY TASK MISSED AGAIN: nothing was written for 9/3, 9/4, 9/5 or 9/6, and the weekly task did not write the week of 8/31 on Monday 9/7. All of it was caught up by hand on 9/7. That is 6 missed daily runs in 7 days (9/1, 9/2, 9/4, 9/5, 9/6, 9/7). The scheduled task itself needs to be looked at, not the prompt.", "NEW 9/3: the Daily tab now has Manager Discount count and dollars in columns N and O, right beside the employee discount columns, filled for every day since 5/1. Manager Discount is a separate register button with no cap, and every one of the 55 rung since 5/1 comped the check to exactly $0.00 ($412.47 total). August employee discounts were $81.46; August manager discounts were $119.76 on 17 checks. The uncapped button now carries more comp dollars than the capped one.", "Manager discounts by authorizer since 8/4: jacob about 89%. The pattern on 9/2 (zero employee discounts, two staff-looking meals comped whole under Manager Discount by the same person who rang them) repeated on 9/4 and 9/5.", "Week of 8/31 category mix came from 7 single-day Simphony System Financial API replays summed, which is the method that finally works; the remaining backlog (weeks 5/4 to 8/17) can now be filled the same way.", "ERROR CORRECTS May–Aug: $54,257, which is 14.6% of net sales. Two days explain most of it: 5/4 ($12,838) and 8/12 ($17,003 plus $3,830 in cancels). Those look like whole-order re-rings or a register event, not normal mistakes. The week of 8/24 was 6.1%, the week of 8/31 was 5.7%. Ask what happened on 5/4 and 8/12.", "The tracker was rebuilt on a PEACHWORKS AND SIMPHONY ONLY basis on 8/31 and 9/1. Every month, both prior years and all 18 weeks since 5/4 come from Peachworks report 300. The workbook is no longer a source for anything on the tracker.", "OPEN — depreciation and amortization from the tax return is the one number blocking a real net income on the Monthly tab (Q20).", "OPEN — the $4,000 a month other operating line looks light. Compare one closed month against the Haj Financial Services statement to calibrate it.", "OPEN — Renier 5/1 punch: 23.69 hrs, about $240 phantom. Still unfixed.", "OPEN — $2,848.70 Distribution Cost in the week of 6/22, still unexplained, and now a $1,605.56 Operations/Cleaning line in the week of 8/31.", "OPEN — cash: 9/2 −$37.93; 8/31 −$37.69; 8/28 unexplained +$95.59; 8/12 −$87. 9/3 to 9/6 were all clean.", "BEFORE the Kraft and Plastipak fliers go out, the FREE SMALL FRY badge deal has to be set up as its own named discount in Simphony so it can be tracked. A \"Coupon Small Fry\" discount (ID 79897213) already exists; check whether it can be used."]
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-09-29","hours":[["9a",22.16],["10a",39.65],["11a",269.83],["12p",394.74],["1p",134.93],["2p",204.89],["3p",209.08],["4p",186.4],["5p",180.95],["6p",188.97],["7p",153.99],["8p",109.3],["9p",43.59],["10p",21.44]]};
+    const HOURLY = {"date":"2026-09-30","hours":[["9a",24.92],["10a",117.97],["11a",333.61],["12p",383.4],["1p",247.2],["2p",162.74],["3p",291.09],["4p",375.23],["5p",245.67],["6p",353.03],["7p",229.38],["8p",152.43],["9p",131.36],["10p",139.36]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -756,7 +755,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-09-29", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-09-30", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -951,7 +950,10 @@ const SHIFT_DISC = [
   ["2026-09-28", "4:31 PM", 788, "Manager Discount", 5.68, "register (Jimmy)"],
   ["2026-09-29", "4:25 PM", 983, "Manager Discount", 9.5, "Jacob Kresin"],
   ["2026-09-29", "5:35 PM", 10, "Employee Discount", 8.14, "Jacob Kresin"],
-  ["2026-09-29", "9:16 PM", 53, "Employee Discount", 2.5, "Jacob Kresin"]];
+  ["2026-09-29", "9:16 PM", 53, "Employee Discount", 2.5, "Jacob Kresin"],
+  ["2026-09-30", "2:15 PM", 175, "Employee Discount", 1.65, "register (Jimmy)"],
+  ["2026-09-30", "3:40 PM", 200, "Manager Discount", 12.16, "register (Jimmy)"],
+  ["2026-09-30", "8:46 PM", 289, "Employee Discount", 4.68, "register (Jimmy)"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
