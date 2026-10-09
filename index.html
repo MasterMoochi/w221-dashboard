@@ -597,17 +597,17 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-07", "updatedBy": "daily run 10/7: 10/6 row, hourly, discounts; 10/2 to 10/5 labor restated",
+  "updated": "2026-10-09", "updatedBy": "catch-up 10/9: 10/7 and 10/8 rows, hourly, discounts; 10/3, 10/6 and 10/7 labor restated",
   "daily": {
-      "date": "2026-10-06",
-      "netSales": 2562.44,
-      "transactions": 189,
-      "laborPct": 25.4,
-      "debrief": "Tuesday 10/6: $2,562 net on 189 checks, a $13.56 average, 18.6% over last Tuesday ($2,160) and 1.9% over the four-Tuesday average ($2,514). The best lunch of the week, $559 at 11am and $476 at noon, then a soft afternoon ($73 to $115 an hour from 2 to 4pm) and $132 to $195 an hour through the evening. Labor was 43.04 hours at 25.4%, about 5 hours more than the four-Tuesday average. Bank $10.27 over, no paid outs. Employee discounts: check 479 for $14.49 (Andrew Renier, 11:16 PM) and check 402 for $4.25 on the Jimmy 221 login; one manager discount, check 420 for $5.83 (Tender 2 Piece) on Jimmy 221, authorized by jacob. Drive thru 58.9%, dine in 33.0%, app share 8.1%, no Olo pickup. Tastee $201, promo $175. No missed clock-outs. Peachworks restated 10/2 to 10/5 labor slightly lower; the tracker is updated.",
+      "date": "2026-10-08",
+      "netSales": 2536.53,
+      "transactions": 201,
+      "laborPct": 25.7,
+      "debrief": "Thursday 10/8: $2,537 net on 201 checks, a $12.62 average, 17.7% under last Thursday ($3,081) and 15.5% under the four-Thursday average ($3,001). Lunch peaked at $490 at noon, then $132 to $224 an hour through the afternoon and a $269 6pm. Labor was 38.67 hours at 25.7%, in line with usual Thursday hours, so the high percentage comes from the lighter sales. Bank $9.54 over, no paid outs. Employee discounts: checks 771 ($2.00, 12:15 PM) and 929 ($3.74, 10:04 PM). Manager discounts $20.04: check 823 ($9.87, cheeseburger, authorized by jacob), 837 ($4.99, chocolate shake, jacob) and 872 ($5.18, large fry and cheddar, reason entered as mistake). All five rang on the Jimmy 221 login. Drive thru 62.5%, dine in 27.5%, app share 10.1%. Tastee $142, promo $202; most-used deal code #432 on 6 checks. No missed clock-outs. Peachworks restated 10/3, 10/6 and 10/7 labor; the tracker is updated.",
       "alerts": [
-            "10/6 labor 25.4% on 43.04 hours, about 5 hours over the four-Tuesday average",
-            "10/6 employee discount check 479 for $14.49 (Andrew Renier, 11:16 PM), over the $6 line",
-            "10/6 two discounts on the shared Jimmy 221 login: employee check 402 ($4.25) and manager check 420 ($5.83, Tender 2 Piece, authorized by jacob)"
+            "10/8 labor 25.7% on 38.67 hours: hours were normal for a Thursday, sales were 15.5% under the four-Thursday average",
+            "10/8 manager discounts $20.04, over the $15 daily line: checks 823 ($9.87), 837 ($4.99) and 872 ($5.18, reason entered as mistake)",
+            "10/8 all five discounts rang on the shared Jimmy 221 login: employee checks 771 and 929, manager checks 823, 837 and 872"
       ]
 },
   "weekly":  {"weekStart": "2026-09-28", "netSales": 19379.36, "laborPct": 20.1, "cogsPct": 21.8, "alerts": ["Net $19,379, up 1.1% from $19,177, and labor came back down to 20.1% from 22.0%", "COGS 21.8% on $4,227.74 of purchases (food $4,116.65, paper $111.09, no other GL)", "Employee discounts 10 rings, $43.43; manager discounts 6 checks, $39.41, including 9/30 check 200 at $12.16, over the $12 single-check line", "App share averaged 9.4%; Olo pickup was $0 on 4 of the 7 days (9/30, 10/1, 10/2, 10/4)", "Category mix: hot dogs 43.1%, fries 25.9%, corn dogs 9.4%, drinks 12.0%, Tastee 6.6%, burgers 5.6%. Offers (promo redemptions) $1,871.84"]},
@@ -616,7 +616,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-06","hours":[["10a",80.33],["11a",558.51],["12p",476.09],["1p",325.28],["2p",83.91],["3p",115.37],["4p",73.27],["5p",167.31],["6p",173.66],["7p",194.55],["8p",132.47],["9p",48.4],["10p",118.8],["11p",14.49]]};
+    const HOURLY = {"date":"2026-10-08","hours":[["9a",27.08],["10a",103.99],["11a",205.08],["12p",490.29],["1p",209.75],["2p",170.96],["3p",131.87],["4p",223.54],["5p",205.73],["6p",268.95],["7p",238.64],["8p",133.07],["9p",74.04],["10p",53.54]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -755,7 +755,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-06", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-08", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -971,7 +971,13 @@ const SHIFT_DISC = [
   ["2026-10-05", "7:41 PM", 269, "Employee Discount", 3.94, "Jacob Kresin"],
   ["2026-10-06", "4:03 PM", 402, "Employee Discount", 4.25, "register (Jimmy)"],
   ["2026-10-06", "5:38 PM", 420, "Manager Discount", 5.83, "register (Jimmy)"],
-  ["2026-10-06", "11:16 PM", 479, "Employee Discount", 14.49, "Andrew Renier"]];
+  ["2026-10-06", "11:16 PM", 479, "Employee Discount", 14.49, "Andrew Renier"],
+  ["2026-10-07", "9:23 PM", 715, "Employee Discount", 4.02, "register (Jimmy)"],
+  ["2026-10-08", "12:15 PM", 771, "Employee Discount", 2, "register (Jimmy)"],
+  ["2026-10-08", "1:47 PM", 823, "Manager Discount", 9.87, "register (Jimmy)"],
+  ["2026-10-08", "2:51 PM", 837, "Manager Discount", 4.99, "register (Jimmy)"],
+  ["2026-10-08", "5:16 PM", 872, "Manager Discount", 5.18, "register (Jimmy)"],
+  ["2026-10-08", "10:04 PM", 929, "Employee Discount", 3.74, "register (Jimmy)"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
