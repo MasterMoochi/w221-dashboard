@@ -597,17 +597,17 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-10",
-  "updatedBy": "catch-up 10/10: 10/9 daily, hourly, discounts",
+  "updated": "2026-10-12",
+  "updatedBy": "catch-up 10/12: 10/10 and 10/11 daily, hourly, discounts",
   "daily": {
-    "date": "2026-10-09",
-    "netSales": 3252.54,
-    "transactions": 222,
-    "laborPct": 19.4,
-    "debrief": "Friday 10/9: $3,253 net on 222 checks, a $14.65 average, 5.8% over last Friday ($3,075) and 7.1% over the four-Friday average ($3,037). Lunch ran $380 at 11am and peaked at $615 at noon; dinner built to $316 at 7pm. Labor was 43.74 hours at 19.4%, close to the four-Friday average of 44.55 hours. Bank $18.74 short, no paid outs. Employee discounts $15.49 on 5 checks: 951 ($8.44, 11:11 AM, Jimmy 221 login, reference entered as ericka), 72 ($1.65, 3:07 PM, Jimmy 221), and 86, 169 and 177 ($1.25, $1.90, $2.25) on Jameel's login. No manager discounts. Mix: drive thru 57.9%, dine in 31.9%, apps 10.2%. Top deal code: Comb Offer #1 on 20 checks.",
+    "date": "2026-10-11",
+    "netSales": 2780.04,
+    "transactions": 181,
+    "laborPct": 17,
+    "debrief": "Sunday 10/11: $2,780 net on 181 checks, a $15.36 average, 25.7% over last Sunday ($2,211) and 25.2% over the four-Sunday average ($2,220). Sales built through the afternoon to $337 at 2pm and peaked at $375 at 6pm. Labor was 33.17 hours at 17.0%, close to the four-Sunday average of 31.79 hours. Bank $17.14 over, no paid outs. Employee discounts $6.54 on 2 checks: 421 ($3.79, 1:13 PM, Kaomy Garcia) and 424 ($2.75, 1:16 PM, Jimmy 221 login). No manager discounts. Mix: drive thru 61.8%, dine in 27.2%, apps 11.0%. Top deal code: Comb Offer #1 on 21 checks. Saturday 10/10 (backfilled): $2,830 net on 178 checks, 0.5% over last Saturday, labor 18.4%, 3 employee discounts for $7.50, $80 paid out with the bank $16.43 over.",
     "alerts": [
-      "10/9 employee discount $8.44 on check 951 (11:11 AM), over the $6.00 line: 2 tender 2-piece, 2 small fries and a Junkyard Dog, reference entered as ericka",
-      "10/9 two employee discounts rang on the shared Jimmy 221 login: checks 951 ($8.44) and 72 ($1.65)"
+      "10/11 employee discount rang on the shared Jimmy 221 login: check 424 ($2.75, 1:16 PM, deluxe cheeseburger)",
+      "10/10 employee discount rang on the shared Jimmy 221 login: check 236 ($2.59, 1:08 PM, AB Texas)"
     ]
   },
   "weekly": {
@@ -647,7 +647,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-09","hours":[["9a",60.09],["10a",114.3],["11a",380.1],["12p",615.43],["1p",288.37],["2p",219.16],["3p",151.86],["4p",228.7],["5p",228.44],["6p",272.13],["7p",315.94],["8p",94.79],["9p",140.09],["10p",143.14]]};
+    const HOURLY = {"date":"2026-10-11","hours":[["9a",21.2],["10a",104.89],["11a",282.53],["12p",280.15],["1p",277.79],["2p",336.76],["3p",237.66],["4p",234.71],["5p",255.99],["6p",374.77],["7p",227.3],["8p",103.8],["9p",42.49]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -786,7 +786,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-09", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-11", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -1013,7 +1013,12 @@ const SHIFT_DISC = [
   ["2026-10-09", "3:07 PM", 72, "Employee Discount", 1.65, "register (Jimmy)"],
   ["2026-10-09", "3:48 PM", 86, "Employee Discount", 1.25, "Jameel Alsaqri"],
   ["2026-10-09", "9:51 PM", 169, "Employee Discount", 1.9, "Jameel Alsaqri"],
-  ["2026-10-09", "10:31 PM", 177, "Employee Discount", 2.25, "Jameel Alsaqri"]];
+  ["2026-10-09", "10:31 PM", 177, "Employee Discount", 2.25, "Jameel Alsaqri"],
+  ["2026-10-10", "1:08 PM", 236, "Employee Discount", 2.59, "register (Jimmy)"],
+  ["2026-10-10", "9:03 PM", 355, "Employee Discount", 3.74, "Jacob Kresin"],
+  ["2026-10-10", "9:03 PM", 356, "Employee Discount", 1.17, "Jacob Kresin"],
+  ["2026-10-11", "1:13 PM", 421, "Employee Discount", 3.79, "Kaomy Garcia"],
+  ["2026-10-11", "1:16 PM", 424, "Employee Discount", 2.75, "register (Jimmy)"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
