@@ -597,18 +597,19 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-13",
-  "updatedBy": "catch-up 10/13: 10/12 daily, hourly, discounts; weekly row for 10/5",
+  "updated": "2026-10-14",
+  "updatedBy": "catch-up 10/14: 10/13 daily, hourly, discounts; 10/9 and 10/12 labor restated",
   "daily": {
-    "date": "2026-10-12",
-    "netSales": 2714.31,
-    "transactions": 184,
-    "laborPct": 24.9,
-    "debrief": "Monday 10/12: $2,714 net on 184 checks, a $14.75 average, 6.5% over last Monday ($2,549) and 6.3% over the four-Monday average ($2,552). Lunch peaked at $488 at noon; dinner ran $174 to $227 an hour from 5 to 7pm. Labor was 47.09 hours at 24.9%, 29% above the four-Monday average of 36.38 hours, with no missed clock-outs. Bank $1.45 short, no paid outs. Employee discounts $9.33 on 2 checks: 710 ($1.35, 6:41 PM, Jacob Kresin) and 726 ($7.98, 7:36 PM, four small shakes, Jimmy 221 login). Manager discount: check 679 ($12.86, 4:36 PM, 2 corn dogs, cheeseburger and plain dog), rung and authorized by Jacob Kresin. Mix: drive thru 63.1%, dine in 28.0%, apps 8.9%. Top deal code: Comb Offer #1 on 13 checks. October to date is $33,621, 8.6% behind the same Thursday-to-Monday stretch last year.",
+    "date": "2026-10-13",
+    "netSales": 2445.47,
+    "transactions": 172,
+    "laborPct": 25.1,
+    "debrief": "Tuesday 10/13: $2,445 net on 172 checks, a $14.22 average, 4.6% under last Tuesday ($2,562) and 1.8% under the four-Tuesday average ($2,490). Lunch peaked at $358 at noon with a second bump of $298 at 4pm; nothing rang in the 9pm hour, then $83 at 10pm. Labor was 40.93 hours at 25.1%, 6% above the four-Tuesday average of 38.56 hours, with 7 people on the clock and no edited or open punches. $125 paid out, bank $2.56 over. One employee discount, check 857 ($3.54, 4:23 PM, Jimmy 221 login); no manager discounts. Mix: drive thru 58.2%, dine in 30.2%, apps 11.6%. Top deal code: Comb Offer #1 on 22 checks. Monday 10/12 labor has been restated to 37.89 hours (19.8%) after Kaomy Garcia's missed clock-out was fixed.",
     "alerts": [
-      "10/12 labor 47.09 hours, 29% above the four-Monday average of 36.38, at 24.9% of sales",
-      "10/12 manager discount check 679 $12.86, over the $12 line, rung and authorized by Jacob Kresin",
-      "10/12 employee discount check 726 $7.98, over the $6 line: four small shakes on the shared Jimmy 221 login"
+      "10/13 labor 25.1% on 40.93 hours, with net 4.6% under last Tuesday",
+      "10/13 $125 paid out: bank variance minus paid outs is -$122.44, over the $75 line (the deposit itself was $2.56 over)",
+      "10/13 seven people worked with one employee discount and no manager discounts",
+      "10/13 employee discount on the shared Jimmy 221 login: check 857 ($3.54, 4:23 PM)"
     ]
   },
   "weekly": {
@@ -646,7 +647,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-12","hours":[["9a",50.88],["10a",116.16],["11a",297.35],["12p",487.79],["1p",303.25],["2p",310.84],["3p",95.09],["4p",89.46],["5p",194.04],["6p",173.87],["7p",226.96],["8p",159.85],["9p",135.87],["10p",72.9]]};
+    const HOURLY = {"date":"2026-10-13","hours":[["9a",26.35],["10a",47.06],["11a",294.12],["12p",357.8],["1p",226.73],["2p",211.66],["3p",107.8],["4p",298.32],["5p",206.41],["6p",268.7],["7p",179.87],["8p",137.92],["9p",0],["10p",82.73]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -785,7 +786,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-12", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-13", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -1020,7 +1021,8 @@ const SHIFT_DISC = [
   ["2026-10-11", "1:16 PM", 424, "Employee Discount", 2.75, "register (Jimmy)"],
   ["2026-10-12", "4:36 PM", 679, "Manager Discount", 12.86, "Jacob Kresin"],
   ["2026-10-12", "6:41 PM", 710, "Employee Discount", 1.35, "Jacob Kresin"],
-  ["2026-10-12", "7:36 PM", 726, "Employee Discount", 7.98, "register (Jimmy)"]];
+  ["2026-10-12", "7:36 PM", 726, "Employee Discount", 7.98, "register (Jimmy)"],
+  ["2026-10-13", "4:23 PM", 857, "Employee Discount", 3.54, "register (Jimmy)"]];
 /*SHIFT-END*/
 /*PFG-START*/
 const PFG_TRUCKS=["2026-01-16", "2026-03-27", "2026-06-05", "2026-08-07"];
