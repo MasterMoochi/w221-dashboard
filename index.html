@@ -597,17 +597,18 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-22",
+  "updated": "2026-10-23",
   "updatedBy": "Claude (manual catch-up)",
   "daily": {
-    "date": "2026-10-21",
-    "netSales": 2975.95,
-    "transactions": 226,
-    "laborPct": 24.1,
-    "debrief": "Wed $2,976 on 226 checks, labor 24.1% (45.8 hrs, 12% over the last four Wednesdays); drive thru 63%, dine in 31%, app share 6.0%. Wiener Wednesday Offer #626 on 46 checks. Two employee discounts ($8.12, Andrew Renier), both under the cap; no manager discounts.",
+    "date": "2026-10-22",
+    "netSales": 2908.16,
+    "transactions": 213,
+    "laborPct": 22.4,
+    "debrief": "Thu $2,908 on 213 checks, labor 22.4%; drive thru 60%, dine in 34%, app share 6.3%; night (5 PM to close) $859, 29.5% of sales. Three employee discounts ($9.53) and three manager discounts ($21.16), all rung by Jacob Kresin.",
     "alerts": [
-      "Labor hours 45.8, 12% above the last four Wednesdays",
-      "App share 6.0%, below 8%"
+      "Manager discounts $21.16 on 3 checks (over $15/day), all rung by Jacob Kresin",
+      "Jacob Kresin authorized his own manager discounts on checks 689 and 796",
+      "App share 6.3%, below 8%"
     ]
   },
   "weekly": {
@@ -645,7 +646,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-21","hours":[["9a",96.3],["10a",69.98],["11a",256.6],["12p",430.31],["1p",255.51],["2p",323.68],["3p",174.73],["4p",267.93],["5p",354.72],["6p",230.09],["7p",270.66],["8p",84.04],["9p",95.36],["10p",66.04]]};
+    const HOURLY = {"date":"2026-10-22","hours":[["8a",16.25],["9a",48.84],["10a",43.53],["11a",484.73],["12p",538.87],["1p",230.99],["2p",126.13],["3p",285.9],["4p",273.87],["5p",333.39],["6p",230.36],["7p",147.96],["8p",70.82],["9p",59.22],["10p",17.3]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -784,7 +785,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-22", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-23", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -1029,7 +1030,13 @@ const SHIFT_DISC = [
   ["2026-10-20","9:18 PM",345,"Employee Discount",10.49,"Andrew Renier"],
   ["2026-10-20","9:50 PM",349,"Employee Discount",3.29,"Andrew Renier"],
   ["2026-10-21","4:11 PM",490,"Employee Discount",3.43,"Andrew Renier"],
-  ["2026-10-21","9:02 PM",574,"Employee Discount",4.69,"Andrew Renier"]
+  ["2026-10-21","9:02 PM",574,"Employee Discount",4.69,"Andrew Renier"],
+  ["2026-10-22","2:03 PM",689,"Manager Discount",4.99,"Jacob Kresin"],
+  ["2026-10-22","4:32 PM",735,"Manager Discount",7.08,"Jacob Kresin"],
+  ["2026-10-22","4:33 PM",736,"Employee Discount",3.29,"Jacob Kresin"],
+  ["2026-10-22","9:22 PM",796,"Manager Discount",9.09,"Jacob Kresin"],
+  ["2026-10-22","10:12 PM",800,"Employee Discount",3.74,"Jacob Kresin"],
+  ["2026-10-22","10:45 PM",803,"Employee Discount",2.5,"Jacob Kresin"]
 ];
 /*SHIFT-END*/
 /*PFG-START*/
