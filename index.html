@@ -597,18 +597,21 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-23",
+  "updated": "2026-10-27",
   "updatedBy": "Claude (manual catch-up)",
   "daily": {
-    "date": "2026-10-22",
-    "netSales": 2908.16,
-    "transactions": 213,
-    "laborPct": 22.4,
-    "debrief": "Thu $2,908 on 213 checks, labor 22.4%; drive thru 60%, dine in 34%, app share 6.3%; night (5 PM to close) $859, 29.5% of sales. Three employee discounts ($9.53) and three manager discounts ($21.16), all rung by Jacob Kresin.",
+    "date": "2026-10-26",
+    "netSales": 2707.57,
+    "transactions": 190,
+    "laborPct": 19.2,
+    "debrief": "Mon $2,708 on 190 checks, labor 19.2% (last Mon $2,565, 197 checks, 22.4%); drive thru 57%, dine in 27%, app share 15.5%; night $696, 25.7% of sales. No employee discounts; two manager discounts ($12.19) for Andrew Renier, authorized by jacob. Weekend: Fri $3,535, Sat $3,505, Sun $2,347.",
     "alerts": [
-      "Manager discounts $21.16 on 3 checks (over $15/day), all rung by Jacob Kresin",
-      "Jacob Kresin authorized his own manager discounts on checks 689 and 796",
-      "App share 6.3%, below 8%"
+      "Mon: $173.82 unexplained cash (paid outs $650, bank variance $476.18)",
+      "Mon: zero employee discounts but 2 manager discounts ($12.19, Andrew Renier, auth jacob): staff meals on the uncapped button",
+      "Fri 10/23: $98.91 unexplained cash",
+      "Over-cap employee discounts: Fri check 51 $10.24 (Jameel), Sun check 418 $9.98 (Lakeyah Burries)",
+      "Shared Jimmy 221 login used for discounts Sat and Sun",
+      "Jacob Kresin self-authorized a manager discount Sat (check 159)"
     ]
   },
   "weekly": {
@@ -646,7 +649,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-22","hours":[["8a",16.25],["9a",48.84],["10a",43.53],["11a",484.73],["12p",538.87],["1p",230.99],["2p",126.13],["3p",285.9],["4p",273.87],["5p",333.39],["6p",230.36],["7p",147.96],["8p",70.82],["9p",59.22],["10p",17.3]]};
+    const HOURLY = {"date":"2026-10-26","hours":[["9a",29.91],["10a",103.15],["11a",472.09],["12p",458],["1p",342.48],["2p",235.47],["3p",126.54],["4p",244.01],["5p",125.7],["6p",263.22],["7p",168.44],["8p",59.45],["9p",27.53],["10p",51.58]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -785,7 +788,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-23", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-27", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -1036,7 +1039,20 @@ const SHIFT_DISC = [
   ["2026-10-22","4:33 PM",736,"Employee Discount",3.29,"Jacob Kresin"],
   ["2026-10-22","9:22 PM",796,"Manager Discount",9.09,"Jacob Kresin"],
   ["2026-10-22","10:12 PM",800,"Employee Discount",3.74,"Jacob Kresin"],
-  ["2026-10-22","10:45 PM",803,"Employee Discount",2.5,"Jacob Kresin"]
+  ["2026-10-22","10:45 PM",803,"Employee Discount",2.5,"Jacob Kresin"],
+  ["2026-10-23","3:45 PM",956,"Employee Discount",1.25,"Jameel Alsaqri"],
+  ["2026-10-23","9:11 PM",51,"Employee Discount",10.24,"Jameel Alsaqri"],
+  ["2026-10-24","12:28 PM",108,"Employee Discount",3.79,"register (Jimmy)"],
+  ["2026-10-24","1:46 PM",140,"Employee Discount",2.5,"register (Jimmy)"],
+  ["2026-10-24","2:40 PM",159,"Manager Discount",2.49,"Jacob Kresin"],
+  ["2026-10-24","7:08 PM",238,"Manager Discount",11.47,"Kooper Blackwelder"],
+  ["2026-10-24","9:05 PM",265,"Employee Discount",2.69,"Jacob Kresin"],
+  ["2026-10-25","8:46 PM",414,"Employee Discount",4,"register (Jimmy)"],
+  ["2026-10-25","8:58 PM",418,"Employee Discount",9.98,"Lakeyah Burries"],
+  ["2026-10-25","9:30 PM",424,"Manager Discount",8.19,"register (Jimmy)"],
+  ["2026-10-25","9:32 PM",425,"Employee Discount",2,"register (Jimmy)"],
+  ["2026-10-26","4:41 PM",566,"Manager Discount",2.69,"Andrew Renier"],
+  ["2026-10-26","8:37 PM",619,"Manager Discount",9.5,"Andrew Renier"]
 ];
 /*SHIFT-END*/
 /*PFG-START*/
