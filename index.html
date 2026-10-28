@@ -597,21 +597,19 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-27",
+  "updated": "2026-10-28",
   "updatedBy": "Claude (manual catch-up)",
   "daily": {
-    "date": "2026-10-26",
-    "netSales": 2707.57,
-    "transactions": 190,
-    "laborPct": 19.2,
-    "debrief": "Mon $2,708 on 190 checks, labor 19.2% (last Mon $2,565, 197 checks, 22.4%); drive thru 57%, dine in 27%, app share 15.5%; night $696, 25.7% of sales. No employee discounts; two manager discounts ($12.19) for Andrew Renier, authorized by jacob. Weekend: Fri $3,535, Sat $3,505, Sun $2,347.",
+    "date": "2026-10-27",
+    "netSales": 2222.06,
+    "transactions": 181,
+    "laborPct": 28.2,
+    "debrief": "Tue $2,222 on 181 checks, labor 28.2% on 41.12 hrs (last Tue $2,483, 191 checks, 23.8%); drive thru 71%, dine in 24%, app share 4.5%; night $750, 33.7% of sales. Employee discounts 2 for $18.46; one manager discount ($8.00, Andrew Renier, authorized by jacob). Cash clean: bank variance $1.45, no paid outs.",
     "alerts": [
-      "Mon: $173.82 unexplained cash (paid outs $650, bank variance $476.18)",
-      "Mon: zero employee discounts but 2 manager discounts ($12.19, Andrew Renier, auth jacob): staff meals on the uncapped button",
-      "Fri 10/23: $98.91 unexplained cash",
-      "Over-cap employee discounts: Fri check 51 $10.24 (Jameel), Sun check 418 $9.98 (Lakeyah Burries)",
-      "Shared Jimmy 221 login used for discounts Sat and Sun",
-      "Jacob Kresin self-authorized a manager discount Sat (check 159)"
+      "Tue: labor 28.2% ($627 on $2,222 net), over the 25% line",
+      "Tue: check average $12.28, under $12.50",
+      "Over-cap employee discounts: check 639 $7.97 (Jameel), check 805 $10.49 (Marissa Caston)",
+      "Tue: app share 4.5% (DoorDash $89, Olo $10), under 8%"
     ]
   },
   "weekly": {
@@ -649,7 +647,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-26","hours":[["9a",29.91],["10a",103.15],["11a",472.09],["12p",458],["1p",342.48],["2p",235.47],["3p",126.54],["4p",244.01],["5p",125.7],["6p",263.22],["7p",168.44],["8p",59.45],["9p",27.53],["10p",51.58]]};
+    const HOURLY = {"date":"2026-10-27","hours":[["9a",15.42],["10a",19.97],["11a",298.16],["12p",421.63],["1p",248.48],["2p",192.69],["3p",155.37],["4p",120.62],["5p",258.79],["6p",158.85],["7p",113.41],["8p",140.5],["9p",30.92],["10p",47.25]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
@@ -788,7 +786,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-27", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-28", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -1052,7 +1050,10 @@ const SHIFT_DISC = [
   ["2026-10-25","9:30 PM",424,"Manager Discount",8.19,"register (Jimmy)"],
   ["2026-10-25","9:32 PM",425,"Employee Discount",2,"register (Jimmy)"],
   ["2026-10-26","4:41 PM",566,"Manager Discount",2.69,"Andrew Renier"],
-  ["2026-10-26","8:37 PM",619,"Manager Discount",9.5,"Andrew Renier"]
+  ["2026-10-26","8:37 PM",619,"Manager Discount",9.5,"Andrew Renier"],
+  ["2026-10-27","11:18 AM",639,"Employee Discount",7.97,"Jameel"],
+  ["2026-10-27","8:49 PM",805,"Employee Discount",10.49,"Marissa Caston"],
+  ["2026-10-27","9:19 PM",809,"Manager Discount",8,"Andrew Renier"]
 ];
 /*SHIFT-END*/
 /*PFG-START*/
