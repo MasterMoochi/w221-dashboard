@@ -597,19 +597,17 @@
 /* ---- LIVE data: auto-updated by scheduled tasks. Edit ONLY between the markers. ---- */
 /*LIVE-START*/
 const LIVE = {
-  "updated": "2026-10-28",
+  "updated": "2026-10-29",
   "updatedBy": "Claude (manual catch-up, daily + weekly)",
   "daily": {
-    "date": "2026-10-27",
-    "netSales": 2222.06,
-    "transactions": 181,
-    "laborPct": 28.2,
-    "debrief": "Tue $2,222 on 181 checks, labor 28.2% on 41.12 hrs (last Tue $2,483, 191 checks, 23.8%); drive thru 71%, dine in 24%, app share 4.5%; night $750, 33.7% of sales. Employee discounts 2 for $18.46; one manager discount ($8.00, Andrew Renier, authorized by jacob). Cash clean: bank variance $1.45, no paid outs.",
+    "date": "2026-10-28",
+    "netSales": 3116.53,
+    "transactions": 251,
+    "laborPct": 23.5,
+    "debrief": "Wed $3,117 on 251 checks, labor 23.5% on 44.33 hrs (last Wed $2,976, 226 checks, 24.1%); right at the four-Wednesday average of $3,111. Night $964, 30.9% of sales (last Wed $1,101). Promo $818. Cash: bank variance -$15.18, no paid outs. Discounts, order mix and clock-outs pending: Simphony was signed out.",
     "alerts": [
-      "Tue: labor 28.2% ($627 on $2,222 net), over the 25% line",
-      "Tue: check average $12.28, under $12.50",
-      "Over-cap employee discounts: check 639 $7.97 (Jameel), check 805 $10.49 (Marissa Caston)",
-      "Tue: app share 4.5% (DoorDash $89, Olo $10), under 8%"
+      "Wed: check average $12.42, under $12.50",
+      "Wed: discounts, order mix and clock-outs not pulled yet (Simphony signed out)"
     ]
   },
   "weekly": {
@@ -649,7 +647,7 @@ const LIVE = {
 };
 /*LIVE-END*/
 /*HR-START*/
-    const HOURLY = {"date":"2026-10-27","hours":[["9a",15.42],["10a",19.97],["11a",298.16],["12p",421.63],["1p",248.48],["2p",192.69],["3p",155.37],["4p",120.62],["5p",258.79],["6p",158.85],["7p",113.41],["8p",140.5],["9p",30.92],["10p",47.25]]};
+    const HOURLY = {"date":"2026-10-28","hours":[["9a",24.4],["10a",115.01],["11a",582.5],["12p",598.25],["1p",275.71],["2p",227.41],["3p",110.4],["4p",218.94],["5p",201.96],["6p",275.69],["7p",182.24],["8p",94.01],["9p",158.7],["10p",51.31]]};
     /*HR-END*/
 function debriefChartHTML(){
   if (typeof HOURLY === "undefined" || !HOURLY.hours || !HOURLY.hours.length) return "";
