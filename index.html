@@ -604,10 +604,10 @@ const LIVE = {
     "netSales": 3116.53,
     "transactions": 251,
     "laborPct": 23.5,
-    "debrief": "Wed $3,117 on 251 checks, labor 23.5% on 44.33 hrs (last Wed $2,976, 226 checks, 24.1%); right at the four-Wednesday average of $3,111. Night $964, 30.9% of sales (last Wed $1,101). Promo $818. Cash: bank variance -$15.18, no paid outs. Discounts, order mix and clock-outs pending: Simphony was signed out.",
+    "debrief": "Wed $3,117 on 251 checks, labor 23.5% on 44.33 hrs (last Wed $2,976, 226 checks, 24.1%); right at the four-Wednesday average of $3,111. Drive thru 60%, dine in 34%, app share 5.5%; night $964, 30.9% of sales (last Wed $1,101). Promo $818. One employee discount ($5.44, Andrew Renier) and one manager discount ($7.37, Jacob Kresin, authorized by mu). Cash: bank variance -$15.18, no paid outs.",
     "alerts": [
       "Wed: check average $12.42, under $12.50",
-      "Wed: discounts, order mix and clock-outs not pulled yet (Simphony signed out)"
+      "Wed: app share 5.5% (DoorDash $125, Uber $19, Olo $26), under 8%"
     ]
   },
   "weekly": {
@@ -620,7 +620,7 @@ const LIVE = {
       "Employee discounts 17 for $79.06, over the $60 weekly line; one day at $18.98",
       "Manager discounts 6 for $43.31, over the $40 weekly line",
       "Week of 10/12: labor 23.1%, up 2.65 points while sales fell 4.9% (Sun 10/18 at 33.8%); employee discounts $94.89, manager $52.96",
-      "Category mix not filled for 10/12 or 10/19: Simphony was signed out"
+      "Mix, week of 10/19: hot dogs 43.3%, fries 26.2%, corn dogs 9.3%, drinks 11.9%, Tastee 5.6%, burgers 5.1%"
     ]
   },
   "monthly": {
@@ -786,7 +786,7 @@ const EMP_PUNCH = [
 ["2026-08-16","Carina Carrasco",17.56,"301"],["2026-08-16","Eduar Gramajo",4.94,"301"]];
 /*EMP-END*/
 /*SHIFT-START*/
-const SHIFT_META = { "updated":"2026-10-28", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
+const SHIFT_META = { "updated":"2026-10-29", "pct":50, "offShiftOK":true, "scope":"own meal only", "capDisc":8.00,
   "policy":"Employee discount is \u003cb\u003e50% off\u003c/b\u003e, valid \u003cb\u003eanytime \u2014 on shift or off\u003c/b\u003e, and it covers \u003cb\u003ethat person\u2019s own meal only\u003c/b\u003e. So the time of a ring is never itself a violation \u2014 the size is. At 50% off, one meal comes off at roughly $4\u2013$7, so anything discounting more than $8.00 means more than one meal left on that ticket.",
   "note":"Punches come from Simphony \u2192 My Reports \u2192 Labor \u2192 Time Card Detail. The discount log comes from the Library report \u201cDiscounts by Revenue Center and Check\u201d. The daily task refreshes both each morning." };
 // [date, employee, clockIn, clockOut, hours] — Simphony Time Card Detail, 8/17–8/23
@@ -1053,7 +1053,9 @@ const SHIFT_DISC = [
   ["2026-10-26","8:37 PM",619,"Manager Discount",9.5,"Andrew Renier"],
   ["2026-10-27","11:18 AM",639,"Employee Discount",7.97,"Jameel"],
   ["2026-10-27","8:49 PM",805,"Employee Discount",10.49,"Marissa Caston"],
-  ["2026-10-27","9:19 PM",809,"Manager Discount",8,"Andrew Renier"]
+  ["2026-10-27","9:19 PM",809,"Manager Discount",8,"Andrew Renier"],
+  ["2026-10-28","3:47 PM",974,"Manager Discount",7.37,"Jacob Kresin"],
+  ["2026-10-28","9:01 PM",67,"Employee Discount",5.44,"Andrew Renier"]
 ];
 /*SHIFT-END*/
 /*PFG-START*/
